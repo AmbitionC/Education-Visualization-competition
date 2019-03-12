@@ -151,3 +151,37 @@ print(num_policy)
 
 # 共产党党员1人，共青团员1662人，少先队员23人，一般为78人，民主党派1人
 
+##############################################################################
+# 学生年龄统计
+
+# 统计学生年龄缺失值
+num_age_null = len(data_origin['bf_BornDate'][pd.isnull(data_origin['bf_BornDate'])])
+print("学生年龄缺失数量为", num_age_null)
+# 缺失人数为83人，删除缺失的学生记录
+data_age = data_origin.drop(data_origin[pd.isnull(data_origin['bf_BornDate'])].index)
+
+# 计算学生的年级，如果都是以2019开始计算
+data_age['bf_BornDate'] = 2019 - data_age['bf_BornDate']
+
+# 统计学生的年龄分布情况
+num_age_15 = len(data_age['bf_BornDate'][data_age['bf_BornDate'] <= 15])
+num_age_16 = len(data_age['bf_BornDate'][data_age['bf_BornDate'] == 16])
+num_age_17 = len(data_age['bf_BornDate'][data_age['bf_BornDate'] == 17])
+num_age_18 = len(data_age['bf_BornDate'][data_age['bf_BornDate'] == 18])
+num_age_19 = len(data_age['bf_BornDate'][data_age['bf_BornDate'] == 19])
+num_age_20 = len(data_age['bf_BornDate'][data_age['bf_BornDate'] >= 20])
+
+print("小于等于15岁的学生数有", num_age_15, "人", "年龄最小的岁数为", min(data_age['bf_BornDate']), "岁")
+print("16岁的学生数有", num_age_16, "人")
+print("17岁的学生数有", num_age_17, "人")
+print("18岁的学生数有", num_age_18, "人")
+print("19岁的学生数有", num_age_19, "人")
+print("大于等于岁的学生数有", num_age_20, "人", "年龄最大的岁数为", max(data_age['bf_BornDate']), "岁")
+
+##############################################################################
+# 住校学生统计
+
+# 统计学生住校信息栏为空的数据，表示学生住外面
+num_zhusu_null = len(data_origin['bf_zhusu'][pd.isnull(data_origin['bf_zhusu'])])
+
+print("住校学生有", (data_origin.shape[0] - num_zhusu_null), "住校外的学生有", num_zhusu_null)
