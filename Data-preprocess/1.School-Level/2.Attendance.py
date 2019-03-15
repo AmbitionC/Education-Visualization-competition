@@ -50,27 +50,27 @@ print(len(data_origin['qj_term'][pd.isnull(data_origin['qj_term'])]))
 ##############################################################################
 # Step2: 以各个学期为单位，对数据进行划分，并进行统计
 # 学期跨度为2013-2014-1，到2018-2019-1
+##############################################################################
 
 term = ["2013-2014-1", "2013-2014-2", "2014-2015-1", "2014-2015-2", "2015-2016-1", "2015-2016-2", "2016-2017-1",
         "2016-2017-2", "2017-2018-1", "2017-2018-2", "2018-2019-1", ]
 
+control_task = [100000, 100100, 100200, 100300, 200000, 200100, 200200, 300000, 300100, 300200,
+                9900100, 9900200, 9900300, 9900400, 9900500]
+
+control_task_name = ['默认信息', '早上迟到', '晚到学校', '晚自修迟到', '默认信息', '校徽校服', '请假离校', '默认信息',
+                     '住宿早晨锻炼', '课间操请假', '默认信息', '默认信息', '默认信息', '离校考勤', '进校考勤']
 # 统计各个学期的特殊情况
-# 100100-早上迟到，100200-晚到学校，100300-晚自修迟到
-# 100
 
-#
-# for j in range(len(term)):
-#     morning_late = 0
-#     for i in range(data_origin.shape[0]):
-#         if data_origin['qj_term'].iloc[i] == term[j]:
-#             if data_origin['control_task_order_id'].iloc[i] == 100100:
-#                 morning_late += 1
-#     print("学期", term[j], "早上迟到人数为", morning_late)
+for i in range(len(term)):
+    for j in range(len(control_task)):
+        num_attendance = 0
+        for k in range(data_origin.shape[0]):
+            if data_origin['qj_term'].iloc[k] == term[i]:
+                if data_origin['control_task_order_id'].iloc[k] == control_task[j]:
+                    num_attendance += 1
+        print("学期", term[i], control_task_name[j], "人数为", num_attendance)
 
-for j in range(len(term)):
-    morning_late = 0
-    for i in range(data_origin.shape[0]):
-        if data_origin['qj_term'].iloc[i] == term[j]:
-            if data_origin['control_task_order_id'].iloc[i] == 100200:
-                morning_late += 1
-    print("学期", term[j], "晚自习迟到人数为", morning_late)
+##############################################################################
+# Step3: 以各个学期为单位，对数据进行划分，并进行统计
+# 学期跨度为2013-2014-1，到2018-2019-1
