@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-consumption = pd.read_csv('../data/7_consumption.csv')
+consumption = pd.read_csv('../../education_data/7_consumption.csv')
 
 consumption['PerSex'] = consumption['PerSex'].apply(lambda x: np.NaN if str(x).isspace() else x)
 consumption.dropna()

@@ -54,41 +54,6 @@ data_origin.to_csv("data_origin.csv")
 # 学期跨度为2013-2014-1，到2018-2019-1
 ##############################################################################
 
-term = ["2013-2014-1", "2013-2014-2", "2014-2015-1", "2014-2015-2", "2015-2016-1", "2015-2016-2", "2016-2017-1",
-        "2016-2017-2", "2017-2018-1", "2017-2018-2", "2018-2019-1"]
-
-year = [2014, 2015, 2016, 2017, 2018, 2019]
-
-month = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-
-date = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
-
-control_task = [100000, 100100, 100200, 100300, 200000, 200100, 200200, 300000, 300100, 300200,
-                9900100, 9900200, 9900300, 9900400, 9900500]
-
-control_task_name = ['默认信息', '早上迟到', '晚到学校', '晚自修迟到', '默认信息', '校徽校服', '请假离校', '默认信息',
-                     '住宿早晨锻炼', '课间操请假', '默认信息', '默认信息', '默认信息', '离校考勤', '进校考勤']
-
-# 首先统计学年内数据的数量
-for i in range(len(year)):
-    num_students = 0
-    for j in range(data_origin.shape[0]):
-        if data_origin['year'].iloc[j] == year[i]:
-            num_students += 1
-    print("学年", year[i], "登记次数为", num_students)
-
-print("\b")
-
-# 学年 2014 登记次数为 10119（实际为1657条，其中8462条数据为体育场登记数据，其他年份没有）
-# 学年 2015 登记次数为 1749
-# 学年 2016 登记次数为 1364
-# 学年 2017 登记次数为 2037
-# 学年 2018 登记次数为 7577（实际为2329条，其中5248条为离校进校登记）
-# 学年 2019 登记次数为 784
-# 登记的次数不一样，所以要考虑是否进行归一化处理或者是计算比例
-
-
-
 # 字段解释：
 # 100000  正常时间到校，上课时间为7:25
 # 100100  早晨上学迟到，在上课时间迟到一点
@@ -106,78 +71,676 @@ print("\b")
 # 9900400  离校数据，推测属于正常离校数据
 # 9900500  进校数据，推测为正常进校数据
 
-
-
 # 需要进行统计展示的信息：
 # 早上迟到： 100100 + 9900100 + 100200
 # 请假离校（早退）： 200200 + 9900300
 # 校徽校服问题： 200100 + 9900200
-# 课间操请假：  300200
-
-# 早上迟到进行比较的数据： 100100 + 9900100 + 100200 + 100000
+# 课间操请假：  300200（只能统计2014年信息）
 
 
-# 记录迟到登记次数
-for i in range(len(year)):
-    num_statistic = 0
-    for j in range(data_origin.shape[0]):
-        if data_origin['year'].iloc[j] == year[i]:
-            # if (data_origin['control_task_order_id'].iloc[j] == 100100) or (data_origin['control_task_order_id'].iloc[j] == 9900100) or (data_origin['control_task_order_id'].iloc[j] == 100200):
-            # if (data_origin['control_task_order_id'].iloc[j] == 200200) or (data_origin['control_task_order_id'].iloc[j] == 9900300) :
-            # if (data_origin['control_task_order_id'].iloc[j] == 200100) or (data_origin['control_task_order_id'].iloc[j] == 9900200) :
-            # if (data_origin['control_task_order_id'].iloc[j] == 300100):
-            if (data_origin['control_task_order_id'].iloc[j] == 9900200):
-                num_statistic += 1
-    print("学年", year[i], "住宿早晨锻炼次数为", num_statistic)
+term = ["2013-2014-1", "2013-2014-2", "2014-2015-1", "2014-2015-2", "2015-2016-1", "2015-2016-2", "2016-2017-1",
+        "2016-2017-2", "2017-2018-1", "2017-2018-2", "2018-2019-1"]
+
+year = [2014, 2015, 2016, 2017, 2018, 2019]
+
+month = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+
+date = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+
+control_task = [100000, 100100, 100200, 100300, 200000, 200100, 200200, 300000, 300100, 300200,
+                9900100, 9900200, 9900300, 9900400, 9900500]
+
+control_task_name = ['默认信息', '早上迟到', '晚到学校', '晚自修迟到', '默认信息', '校徽校服', '请假离校', '默认信息',
+                     '住宿早晨锻炼', '课间操请假', '默认信息', '默认信息', '默认信息', '离校考勤', '进校考勤']
+
+# 统计各个学年的数据数量
+def statistic_year_num():
+    for i in range(len(year)):
+        num_students = 0
+        for j in range(data_origin.shape[0]):
+            if data_origin['year'].iloc[j] == year[i]:
+                num_students += 1
+        print("学年", year[i], "数据量为", num_students)
+    print('\b')
+
+# 学年 2014 数据量为 10119
+# 学年 2015 数据量为 1749
+# 学年 2016 数据量为 1364
+# 学年 2017 数据量为 2037
+# 学年 2018 数据量为 7577
+# 学年 2019 数据量为 784
+
+# 统计各年的操场打卡数据的数量
+def statisitic_year_playground():
+    num_playground = [0, 0, 0, 0, 0, 0]
+    # 统计各年操场打卡事件
+    for i in range(len(year)):
+        for j in range(data_origin.shape[0]):
+            if data_origin['year'].iloc[j] == year[i]:
+                # if (data_origin['control_task_order_id'].iloc[j] == 300000):
+                # if (data_origin['control_task_order_id'].iloc[j] == 300100):
+                if (data_origin['control_task_order_id'].iloc[j] == 300200):
+                    num_playground[i] += 1
+        print("学年", year[i], "课间操请假数据量为", num_playground[i])
+    print('\b')
+
+# 操场打卡数据只有2014年才有
+# 300000为操场默认登记数据  96人
+# 300100为住宿生早上锻炼数据   6062
+# 300200为课间操请假数据   2400
+# 2014年比其他年份多的数据为   8558
+
+def statisitic_year_inandout():
+    num_inandout = [0, 0, 0, 0, 0, 0]
+    for i in range(len(year)):
+        for j in range(data_origin.shape[0]):
+            if data_origin['year'].iloc[j] == year[i]:
+                if (data_origin['control_task_order_id'].iloc[j] == 9900400) or (data_origin['control_task_order_id'].iloc[j] == 9900500):
+                    num_inandout[i] += 1
+        print("学年", year[i], "进出校数据量为", num_inandout[i])
+    print('\b')
+# 学年 2014 进出校数据量为 0
+# 学年 2015 进出校数据量为 0
+# 学年 2016 进出校数据量为 0
+# 学年 2017 进出校数据量为 0
+# 学年 2018 进出校数据量为 5248
+# 学年 2019 进出校数据量为 634
+
+
+# 学年 2014 登记次数为 1561（总共为10119条，其中8558条数据为体育场登记数据，其他年份没有）
+# 学年 2015 登记次数为 1749
+# 学年 2016 登记次数为 1364
+# 学年 2017 登记次数为 2037
+# 学年 2018 登记次数为 2329（总共为7577条，其中5248条为离校进校登记）
+# 学年 2019 登记次数为 150（总共为784条，其中634条为进校离校登记）
+# 登记的次数不一样，所以要考虑是否进行归一化处理或者是计算比例
+year_students = [1561, 1749, 1364, 2037, 2329, 150]
+
+
+def statistic_year_late():
+    num_late = [0, 0, 0, 0, 0, 0]
+    # 记录迟到晚到比例
+    for i in range(len(year)):
+        for j in range(data_origin.shape[0]):
+            if data_origin['year'].iloc[j] == year[i]:
+                if (data_origin['control_task_order_id'].iloc[j] == 100100) or (data_origin['control_task_order_id'].iloc[j] == 9900100) or (data_origin['control_task_order_id'].iloc[j] == 100200):
+                    num_late[i] += 1
+        num_late[i] = round(num_late[i] / year_students[i] * 100, 2)
+        print("学年", year[i], "迟到晚到的比例为", num_late[i], "%")
+    print("\b")
+
+def statistic_year_early():
+    num_early = [0, 0, 0, 0, 0, 0]
+    # 记录早退离校比例
+    for i in range(len(year)):
+        for j in range(data_origin.shape[0]):
+            if data_origin['year'].iloc[j] == year[i]:
+                if (data_origin['control_task_order_id'].iloc[j] == 200200) or (data_origin['control_task_order_id'].iloc[j] == 9900300) :
+                    num_early[i] += 1
+        num_early[i] = round(num_early[i] / year_students[i] * 100, 2)
+        print("学年", year[i], "早退离校的比例为", num_early[i], "%")
+    print("\b")
+
+def statistic_year_uniform():
+    num_uniform = [0, 0, 0, 0, 0, 0]
+    # 记录校服校徽问题比例
+    for i in range(len(year)):
+        for j in range(data_origin.shape[0]):
+            if data_origin['year'].iloc[j] == year[i]:
+                if (data_origin['control_task_order_id'].iloc[j] == 200100) or (data_origin['control_task_order_id'].iloc[j] == 9900200) :
+                    num_uniform[i] += 1
+        num_uniform[i] = round(num_uniform[i] / year_students[i] * 100, 2)
+        print("学年", year[i], "校服校徽问题比例为", num_uniform[i], "%")
+    print("\b")
+
+def statistic_year_exercise():
+    num_exercise = [0, 0, 0, 0, 0, 0]
+    # 记录课间操请假的比例
+    for i in range(len(year)):
+        for j in range(data_origin.shape[0]):
+            if data_origin['year'].iloc[j] == year[i]:
+                if (data_origin['control_task_order_id'].iloc[j] == 300200):
+                    num_exercise[i] += 1
+        num_exercise[i] = round(num_exercise[i] / year_students[i] * 100, 2)
+        print("学年", year[i], "课间操请假比例为", num_exercise[i], "%")
+    print("\b")
+
 '''
-学年 2014 迟到晚到次数为 959
-学年 2015 迟到晚到次数为 1023
-学年 2016 迟到晚到次数为 765
-学年 2017 迟到晚到次数为 665
-学年 2018 迟到晚到次数为 888
-学年 2019 迟到晚到次数为 111
+学年 2014 迟到晚到的比例为 61.43 %
+学年 2015 迟到晚到的比例为 58.49 %
+学年 2016 迟到晚到的比例为 56.09 %
+学年 2017 迟到晚到的比例为 32.65 %
+学年 2018 迟到晚到的比例为 38.13 %
+学年 2019 迟到晚到的比例为 74.0 %
 
-学年 2014 请假离校次数为 59
-学年 2015 请假离校次数为 87
-学年 2016 请假离校次数为 224
-学年 2017 请假离校次数为 1150
-学年 2018 请假离校次数为 477
-学年 2019 请假离校次数为 0
 
-学年 2014 校徽校服问题次数为 527
-学年 2015 校徽校服问题次数为 568
-学年 2016 校徽校服问题次数为 375
-学年 2017 校徽校服问题次数为 222
-学年 2018 校徽校服问题次数为 964
-学年 2019 校徽校服问题次数为 39
+学年 2014 早退离校的比例为 3.78 %
+学年 2015 早退离校的比例为 4.97 %
+学年 2016 早退离校的比例为 16.42 %
+学年 2017 早退离校的比例为 56.46 %
+学年 2018 早退离校的比例为 20.48 %
+学年 2019 早退离校的比例为 0.0 %
 
-学年 2014 课间操请假次数为 2400
-学年 2015 课间操请假次数为 0
-学年 2016 课间操请假次数为 0
-学年 2017 课间操请假次数为 0
-学年 2018 课间操请假次数为 0
-学年 2019 课间操请假次数为 0
 
-学年 2014 住宿早晨锻炼次数为 6062
-学年 2015 住宿早晨锻炼次数为 0
-学年 2016 住宿早晨锻炼次数为 0
-学年 2017 住宿早晨锻炼次数为 0
-学年 2018 住宿早晨锻炼次数为 0
-学年 2019 住宿早晨锻炼次数为 0
-
+学年 2014 校服校徽问题比例为 33.76 %
+学年 2015 校服校徽问题比例为 32.48 %
+学年 2016 校服校徽问题比例为 27.49 %
+学年 2017 校服校徽问题比例为 10.9 %
+学年 2018 校服校徽问题比例为 41.39 %
+学年 2019 校服校徽问题比例为 26.0 %
 '''
-# 统计各个学期的特殊情况
-
-# for i in range(len(term)):
-#     for j in range(len(control_task)):
-#         num_attendance = 0
-#         for k in range(data_origin.shape[0]):
-#             if data_origin['qj_term'].iloc[k] == term[i]:
-#                 if data_origin['control_task_order_id'].iloc[k] == control_task[j]:
-#                     num_attendance += 1
-#         print("学期", term[i], control_task_name[j], "人数为", num_attendance)
 
 ##############################################################################
 # Step3: 以各个学期为单位，对数据进行划分，并进行统计
 # 学期跨度为2013-2014-1，到2018-2019-1
+##############################################################################
+# 统计各个学期的数据数量
+def statistic_term_num():
+    for i in range(len(term)):
+        num_students = 0
+        for j in range(data_origin.shape[0]):
+            if data_origin['qj_term'].iloc[j] == term[i]:
+                num_students += 1
+        print("学期", term[i], "数据量为", num_students)
+    print('\b')
 
+# 学期 2013-2014-1 数据量为 2738
+# 学期 2013-2014-2 数据量为 6949
+# 学期 2014-2015-1 数据量为 611
+# 学期 2014-2015-2 数据量为 1021
+# 学期 2015-2016-1 数据量为 644
+# 学期 2015-2016-2 数据量为 415
+# 学期 2016-2017-1 数据量为 965
+# 学期 2016-2017-2 数据量为 798
+# 学期 2017-2018-1 数据量为 2307
+# 学期 2017-2018-2 数据量为 2709
+# 学期 2018-2019-1 数据量为 4473
+
+# 统计各个学期的运动场打开数量
+
+# 统计各学期的操场打卡数据的数量
+def statisitic_term_playground():
+    num_playground = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    # 统计各学期操场打卡事件
+    for i in range(len(term)):
+        for j in range(data_origin.shape[0]):
+            if data_origin['qj_term'].iloc[j] == term[i]:
+                if (data_origin['control_task_order_id'].iloc[j] == 300200):
+                # if (data_origin['control_task_order_id'].iloc[j] == 300100):
+                # if (data_origin['control_task_order_id'].iloc[j] == 300200):
+                    num_playground[i] += 1
+        print("学期", term[i], "操场默认登记为", num_playground[i])
+    print('\b')
+
+# 操场打卡数据只有2014年才有
+# 2013-2014-1:
+# 300000为操场默认登记数据  96
+# 300100为住宿生早上锻炼数据   1501
+# 300200为课间操请假数据   877
+# 2013-2014-1多出的数据量为   2474
+
+# 2013-2014-2:
+# 300000为操场默认登记数据  0
+# 300100为住宿生早上锻炼数据   4561
+# 300200为课间操请假数据   1523
+# 2013-2014-2多出的数据量为   6084
+
+# 统计各个学期的进校离校的数量
+def statistic_term_inandout():
+    num_inandout = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    for i in range(len(term)):
+        for j in range(data_origin.shape[0]):
+            if data_origin['qj_term'].iloc[j] == term[i]:
+                if (data_origin['control_task_order_id'].iloc[j] == 9900400) or (data_origin['control_task_order_id'].iloc[j] == 9900500):
+                    num_inandout[i] += 1
+        print("学期", term[i], "进出校园登记为", num_inandout[i])
+    print('\b')
+
+# 学期 2013-2014-1 进出校园登记为 0
+# 学期 2013-2014-2 进出校园登记为 0
+# 学期 2014-2015-1 进出校园登记为 0
+# 学期 2014-2015-2 进出校园登记为 0
+# 学期 2015-2016-1 进出校园登记为 0
+# 学期 2015-2016-2 进出校园登记为 0
+# 学期 2016-2017-1 进出校园登记为 0
+# 学期 2016-2017-2 进出校园登记为 0
+# 学期 2017-2018-1 进出校园登记为 0
+# 学期 2017-2018-2 进出校园登记为 2082
+# 学期 2018-2019-1 进出校园登记为 3800
+
+# 学期 2013-2014-1 数据量为 309（2783-2474）
+# 学期 2013-2014-2 数据量为 865（6949-6084）
+# 学期 2014-2015-1 数据量为 611
+# 学期 2014-2015-2 数据量为 1021
+# 学期 2015-2016-1 数据量为 644
+# 学期 2015-2016-2 数据量为 415
+# 学期 2016-2017-1 数据量为 965
+# 学期 2016-2017-2 数据量为 798
+# 学期 2017-2018-1 数据量为 2307
+# 学期 2017-2018-2 数据量为 627（2709-2082）
+# 学期 2018-2019-1 数据量为 673（4473-3800）
+
+term_students = [309, 865, 611, 1021, 644, 415, 965, 798, 2307, 627, 673]
+
+
+def statistic_term_late():
+    num_late = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    # 记录迟到晚到比例
+    for i in range(len(term)):
+        for j in range(data_origin.shape[0]):
+            if data_origin['qj_term'].iloc[j] == term[i]:
+                if (data_origin['control_task_order_id'].iloc[j] == 100100) or (data_origin['control_task_order_id'].iloc[j] == 9900100) or (data_origin['control_task_order_id'].iloc[j] == 100200):
+                    num_late[i] += 1
+        num_late[i] = round(num_late[i] / term_students[i] * 100, 2)
+        print("学期", term[i], "迟到晚到的比例为", num_late[i], "%")
+    print("\b")
+
+def statistic_term_early():
+    num_early = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    # 记录早退离校比例
+    for i in range(len(term)):
+        for j in range(data_origin.shape[0]):
+            if data_origin['qj_term'].iloc[j] == term[i]:
+                if (data_origin['control_task_order_id'].iloc[j] == 200200) or (data_origin['control_task_order_id'].iloc[j] == 9900300) :
+                    num_early[i] += 1
+        num_early[i] = round(num_early[i] / term_students[i] * 100, 2)
+        print("学期", term[i], "早退离校的比例为", num_early[i], "%")
+    print("\b")
+
+def statistic_term_uniform():
+    num_uniform = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    # 记录校服校徽问题比例
+    for i in range(len(term)):
+        for j in range(data_origin.shape[0]):
+            if data_origin['qj_term'].iloc[j] == term[i]:
+                if (data_origin['control_task_order_id'].iloc[j] == 200100) or (data_origin['control_task_order_id'].iloc[j] == 9900200) :
+                    num_uniform[i] += 1
+        num_uniform[i] = round(num_uniform[i] / term_students[i] * 100, 2)
+        print("学期", term[i], "校服校徽问题比例为", num_uniform[i], "%")
+    print("\b")
+'''
+学期 2013-2014-1 迟到晚到的比例为 91.26 %
+学期 2013-2014-2 迟到晚到的比例为 48.32 %
+学期 2014-2015-1 迟到晚到的比例为 64.65 %
+学期 2014-2015-2 迟到晚到的比例为 55.83 %
+学期 2015-2016-1 迟到晚到的比例为 61.34 %
+学期 2015-2016-2 迟到晚到的比例为 72.77 %
+学期 2016-2017-1 迟到晚到的比例为 45.08 %
+学期 2016-2017-2 迟到晚到的比例为 28.82 %
+学期 2017-2018-1 迟到晚到的比例为 23.54 %
+学期 2017-2018-2 迟到晚到的比例为 66.99 %
+学期 2018-2019-1 迟到晚到的比例为 62.56 %
+
+
+学期 2013-2014-1 早退离校的比例为 3.88 %
+学期 2013-2014-2 早退离校的比例为 4.97 %
+学期 2014-2015-1 早退离校的比例为 1.15 %
+学期 2014-2015-2 早退离校的比例为 7.25 %
+学期 2015-2016-1 早退离校的比例为 1.55 %
+学期 2015-2016-2 早退离校的比例为 1.45 %
+学期 2016-2017-1 早退离校的比例为 27.05 %
+学期 2016-2017-2 早退离校的比例为 58.02 %
+学期 2017-2018-1 早退离校的比例为 45.17 %
+学期 2017-2018-2 早退离校的比例为 12.6 %
+学期 2018-2019-1 早退离校的比例为 0.0 %
+
+
+学期 2013-2014-1 校服校徽问题比例为 21.04 %
+学期 2013-2014-2 校服校徽问题比例为 34.1 %
+学期 2014-2015-1 校服校徽问题比例为 33.88 %
+学期 2014-2015-2 校服校徽问题比例为 29.97 %
+学期 2015-2016-1 校服校徽问题比例为 37.11 %
+学期 2015-2016-2 校服校徽问题比例为 25.78 %
+学期 2016-2017-1 校服校徽问题比例为 27.88 %
+学期 2016-2017-2 校服校徽问题比例为 13.16 %
+学期 2017-2018-1 校服校徽问题比例为 31.3 %
+学期 2017-2018-2 校服校徽问题比例为 20.41 %
+学期 2018-2019-1 校服校徽问题比例为 37.44 %
+'''
+
+##############################################################################
+# Step4: 以各个月份为单位，对数据进行划分，并进行统计
+# 学期跨度为2018年的1月，到2018年的12月
+##############################################################################
+
+# 首先提取2018年年份的数据
+data_year = data_origin.drop(data_origin[data_origin['year'] < 2018].index)
+data_year = data_year.drop(data_year[data_year['year'] > 2018].index)
+
+# 统计每个月的数据数量
+def statistic_month_num():
+    for i in range(len(month)):
+        num_students = 0
+        for j in range(data_year.shape[0]):
+            if data_year['month'].iloc[j] == month[i]:
+                num_students += 1
+        print(month[i], "月", "数据量为", num_students)
+    print('\b')
+
+# 1 月 数据量为 1176
+# 2 月 数据量为 27
+# 3 月 数据量为 155
+# 4 月 数据量为 403
+# 5 月 数据量为 1035
+# 6 月 数据量为 951
+# 7 月 数据量为 141
+# 8 月 数据量为 0
+# 9 月 数据量为 927
+# 10 月 数据量为 1019
+# 11 月 数据量为 705
+# 12 月 数据量为 1038
+
+# 统计各个月份的进校离校的数量
+def statistic_month_inandout():
+    num_inandout = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    for i in range(len(month)):
+        for j in range(data_year.shape[0]):
+            if data_year['month'].iloc[j] == month[i]:
+                if (data_year['control_task_order_id'].iloc[j] == 9900400) or (data_year['control_task_order_id'].iloc[j] == 9900500):
+                    num_inandout[i] += 1
+        print(month[i], "月进出校园数据量为", num_inandout[i])
+    print('\b')
+
+# 1 月进出校园数据量为 0
+# 2 月进出校园数据量为 0
+# 3 月进出校园数据量为 0
+# 4 月进出校园数据量为 288
+# 5 月进出校园数据量为 854
+# 6 月进出校园数据量为 825
+# 7 月进出校园数据量为 115
+# 8 月进出校园数据量为 0
+# 9 月进出校园数据量为 785
+# 10 月进出校园数据量为 938
+# 11 月进出校园数据量为 606
+# 12 月进出校园数据量为 837
+
+# 1 月 数据量为 1176
+# 2 月 数据量为 27
+# 3 月 数据量为 155
+# 4 月 数据量为 115（403-288）
+# 5 月 数据量为 181（1035-854）
+# 6 月 数据量为 126（951-825）
+# 7 月 数据量为 26（141-115）
+# 8 月 数据量为 0
+# 9 月 数据量为 142（927-785）
+# 10 月 数据量为 81（1019-938）
+# 11 月 数据量为 99（705-606）
+# 12 月 数据量为 201（1038-837）
+
+month_students = [1176, 27, 155, 115, 181, 126, 26, 1, 142, 81, 99, 201]
+
+# 统计12个月的考勤特殊情况
+def statistic_month_late():
+    num_late = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    for i in range(len(month)):
+        for j in range(data_year.shape[0]):
+            if data_year['month'].iloc[j] == month[i]:
+                if (data_year['control_task_order_id'].iloc[j] == 100100) or (data_year['control_task_order_id'].iloc[j] == 9900100) or (data_year['control_task_order_id'].iloc[j] == 100200):
+                    num_late[i] += 1
+        num_late[i] = round(num_late[i] / month_students[i] * 100, 2)
+        print(month[i], "月迟到晚到的比例为", num_late[i], "%")
+    print("\b")
+
+def statistic_month_early():
+    num_early = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    for i in range(len(month)):
+        for j in range(data_year.shape[0]):
+            if data_year['month'].iloc[j] == month[i]:
+                if (data_year['control_task_order_id'].iloc[j] == 200200) or (data_year['control_task_order_id'].iloc[j] == 9900300):
+                    num_early[i] += 1
+        num_early[i] = round(num_early[i] / month_students[i] * 100, 2)
+        print(month[i], "月早退的比例为", num_early[i], "%")
+    print("\b")
+
+def statistic_month_uniform():
+    num_uniform = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    for i in range(len(month)):
+        for j in range(data_year.shape[0]):
+            if data_year['month'].iloc[j] == month[i]:
+                if (data_year['control_task_order_id'].iloc[j] == 200100) or (data_year['control_task_order_id'].iloc[j] == 9900200):
+                    num_uniform[i] += 1
+        num_uniform[i] = round(num_uniform[i] / month_students[i] * 100, 2)
+        print(month[i], "月校服校徽问题的比例为", num_uniform[i], "%")
+    print("\b")
+
+# statistic_month_late()
+# statistic_month_early()
+# statistic_month_uniform()
+
+'''
+对其中的一些过高的值需要做平均处理，因为有的月份样本数量太少
+或者对这些数据进行差分，用百分比的话显然不妥（进行等比例缩放）
+1 月迟到晚到的比例为 13.44 %
+2 月迟到晚到的比例为 81.48 %
+3 月迟到晚到的比例为 43.87 %
+4 月迟到晚到的比例为 72.17 %
+5 月迟到晚到的比例为 82.32 %
+6 月迟到晚到的比例为 57.94 %
+7 月迟到晚到的比例为 96.15 %
+8 月迟到晚到的比例为 0.0 %
+9 月迟到晚到的比例为 41.55 %
+10 月迟到晚到的比例为 65.43 %
+11 月迟到晚到的比例为 66.67 %
+12 月迟到晚到的比例为 65.67 %
+
+
+1 月早退的比例为 33.84 %
+2 月早退的比例为 0.0 %
+3 月早退的比例为 45.81 %
+4 月早退的比例为 4.35 %
+5 月早退的比例为 1.66 %
+6 月早退的比例为 0.0 %
+7 月早退的比例为 0.0 %
+8 月早退的比例为 0.0 %
+9 月早退的比例为 0.0 %
+10 月早退的比例为 0.0 %
+11 月早退的比例为 0.0 %
+12 月早退的比例为 0.0 %
+
+
+1 月校服校徽问题的比例为 52.72 %
+2 月校服校徽问题的比例为 18.52 %
+3 月校服校徽问题的比例为 10.32 %
+4 月校服校徽问题的比例为 23.48 %
+5 月校服校徽问题的比例为 16.02 %
+6 月校服校徽问题的比例为 42.06 %
+7 月校服校徽问题的比例为 3.85 %
+8 月校服校徽问题的比例为 0.0 %
+9 月校服校徽问题的比例为 58.45 %
+10 月校服校徽问题的比例为 34.57 %
+11 月校服校徽问题的比例为 33.33 %
+12 月校服校徽问题的比例为 34.33 %
+'''
+
+##############################################################################
+# Step5: 以每一天为单位，对数据进行划分，并进行统计
+# 学期跨度为2018年的1月1日，到2018年的1月30日
+##############################################################################
+
+
+# 首先提取2018年年份的数据
+data_day = data_origin.drop(data_origin[data_origin['year'] < 2018].index)
+data_day = data_day.drop(data_day[data_day['year'] > 2018].index)
+data_day = data_day.drop(data_day[data_day['month']> 1].index)
+# print(data_day.shape[0])
+
+# 统计1月每一天的数据数量
+def statistic_day_num():
+    for i in range(len(date)):
+        num_students = 0
+        for j in range(data_day.shape[0]):
+            if data_day['date'].iloc[j] == date[i]:
+                num_students += 1
+        print(date[i], "号", "数据量为", num_students)
+    print('\b')
+
+# statistic_day_num()
+
+# 1 号 数据量为 0
+# 2 号 数据量为 25
+# 3 号 数据量为 17
+# 4 号 数据量为 4
+# 5 号 数据量为 16
+# 6 号 数据量为 0
+# 7 号 数据量为 0
+# 8 号 数据量为 13
+# 9 号 数据量为 8
+# 10 号 数据量为 1
+# 11 号 数据量为 3
+# 12 号 数据量为 8
+# 13 号 数据量为 0
+# 14 号 数据量为 0
+# 15 号 数据量为 54
+# 16 号 数据量为 5
+# 17 号 数据量为 31
+# 18 号 数据量为 0
+# 19 号 数据量为 0
+# 20 号 数据量为 0
+# 21 号 数据量为 0
+# 22 号 数据量为 9
+# 23 号 数据量为 22
+# 24 号 数据量为 9
+# 25 号 数据量为 365
+# 26 号 数据量为 60
+# 27 号 数据量为 433
+# 28 号 数据量为 1
+# 29 号 数据量为 92
+# 30 号 数据量为 0
+# 31 号 数据量为 0
+
+
+
+# 直接统计1月份每一天的数据情况
+def statistic_day_late():
+    num_late = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    for i in range(len(date)):
+        for j in range(data_day.shape[0]):
+            if data_day['date'].iloc[j] == date[i]:
+                if (data_day['control_task_order_id'].iloc[j] == 100100) or (data_day['control_task_order_id'].iloc[j] == 9900100) or (data_day['control_task_order_id'].iloc[j] == 100200):
+                    num_late[i] += 1
+        print(date[i], "号迟到晚到的数量为", num_late[i])
+    print("\b")
+
+def statistic_day_early():
+    num_early = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    for i in range(len(date)):
+        for j in range(data_day.shape[0]):
+            if data_day['date'].iloc[j] == date[i]:
+                if (data_day['control_task_order_id'].iloc[j] == 200200) or (data_day['control_task_order_id'].iloc[j] == 9900300):
+                    num_early[i] += 1
+        print(date[i], "号早退的数量为", num_early[i])
+    print("\b")
+
+def statistic_day_uniform():
+    num_uniform = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    for i in range(len(date)):
+        for j in range(data_day.shape[0]):
+            if data_day['month'].iloc[j] == date[i]:
+                if (data_day['control_task_order_id'].iloc[j] == 200100) or (data_day['control_task_order_id'].iloc[j] == 9900200):
+                    num_uniform[i] += 1
+        print(date[i], "号校服校徽问题的比例为", num_uniform[i])
+    print("\b")
+
+statistic_day_late()
+statistic_day_early()
+statistic_day_uniform()
+
+'''
+1 号迟到晚到的数量为 0
+2 号迟到晚到的数量为 15
+3 号迟到晚到的数量为 16
+4 号迟到晚到的数量为 1
+5 号迟到晚到的数量为 10
+6 号迟到晚到的数量为 0
+7 号迟到晚到的数量为 0
+8 号迟到晚到的数量为 13
+9 号迟到晚到的数量为 6
+10 号迟到晚到的数量为 1
+11 号迟到晚到的数量为 3
+12 号迟到晚到的数量为 7
+13 号迟到晚到的数量为 0
+14 号迟到晚到的数量为 0
+15 号迟到晚到的数量为 4
+16 号迟到晚到的数量为 1
+17 号迟到晚到的数量为 4
+18 号迟到晚到的数量为 0
+19 号迟到晚到的数量为 0
+20 号迟到晚到的数量为 0
+21 号迟到晚到的数量为 0
+22 号迟到晚到的数量为 9
+23 号迟到晚到的数量为 17
+24 号迟到晚到的数量为 9
+25 号迟到晚到的数量为 0
+26 号迟到晚到的数量为 19
+27 号迟到晚到的数量为 0
+28 号迟到晚到的数量为 0
+29 号迟到晚到的数量为 23
+30 号迟到晚到的数量为 0
+31 号迟到晚到的数量为 0
+
+
+1 号早退的数量为 0
+2 号早退的数量为 0
+3 号早退的数量为 0
+4 号早退的数量为 0
+5 号早退的数量为 0
+6 号早退的数量为 0
+7 号早退的数量为 0
+8 号早退的数量为 0
+9 号早退的数量为 0
+10 号早退的数量为 0
+11 号早退的数量为 0
+12 号早退的数量为 1
+13 号早退的数量为 0
+14 号早退的数量为 0
+15 号早退的数量为 48
+16 号早退的数量为 2
+17 号早退的数量为 27
+18 号早退的数量为 0
+19 号早退的数量为 0
+20 号早退的数量为 0
+21 号早退的数量为 0
+22 号早退的数量为 0
+23 号早退的数量为 0
+24 号早退的数量为 0
+25 号早退的数量为 99
+26 号早退的数量为 41
+27 号早退的数量为 110
+28 号早退的数量为 1
+29 号早退的数量为 69
+30 号早退的数量为 0
+31 号早退的数量为 0
+
+
+1 号校服校徽问题的比例为 620
+2 号校服校徽问题的比例为 0
+3 号校服校徽问题的比例为 0
+4 号校服校徽问题的比例为 0
+5 号校服校徽问题的比例为 0
+6 号校服校徽问题的比例为 0
+7 号校服校徽问题的比例为 0
+8 号校服校徽问题的比例为 0
+9 号校服校徽问题的比例为 0
+10 号校服校徽问题的比例为 0
+11 号校服校徽问题的比例为 0
+12 号校服校徽问题的比例为 0
+13 号校服校徽问题的比例为 0
+14 号校服校徽问题的比例为 0
+15 号校服校徽问题的比例为 0
+16 号校服校徽问题的比例为 0
+17 号校服校徽问题的比例为 0
+18 号校服校徽问题的比例为 0
+19 号校服校徽问题的比例为 0
+20 号校服校徽问题的比例为 0
+21 号校服校徽问题的比例为 0
+22 号校服校徽问题的比例为 0
+23 号校服校徽问题的比例为 0
+24 号校服校徽问题的比例为 0
+25 号校服校徽问题的比例为 0
+26 号校服校徽问题的比例为 0
+27 号校服校徽问题的比例为 0
+28 号校服校徽问题的比例为 0
+29 号校服校徽问题的比例为 0
+30 号校服校徽问题的比例为 0
+31 号校服校徽问题的比例为 0
+'''

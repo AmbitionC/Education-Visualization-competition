@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="092a05fb-f66f-4390-9bd6-70d6cbbf9749" name="Default Changelist" comment="" />
+    <list default="true" id="092a05fb-f66f-4390-9bd6-70d6cbbf9749" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Data-preprocess/1.School-Level/.idea/1.School-Level.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../Data-preprocess/1.School-Level/.idea/1.School-Level.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Data-preprocess/1.School-Level/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Data-preprocess/1.School-Level/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Data-preprocess/1.School-Level/2.Attendance.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Data-preprocess/1.School-Level/2.Attendance.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Data-preprocess/1.School-Level/csp.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Data-preprocess/1.School-Level/csp.py" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
