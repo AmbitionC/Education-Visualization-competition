@@ -21,19 +21,22 @@ data_origin = pd.read_csv('../../education_data/2_student_info.csv')
 
 # 统计学生性别的缺失值
 num_null = len(data_origin['bf_sex'][pd.isnull(data_origin['bf_sex'])])
-print(num_null)
+print('性别的缺失值数为', num_null)
+print('\b')
 # 缺失值数量为0
 
 # 统计学生的总人数
 num_all = len(data_origin['bf_sex'])
-print(num_all)
+print('学生的总人数为', num_all)
+print('\b')
 # 总人数为1765
 
 # 统计男女生的人数
 data_origin['bf_sex'] = data_origin['bf_sex'].map({'男': 1, '女': 0})
 num_male = sum(data_origin['bf_sex'])
 num_female = num_all - num_male
-print(num_male, num_female)
+print('男生的数量为', num_male, '女生的数量为', num_female)
+print('\b')
 # 男性人数为943人，女性人数为822人
 
 ##############################################################################
@@ -41,7 +44,8 @@ print(num_male, num_female)
 
 # 统计学生民族数据的缺失值
 nation_null = len(data_origin['bf_nation'][pd.isnull(data_origin['bf_nation'])])
-print(nation_null)
+print('学生民族数据缺失数为', nation_null)
+print('\b')
 # 缺失值数量为0
 
 # 了解一共有几种民族
@@ -53,18 +57,21 @@ print(nation_null)
 
 # Step1：统计缺失值并剔除
 NativePlace_null = len(data_origin['bf_NativePlace'][pd.isnull(data_origin['bf_NativePlace'])])
-print(NativePlace_null)
+print('出生地缺失的数为', NativePlace_null)
+print('\b')
 # 出生地缺失的数据有125人
 
 # 将学生出生地缺失的行删除
 data_NativePlace = data_origin.drop(data_origin[data_origin['bf_NativePlace'].isnull()].index)
-print(data_NativePlace.shape[0])
+print('剔除出生地缺失的行后数据量为', data_NativePlace.shape[0])
+print('\b')
 # 剩下的行数为1640行
 
 # 将学生出生地中错误数据进行删除，如汉、汉族、中国
 data_NativePlace = data_NativePlace.drop(data_NativePlace[data_NativePlace['bf_NativePlace'] == '汉族'].index)
 data_NativePlace = data_NativePlace.drop(data_NativePlace[data_NativePlace['bf_NativePlace'] == '汉'].index)
-print(data_NativePlace.shape[0])
+print('去除错误数据后的数据量为', data_NativePlace.shape[0])
+print('\b')
 # 剩下的行数为1610行
 
 # Step2:删除构建主要省级城市
@@ -79,6 +86,7 @@ for i in range(0, 34):
     data_NativePlace_new = data_NativePlace.drop(data_NativePlace[data_NativePlace['bf_NativePlace'].str.contains(Province[i])].index)
     num_city[i] = data_NativePlace.shape[0] - data_NativePlace_new.shape[0]
     print("城市", Province[i], "的数量为", num_city[i])
+print('\b')
 
 # 通过循环来去除主要省市
 for j in range(0, 34):
@@ -88,7 +96,8 @@ for j in range(0, 34):
 # 删除只有中国的行
 data_NativePlace = data_NativePlace.drop(data_NativePlace[data_NativePlace['bf_NativePlace'] == '中国'].index)
 
-print(data_NativePlace.shape[0])
+# print(data_NativePlace.shape[0])
+# print('\b')
 # 处理浙江的城市
 
 Zhejiang = ["宁波", "慈溪", "岱山", "东阳", "奉化", "富阳", "海曙", "杭州", "黄岩", "嘉善", "嘉兴", "建德", "江北", "乐清",
@@ -100,8 +109,10 @@ num_zhejiang = [0]*(len(Zhejiang))
 for i in range(0, len(Zhejiang)):
     data_NativePlace_new = data_NativePlace.drop(data_NativePlace[data_NativePlace['bf_NativePlace'].str.contains(Zhejiang[i])].index)
     num_zhejiang[i] = data_NativePlace.shape[0] - data_NativePlace_new.shape[0]
+    print('属于浙江', Zhejiang[i], '的人数有', num_zhejiang[i])
     data_NativePlace = data_NativePlace.drop(data_NativePlace[data_NativePlace['bf_NativePlace'].str.contains(Zhejiang[i])].index)
 print(num_zhejiang)
+print('\b')
 
 for i in range(0, len(Zhejiang)):
     sum_zhejiang += num_zhejiang[i]
@@ -109,10 +120,12 @@ for i in range(0, len(Zhejiang)):
 num_city[10] = num_city[10] + sum_zhejiang
 print("属于浙江的其他的城市有", sum_zhejiang, "个")
 print("属于浙江省一共有", num_city[10], "名学生")
+print('\b')
 
 # 修改其他的省市
 # 打印剩余的
-print(data_NativePlace)
+# print(data_NativePlace)
+# print('\b')
 
 # 将其他的并入
 # 安徽合肥、皖
@@ -125,11 +138,13 @@ num_city[6] = num_city[6] + 1
 # 打印各个省市的分布情况
 for i in range(0, len(Province)):
     print("来自", Province[i], "的有", num_city[i], "位学生")
+print('\b')
 
 # 打印各个省市有人的分布情况
 for i in range(0, len(Province)):
     if num_city[i] != 0:
         print("来自", Province[i], "的有", num_city[i], "位学生")
+print('\b')
 
 ##############################################################################
 # 学生政治面貌统计
@@ -137,6 +152,8 @@ for i in range(0, len(Province)):
 # 统计学生政治面貌的缺失值
 num_policy_null = len(data_origin['bf_policy'][pd.isnull(data_origin['bf_policy'])])
 print(num_policy_null)
+print('\b')
+
 # 缺失值数量为0
 
 # 统计学校内学生的政治面貌，分为：共青团员，少先队员，一般
@@ -147,7 +164,10 @@ num_policy = [0]*5
 for i in range(5):
     data_policy_new = data_origin.drop(data_origin[data_origin['bf_policy'].str.contains(policy[i])].index)
     num_policy[i] = data_origin.shape[0] - data_policy_new.shape[0]
-print(num_policy)
+for i in range(5):
+    print('政治面貌为', policy[i], '的人数为', num_policy[i])
+
+print('\b')
 
 # 共产党党员1人，共青团员1662人，少先队员23人，一般为78人，民主党派1人
 
@@ -157,6 +177,8 @@ print(num_policy)
 # 统计学生年龄缺失值
 num_age_null = len(data_origin['bf_BornDate'][pd.isnull(data_origin['bf_BornDate'])])
 print("学生年龄缺失数量为", num_age_null)
+print('\b')
+
 # 缺失人数为83人，删除缺失的学生记录
 data_age = data_origin.drop(data_origin[pd.isnull(data_origin['bf_BornDate'])].index)
 
@@ -177,6 +199,7 @@ print("17岁的学生数有", num_age_17, "人")
 print("18岁的学生数有", num_age_18, "人")
 print("19岁的学生数有", num_age_19, "人")
 print("大于等于20岁的学生数有", num_age_20, "人", "年龄最大的岁数为", max(data_age['bf_BornDate']), "岁")
+print('\b')
 
 ##############################################################################
 # 住校学生统计
@@ -185,3 +208,26 @@ print("大于等于20岁的学生数有", num_age_20, "人", "年龄最大的岁
 num_zhusu_null = len(data_origin['bf_zhusu'][pd.isnull(data_origin['bf_zhusu'])])
 
 print("住校学生有", (data_origin.shape[0] - num_zhusu_null), "住校外的学生有", num_zhusu_null)
+print('\b')
+
+# 统计各个年龄段的男女比例
+def statistic_age_sex(age):
+    count = [0, 0]
+    sex = [1, 0]
+    for i in range(len(count)):
+        for j in range(data_age.shape[0]):
+            if (data_age['bf_BornDate'].iloc[j] >= age) and (data_age['bf_sex'].iloc[j] == sex[i]):
+                count[i] += 1
+    print("年龄为", age, "的男生数有", count[0], "年龄为", age, "的女生数有", count[1])
+
+statistic_age_sex(20)
+
+
+'''
+年龄为 15 的男生数有 2 年龄为 15 的女生数有 5
+年龄为 16 的男生数有 254 年龄为 16 的女生数有 174
+年龄为 17 的男生数有 313 年龄为 17 的女生数有 253
+年龄为 18 的男生数有 232 年龄为 18 的女生数有 241
+年龄为 19 的男生数有 96 年龄为 19 的女生数有 111
+年龄为 20 的男生数有 0 年龄为 20 的女生数有 1
+'''
