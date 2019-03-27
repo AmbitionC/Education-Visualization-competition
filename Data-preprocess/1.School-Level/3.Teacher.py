@@ -11,6 +11,7 @@
 ##############################################################################
 
 import pandas as pd
+import json
 
 #显示所有列
 pd.set_option('display.max_columns', None)
@@ -142,7 +143,7 @@ def statistic_gra_sub_teachers():
             sum = data_sub['label'].shape[0]
             print(gra_name[i], '的学科', sub_name[j], '的教师数为', sum)
 
-statistic_gra_sub_teachers()
+# statistic_gra_sub_teachers()
 # 高一 的学科 语文 的教师数为 24
 # 高一 的学科 数学 的教师数为 27
 # 高一 的学科 英语 的教师数为 47
@@ -184,3 +185,46 @@ statistic_gra_sub_teachers()
 # 高三 的学科 美术 的教师数为 2
 # 高三 的学科 体育 的教师数为 1
 # 高三 的学科 音乐 的教师数为 2
+
+##############################################################################
+# Step6: 制作每个教师带班的数量统计
+
+# 根据各个学科进行统计
+def data_teacher_class():
+    sub_name = ['语文', '数学', '英语', '物理', '化学', '政治', '历史', '生物', '地理', '技术', '美术',
+                '体育', '音乐']
+    teacher_label_all = []
+    teacher_name_all = []
+    for i in range(len(sub_name)):
+        teacher_label_piece = []
+        teacher_name_piece = []
+        data_origin['label'] = 1
+        data_teacher = data_origin[data_origin['sub_Name'].str.contains(sub_name[i])]
+        data_teacher = data_teacher.groupby(['bas_id']).count().reset_index()
+        data_teacher['bas_name'] = 0
+        # print(data_teacher)
+        for j in range(data_teacher.shape[0]):
+            for k in range(data_origin.shape[0]):
+                if data_teacher['bas_id'].iloc[j] == data_origin['bas_id'].iloc[k]:
+                    data_teacher['bas_name'].iloc[j] = data_origin['bas_Name'].iloc[k]
+                    break
+        # print(data_teacher)
+        for m in range(data_teacher.shape[0]):
+            teacher_label_piece.append(int(data_teacher['label'].iloc[m]))
+            teacher_name_piece.append(data_teacher['bas_name'].iloc[m])
+        teacher_label_all.append(teacher_label_piece)
+        teacher_name_all.append(teacher_name_piece)
+
+    print(len(teacher_label_all))
+    print(teacher_name_all)
+    json_data = {'Chinese': teacher_label_all[0], 'Math': teacher_label_all[1], 'English': teacher_label_all[2],
+                'Physics': teacher_label_all[3], 'Chemical': teacher_label_all[4], 'Political': teacher_label_all[5],
+                 'History': teacher_label_all[6], 'Biology': teacher_label_all[7], 'Geography': teacher_label_all[8],
+                 'Technology': teacher_label_all[9], 'Art': teacher_label_all[10], 'Gym': teacher_label_all[11],
+                 'Music': teacher_label_all[12]}
+    print(json_data)
+    with open('../1.School-Level-data/2.Teacher_1.json', "w") as file:
+        json.dump(json_data, file)
+    print("完成文件加载")
+
+data_teacher_class()

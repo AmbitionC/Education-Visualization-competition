@@ -2,18 +2,6 @@ function data_visualization1() {
 
     var myChart = echarts.init(document.getElementById('visual-1'));
 
-    // var itemStyle = {
-    //     normal: {
-    //     },
-    //     emphasis: {
-    //         barBorderWidth: 1,
-    //         shadowBlur: 2,
-    //         shadowOffsetX: 0,
-    //         shadowOffsetY: 0,
-    //         shadowColor: 'rgba(0,0,0,0.8)'
-    //     }
-    // };
-
     var option = {
         title: {
             text: "学科—师资分配情况",
@@ -50,9 +38,8 @@ function data_visualization1() {
             {
                 name: '高一',
                 type: 'bar',
-                // itemStyle: itemStyle,
                 itemStyle: {
-                    color: 
+                    color: '#ff9797',
                 },
                 label: {
                     normal: {
@@ -65,7 +52,9 @@ function data_visualization1() {
             {
                 name: '高二',
                 type: 'bar',
-                itemStyle: itemStyle,
+                itemStyle: {
+                    color:  '#b3d9d9',
+                },
                 label: {
                     normal: {
                         show: false,
@@ -77,7 +66,9 @@ function data_visualization1() {
             {
                 name: '高三',
                 type: 'bar',
-                itemStyle: itemStyle,
+                itemStyle: {
+                    color: '#adadad',
+                },
                 label: {
                     normal: {
                         show: false,
@@ -93,6 +84,114 @@ function data_visualization1() {
 }
 
 function data_visualization2() {
+    var myChart = echarts.init(document.getElementById('visual-2'));
+
+    var option = {
+        title: {
+            text: "教师带班数量一览表",
+            left: 'left'
+        },
+        tooltip :{},
+        legend: {
+            top: 'bottom',
+            left: 'center',
+            data: ['语文', '数学', '英语', '物理', '化学', '政治', '历史', '生物', '地理', '技术', '美术',
+                '体育', '音乐']
+        },
+        xAxis: {
+            name: '教师名',
+            type: 'category',
+            data: []
+        },
+        yAxis: {
+            name: '班级数',
+            type: 'value',
+        },
+        series: [
+            {
+                name: '语文',
+                type: 'bar',
+                data: []
+            },
+            {
+                name: '数学',
+                type: 'bar',
+                data: []
+            },
+            {
+                name: '英语',
+                type: 'bar',
+                data: []
+            },
+            {
+                name: '物理',
+                type: 'bar',
+                data: []
+            },
+            {
+                name: '化学',
+                type: 'bar',
+                data: []
+            },
+            {
+                name: '政治',
+                type: 'bar',
+                data: []
+            },
+            {
+                name: '历史',
+                type: 'bar',
+                data: []
+            },
+            {
+                name: '生物',
+                type: 'bar',
+                data: []
+            },
+            {
+                name: '地理',
+                type: 'bar',
+                data: []
+            },
+            {
+                name: '技术',
+                type: 'bar',
+                data: []
+            },
+            {
+                name: '美术',
+                type: 'bar',
+                data: []
+            },
+            {
+                name: '体育',
+                type: 'bar',
+                data: []
+            },
+            {
+                name: '音乐',
+                type: 'bar',
+                data: []
+            }
+        ]
+    };
+
+    myChart.setOption(option);
+
+    $.get('./Dataset/School_Teacher_1.json').done(function (data) {
+        myChart.setOption({
+            series: [
+                {
+                    data: data.Chinese
+                },
+                {
+                    data: data.Math
+                }
+            ]
+        });
+    });
+
+
 
 }
 
