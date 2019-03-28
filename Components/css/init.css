@@ -41,7 +41,7 @@ a{
 }
 
 .data-visual-area3{
-    width: 50%;
+    width: 100%;
     height: 50%;
     position: absolute;
     left: 0%;
@@ -49,11 +49,29 @@ a{
     border: 1px dashed #aaaaaa;
 }
 
-.data-visual-area4{
-    width: 50%;
-    height: 50%;
+/*.data-visual-area4{*/
+    /*width: 50%;*/
+    /*height: 50%;*/
+    /*position: absolute;*/
+    /*left: 50%;*/
+    /*top: 50%;*/
+    /*border: 1px dashed #aaaaaa;*/
+/*}*/
+
+.selectArea{
+    width: 140px;
     position: absolute;
-    left: 50%;
-    top: 50%;
-    border: 1px dashed #aaaaaa;
+    right: 5px;
+    top: 5px;
+    z-index: 100;
+}
+
+.propertyName{
+    cursor: default;
+    float: left;
+    clear: left;
+    /*width: 50%;*/
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #2c2c2c;
 }

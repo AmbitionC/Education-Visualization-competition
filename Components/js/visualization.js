@@ -86,22 +86,26 @@ function data_visualization1() {
 function data_visualization2() {
     var myChart = echarts.init(document.getElementById('visual-2'));
 
+
     var option = {
         title: {
             text: "教师带班数量一览表",
             left: 'left'
         },
-        tooltip :{},
-        legend: {
-            top: 'bottom',
-            left: 'center',
-            data: ['语文', '数学', '英语', '物理', '化学', '政治', '历史', '生物', '地理', '技术', '美术',
-                '体育', '音乐']
+        tooltip :{
+            formatter: function (params) {
+                return [
+                    '教师：' + params.data[0],
+                    '带班数：' + params.data[1]
+                ].join('<br/>')
+            }
         },
+
         xAxis: {
             name: '教师名',
             type: 'category',
-            data: []
+            min: 'dataMin',
+            max: 'dataMax'
         },
         yAxis: {
             name: '班级数',
@@ -109,96 +113,61 @@ function data_visualization2() {
         },
         series: [
             {
-                name: '语文',
-                type: 'bar',
-                data: []
-            },
-            {
-                name: '数学',
-                type: 'bar',
-                data: []
-            },
-            {
-                name: '英语',
-                type: 'bar',
-                data: []
-            },
-            {
-                name: '物理',
-                type: 'bar',
-                data: []
-            },
-            {
-                name: '化学',
-                type: 'bar',
-                data: []
-            },
-            {
-                name: '政治',
-                type: 'bar',
-                data: []
-            },
-            {
-                name: '历史',
-                type: 'bar',
-                data: []
-            },
-            {
-                name: '生物',
-                type: 'bar',
-                data: []
-            },
-            {
-                name: '地理',
-                type: 'bar',
-                data: []
-            },
-            {
-                name: '技术',
-                type: 'bar',
-                data: []
-            },
-            {
-                name: '美术',
-                type: 'bar',
-                data: []
-            },
-            {
-                name: '体育',
-                type: 'bar',
-                data: []
-            },
-            {
-                name: '音乐',
                 type: 'bar',
                 data: []
             }
         ]
     };
 
-    myChart.setOption(option);
-
     $.get('./Dataset/School_Teacher_1.json').done(function (data) {
-        myChart.setOption({
-            series: [
-                {
-                    data: data.Chinese
-                },
-                {
-                    data: data.Math
-                }
-            ]
+        $('#selectSub').on('change', function () {
+            data_change();
+            draw();
         });
+
+        function name_change() {
+            let namex = $('#selectSub').val();
+            let name_apply = data.name[namex];
+            return name_apply
+        }
+
+        function data_change() {
+            let datax = $('#selectSub').val();
+            let data_apply = data.row[datax];
+            return data_apply
+        }
+
+        function color_change() {
+            let color = ['#ff9797','#b3d9d9', '#adadad', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'];
+            let colorx = $('#selectSub').val();
+            let color_apply = color[colorx];
+            return color_apply
+
+        }
+
+        function draw() {
+            let dataset = data_change();
+            let nameset = name_change();
+            let colorset = color_change();
+            myChart.setOption({
+                xAxis: {
+                    data: nameset
+                },
+                series: [{
+                    data: dataset,
+                    itemStyle: {
+                        color: colorset
+                    }
+                }]
+            })
+        }
+
+    draw();
     });
 
-
-
+    myChart.setOption(option);
 }
 
 function data_visualization3() {
-
-}
-
-function data_visualization4() {
 
 }

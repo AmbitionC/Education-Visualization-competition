@@ -195,9 +195,11 @@ def data_teacher_class():
                 '体育', '音乐']
     teacher_label_all = []
     teacher_name_all = []
+    name_label_all = []
     for i in range(len(sub_name)):
         teacher_label_piece = []
         teacher_name_piece = []
+        name_label_piece = []
         data_origin['label'] = 1
         data_teacher = data_origin[data_origin['sub_Name'].str.contains(sub_name[i])]
         data_teacher = data_teacher.groupby(['bas_id']).count().reset_index()
@@ -212,16 +214,22 @@ def data_teacher_class():
         for m in range(data_teacher.shape[0]):
             teacher_label_piece.append(int(data_teacher['label'].iloc[m]))
             teacher_name_piece.append(data_teacher['bas_name'].iloc[m])
+            name_label = [data_teacher['bas_name'].iloc[m], int(data_teacher['label'].iloc[m])]
+            name_label_piece.append(name_label)
+        name_label_all.append(name_label_piece)
         teacher_label_all.append(teacher_label_piece)
         teacher_name_all.append(teacher_name_piece)
 
-    print(len(teacher_label_all))
+    print(name_label_all)
+
+    # print(len(teacher_label_all))
     print(teacher_name_all)
-    json_data = {'Chinese': teacher_label_all[0], 'Math': teacher_label_all[1], 'English': teacher_label_all[2],
-                'Physics': teacher_label_all[3], 'Chemical': teacher_label_all[4], 'Political': teacher_label_all[5],
-                 'History': teacher_label_all[6], 'Biology': teacher_label_all[7], 'Geography': teacher_label_all[8],
-                 'Technology': teacher_label_all[9], 'Art': teacher_label_all[10], 'Gym': teacher_label_all[11],
-                 'Music': teacher_label_all[12]}
+    json_data = {'row': name_label_all, 'name': teacher_name_all}
+    # json_data = {'Chinese': name_label_all[0], 'Math': name_label_all[1], 'English': name_label_all[2],
+    #             'Physics': name_label_all[3], 'Chemical': name_label_all[4], 'Political': name_label_all[5],
+    #              'History': name_label_all[6], 'Biology': name_label_all[7], 'Geography': name_label_all[8],
+    #              'Technology': name_label_all[9], 'Art': name_label_all[10], 'Gym': name_label_all[11],
+    #              'Music': name_label_all[12]}
     print(json_data)
     with open('../1.School-Level-data/2.Teacher_1.json', "w") as file:
         json.dump(json_data, file)
