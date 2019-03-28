@@ -12,6 +12,7 @@
 
 import pandas as pd
 import json
+import random
 
 #显示所有列
 pd.set_option('display.max_columns', None)
@@ -235,4 +236,60 @@ def data_teacher_class():
         json.dump(json_data, file)
     print("完成文件加载")
 
-data_teacher_class()
+# data_teacher_class()
+
+##############################################################################
+# Step7: 制作教师与班级的网络拓扑关系图
+
+def create_net_teachers():
+    sub_name = ['语文', '数学', '英语', '物理', '化学', '政治', '历史', '生物', '地理', '技术', '美术',
+                '体育', '音乐']
+    color = ['#ff9797', '#b3d9d9', '#adadad', '#d48265', '#91c7ae', '#749f83', '#ca8622', '#bda29a', '#6e7074',
+             '#546570', '#c4ccd3', '#ff9797','#b3d9d9',]
+    total_teacher = pd.DataFrame()
+    for i in range(len(sub_name)):
+        data_origin['sum'] = 1
+        data_teacher = data_origin[data_origin['sub_Name'].str.contains(sub_name[i])]
+        data_teacher = data_teacher.groupby(['bas_id']).count().reset_index()
+        data_teacher['size'] = data_origin['sum']
+        data_teacher['color'] = color[i]
+        data_teacher['label'] = data_teacher['bas_id']
+        data_teacher['id'] = data_teacher['bas_id']
+        data_teacher = data_teacher.drop(['bas_id', 'term', 'cla_Name', 'sub_id', 'sub_Name', 'bas_Name', 'sum','gra_Name'], axis=1)
+        total_teacher = total_teacher.append(data_teacher)
+    total_teacher['x'] = 0
+    total_teacher['y'] = 0
+    for j in range(total_teacher.shape[0]):
+        total_teacher['x'].iloc[j] = random.randint(-100, 100)
+        total_teacher['y'].iloc[j] = random.randint(-100, 100)
+    print(total_teacher)
+    return total_teacher
+
+def create_net_classes():
+    data_class = data_origin.groupby(['cla_id']).count().reset_index()
+    data_class['label'] = data_class['cla_id']
+    data_class['size'] = 2
+    data_class['color'] = '#ADADAD'
+    data_class = data_class.drop(['term', 'cla_Name', 'gra_Name', 'sub_id', 'sub_Name', 'bas_id', 'bas_Name'], axis=1)
+    data_class['x'] = 0
+    data_class['y'] = 0
+    for i in range(data_class.shape[0]):
+        data_class['x'].iloc[i] = random.randint(-200, 200)
+        data_class['y'].iloc[i] = random.randint(-200, 200)
+    print(data_class)
+    return data_class
+
+def create_net_conneting():
+    total_teacher = create_net_teachers()
+    teacher_to_class_all = []
+    for i in range(total_teacher.shape[0]):
+        teacher_to_class = []
+        for j in range(data_origin.shape[0]):
+            if total_teacher['id'].iloc[i] == data_origin['bas_id'].iloc[j]:
+                teacher_to_class.append(data_origin['cla_id'].iloc[j])
+        teacher_to_class_all[i] = teacher_to_class
+    print(teacher_to_class)
+
+create_net_conneting()
+
+# create_net_teachers()
