@@ -11,6 +11,7 @@
 ##############################################################################
 
 import pandas as pd
+import numpy as np
 import json
 import random
 
@@ -251,45 +252,75 @@ def create_net_teachers():
         data_origin['sum'] = 1
         data_teacher = data_origin[data_origin['sub_Name'].str.contains(sub_name[i])]
         data_teacher = data_teacher.groupby(['bas_id']).count().reset_index()
-        data_teacher['size'] = data_origin['sum']
+        # print(data_teacher)
+        for k in range(data_teacher.shape[0]):
+            if data_teacher['sum'].iloc[k] >= 50:
+                data_teacher['sum'].iloc[k] = 50
+        data_teacher['size'] = data_teacher['sum']
         data_teacher['color'] = color[i]
         data_teacher['label'] = data_teacher['bas_id']
         data_teacher['id'] = data_teacher['bas_id']
-        data_teacher = data_teacher.drop(['bas_id', 'term', 'cla_Name', 'sub_id', 'sub_Name', 'bas_Name', 'sum','gra_Name'], axis=1)
+        data_teacher = data_teacher.drop(['bas_id', 'cla_id', 'term', 'cla_Name', 'sub_id', 'sub_Name', 'bas_Name', 'sum','gra_Name'], axis=1)
         total_teacher = total_teacher.append(data_teacher)
     total_teacher['x'] = 0
     total_teacher['y'] = 0
     for j in range(total_teacher.shape[0]):
-        total_teacher['x'].iloc[j] = random.randint(-100, 100)
-        total_teacher['y'].iloc[j] = random.randint(-100, 100)
-    print(total_teacher)
+        total_teacher['x'].iloc[j] = random.randint(-170, -120)
+        total_teacher['y'].iloc[j] = random.randint(-500, 500)
+    # print(total_teacher)
     return total_teacher
 
 def create_net_classes():
     data_class = data_origin.groupby(['cla_id']).count().reset_index()
+    data_class['id'] = data_class['cla_id']
     data_class['label'] = data_class['cla_id']
     data_class['size'] = 2
     data_class['color'] = '#ADADAD'
-    data_class = data_class.drop(['term', 'cla_Name', 'gra_Name', 'sub_id', 'sub_Name', 'bas_id', 'bas_Name'], axis=1)
+    data_class = data_class.drop(['term', 'cla_id', 'cla_Name', 'gra_Name', 'sub_id', 'sub_Name', 'bas_id', 'bas_Name', 'sum'], axis=1)
     data_class['x'] = 0
     data_class['y'] = 0
+    data_class.rename(columns={0: 'id'}, inplace=True)
     for i in range(data_class.shape[0]):
-        data_class['x'].iloc[i] = random.randint(-200, 200)
-        data_class['y'].iloc[i] = random.randint(-200, 200)
-    print(data_class)
+        data_class['x'].iloc[i] = random.randint(180, 200)
+        data_class['y'].iloc[i] = random.randint(-500, 500)
+    # print(data_class)
     return data_class
 
 def create_net_conneting():
     total_teacher = create_net_teachers()
-    teacher_to_class_all = []
+    array_cache_total = []
     for i in range(total_teacher.shape[0]):
-        teacher_to_class = []
+        teacher_to_class = pd.DataFrame(columns=['sourceID', 'targetID'])
         for j in range(data_origin.shape[0]):
             if total_teacher['id'].iloc[i] == data_origin['bas_id'].iloc[j]:
-                teacher_to_class.append(data_origin['cla_id'].iloc[j])
-        teacher_to_class_all[i] = teacher_to_class
-    print(teacher_to_class)
+                array_cache = [total_teacher['id'].iloc[i], data_origin['cla_id'].iloc[j]]
+                array_cache_total.append(array_cache)
+    print(array_cache_total)
+    teacher_to_class_all = pd.DataFrame(array_cache_total)
+    teacher_to_class_all.rename(columns={0: 'sourceID', 1: 'targetID'}, inplace=True)
+    print(teacher_to_class_all)
+    return teacher_to_class_all
 
-create_net_conneting()
+def transfer_to_json():
+    data_trans_all = []
+    data_trans_all_edges = []
+    data_trans_1 = create_net_teachers()
+    data_trans_2 = create_net_classes()
+    data_trans = pd.concat([data_trans_1, data_trans_2], axis=0, ignore_index=True)
+    data_trans_3 = create_net_conneting()
+    for i in range(data_trans.shape[0]):
+        data_trans_piece = {"color": data_trans['color'].iloc[i], "label": str(data_trans['label'].iloc[i]),
+                            "attributes": {}, "y": int(data_trans['y'].iloc[i]), "x": int(data_trans['x'].iloc[i]),
+                            "id": str(data_trans['id'].iloc[i]), "size": int(data_trans['size'].iloc[i])}
+        data_trans_all.append(data_trans_piece)
+    print(data_trans_all)
+    for j in range(data_trans_3.shape[0]):
+        data_trans_piece_edges = {"sourceID": str(data_trans_3['sourceID'].iloc[j]), "attributes": {},
+                                  "targetID": str(data_trans_3['targetID'].iloc[j]), "size": 1}
+        data_trans_all_edges.append(data_trans_piece_edges)
+    json_data = {"nodes": data_trans_all, "edges": data_trans_all_edges}
+    with open('../1.School-Level-data/Teacher_3.json', "w") as file:
+        json.dump(json_data, file)
+    print("完成文件加载")
 
-# create_net_teachers()
+transfer_to_json()

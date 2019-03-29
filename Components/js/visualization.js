@@ -171,11 +171,13 @@ function data_visualization2() {
 function data_visualization3() {
     var myChart = echarts.init(document.getElementById('visual-3'));
     myChart.showLoading();
-    $.getJSON('./Dataset/npmdepgraph.json', function (json) {
+    $.getJSON('./Dataset/Teacher_3.json', function (json) {
         myChart.hideLoading();
         myChart.setOption(option = {
             title: {
                 text: 'NPM Dependencies'
+            },
+            tooltip: {
             },
             animationDurationUpdate: 1500,
             animationEasingUpdate: 'quinticInOut',
@@ -223,5 +225,4 @@ function data_visualization3() {
             ]
         }, true);
     });
-    myChart.setOption(option);
 }

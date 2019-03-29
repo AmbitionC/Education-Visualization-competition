@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="092a05fb-f66f-4390-9bd6-70d6cbbf9749" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Education_components.html" beforeDir="false" afterPath="$PROJECT_DIR$/Education_components.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/visualization.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/visualization.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Data-preprocess/1.School-Level/3.Teacher.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Data-preprocess/1.School-Level/3.Teacher.py" afterDir="false" />
     </list>
@@ -31,14 +30,14 @@
         <counts>
           <entry key="css" value="211" />
           <entry key="html" value="566" />
-          <entry key="js" value="3122" />
+          <entry key="js" value="3157" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="CSS" value="211" />
           <entry key="HTML" value="566" />
-          <entry key="JavaScript" value="3122" />
+          <entry key="JavaScript" value="3157" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -63,20 +62,20 @@
     <splitter split-orientation="horizontal" split-proportion="0.46172392">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="false">
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/Education_components.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="135">
-                  <caret line="9" column="63" selection-start-line="9" selection-start-column="63" selection-end-line="9" selection-end-column="63" />
+                <state relative-caret-position="90">
+                  <caret line="6" column="64" lean-forward="true" selection-start-line="6" selection-start-column="64" selection-end-line="6" selection-end-column="64" />
                 </state>
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/js/visualization.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="373">
-                  <caret line="140" column="25" selection-start-line="140" selection-start-column="25" selection-end-line="140" selection-end-column="142" />
+                <state relative-caret-position="198">
+                  <caret line="180" column="14" lean-forward="true" selection-start-line="180" selection-start-column="14" selection-end-line="180" selection-end-column="14" />
                 </state>
               </provider>
             </entry>
@@ -232,12 +231,12 @@
       <updated>1552982235338</updated>
       <workItem from="1552982238008" duration="889000" />
       <workItem from="1553145460075" duration="152000" />
-      <workItem from="1553501292489" duration="22805000" />
+      <workItem from="1553501292489" duration="24063000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="23846000" />
+    <option name="totallyTimeSpent" value="25104000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="6" />
@@ -341,17 +340,17 @@
     <entry file="file://$PROJECT_DIR$/../../Spectrum/Front_end_v4.0/1.Node/Spectrum_Node.html">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/Education_components.html">
+    <entry file="file://$PROJECT_DIR$/js/visualization.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="63" selection-start-line="9" selection-start-column="63" selection-end-line="9" selection-end-column="63" />
+        <state relative-caret-position="198">
+          <caret line="180" column="14" lean-forward="true" selection-start-line="180" selection-start-column="14" selection-end-line="180" selection-end-column="14" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/visualization.js">
+    <entry file="file://$PROJECT_DIR$/Education_components.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="373">
-          <caret line="140" column="25" selection-start-line="140" selection-start-column="25" selection-end-line="140" selection-end-column="142" />
+        <state relative-caret-position="90">
+          <caret line="6" column="64" lean-forward="true" selection-start-line="6" selection-start-column="64" selection-end-line="6" selection-end-column="64" />
         </state>
       </provider>
     </entry>
