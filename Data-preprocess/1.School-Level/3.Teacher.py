@@ -323,4 +323,32 @@ def transfer_to_json():
         json.dump(json_data, file)
     print("完成文件加载")
 
-transfer_to_json()
+# transfer_to_json()
+
+##############################################################################
+# Step8: 制作教师与班级的树状图
+
+def create_tree_teacher():
+    sub_name = ['语文', '数学', '英语', '物理', '化学', '政治', '历史', '生物', '地理', '技术', '美术',
+                '体育', '音乐']
+    for i in range(len(sub_name)):
+        # data_show = pd.DataFrame(columns=['name', 'value'])
+        array_cache_total = []
+        data_teacher = data_origin[data_origin['sub_Name'].str.contains(sub_name[i])]
+        data_teacher = data_teacher.groupby(['bas_id']).count().reset_index()
+        for j in range(data_teacher.shape[0]):
+            for k in range(data_origin.shape[0]):
+                if data_teacher['bas_id'].iloc[j] == data_origin['bas_id'].iloc[k]:
+                    array_cache = [data_origin['bas_Name'].iloc[k], data_teacher['term'].iloc[j]]
+                    array_cache_total.append(array_cache)
+                    break
+        data_show_all = []
+        for m in range(len(array_cache_total)):
+            data_show = {"name": str(array_cache_total[m][0]), "value": int(array_cache_total[m][1])}
+            data_show_all.append(data_show)
+            # print(data_show)
+        print(data_show_all)
+        print(array_cache_total)
+        print(data_teacher)
+
+# create_tree_teacher()

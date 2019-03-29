@@ -171,58 +171,231 @@ function data_visualization2() {
 function data_visualization3() {
     var myChart = echarts.init(document.getElementById('visual-3'));
     myChart.showLoading();
-    $.getJSON('./Dataset/Teacher_3.json', function (json) {
-        myChart.hideLoading();
-        myChart.setOption(option = {
-            title: {
-                text: 'NPM Dependencies'
+
+    var data1 = {
+        "name": "效实中学",
+        "children": [
+            {
+                "name": "语文",
+                "children": [
+                    {'name': '虞老师', 'value': 16},
+                    {'name': '蒋老师', 'value': 11},
+                    {'name': '傅老师', 'value': 10},
+                    {'name': '谢老师', 'value': 12}, {'name': '顾老师', 'value': 7}, {'name': '陈老师', 'value': 18}, {'name': '唐老师', 'value': 19}, {'name': '洪老师', 'value': 16}, {'name': '张老师', 'value': 18}, {'name': '张老师', 'value': 9}, {'name': '蒋老师', 'value': 18}, {'name': '岑老师', 'value': 15}, {'name': '黄老师', 'value': 13}, {'name': '陈老师', 'value': 10}, {'name': '郑老师', 'value': 14}, {'name': '徐老师', 'value': 9}, {'name': '孙老师', 'value': 3}, {'name': '叶老师', 'value': 9}, {'name': '杜老师', 'value': 23}, {'name': '朱老师', 'value': 17}, {'name': '马老师', 'value': 18}, {'name': '刘老师', 'value': 18}, {'name': '王老师', 'value': 1}, {'name': '潘老师', 'value': 1}, {'name': '张老师', 'value': 4}, {'name': '周老师', 'value': 4}, {'name': '李老师', 'value': 1}]
+
             },
-            tooltip: {
+            {
+                "name": "数学",
+                "children":[{'name': '胡老师', 'value': 5}, {'name': '李老师', 'value': 8}, {'name': '贾老师', 'value': 17}, {'name': '黄老师', 'value': 10}, {'name': '戴老师', 'value': 9}, {'name': '牟老师', 'value': 14}, {'name': '杨老师', 'value': 17}, {'name': '朱老师', 'value': 16}, {'name': '潘老师', 'value': 18}, {'name': '杜老师', 'value': 15}, {'name': '张老师', 'value': 6}, {'name': '胡老师', 'value': 10}, {'name': '童老师', 'value': 18}, {'name': '吕老师', 'value': 18}, {'name': '张老师', 'value': 9}, {'name': '郑老师', 'value': 14}, {'name': '周老师', 'value': 17}, {'name': '翁老师', 'value': 2}, {'name': '闵老师', 'value': 11}, {'name': '梁老师', 'value': 3}, {'name': '邬老师', 'value': 15}, {'name': '鲍老师', 'value': 1}, {'name': '范老师', 'value': 9}, {'name': '鲁老师', 'value': 14}, {'name': '吕老师', 'value': 4}, {'name': '沈老师', 'value': 2}, {'name': '周老师', 'value': 1}, {'name': '张老师', 'value': 2}, {'name': '周老师', 'value': 2}, {'name': '朱老师', 'value': 2}, {'name': '胡老师', 'value': 1}]
+
             },
-            animationDurationUpdate: 1500,
-            animationEasingUpdate: 'quinticInOut',
-            series : [
+            {
+                "name": "英语",
+                "children": [{'name': '周老师', 'value': 13}, {'name': '程老师', 'value': 11}, {'name': '陈老师', 'value': 6}, {'name': '王老师', 'value': 12}, {'name': '袁老师', 'value': 10}, {'name': '周老师', 'value': 10}, {'name': '曹老师', 'value': 10}, {'name': '陈老师', 'value': 11}, {'name': '沈老师', 'value': 9}, {'name': '朱老师', 'value': 12}, {'name': '吴老师', 'value': 13}, {'name': '王老师', 'value': 13}, {'name': '何老师', 'value': 19}, {'name': '赵老师', 'value': 6}, {'name': '王老师', 'value': 15}, {'name': '戴老师', 'value': 4}, {'name': '周老师', 'value': 12}, {'name': '武老师', 'value': 14}, {'name': '王老师', 'value': 11}, {'name': '陈老师', 'value': 13}, {'name': '高老师', 'value': 7}, {'name': '陈老师', 'value': 10}, {'name': '张老师', 'value': 11}, {'name': '郑老师', 'value': 10}, {'name': '周老师', 'value': 8}, {'name': '何老师', 'value': 14}, {'name': '郑老师', 'value': 10}, {'name': '李老师', 'value': 7}, {'name': '王老师', 'value': 11}, {'name': '毕老师', 'value': 1}, {'name': '徐老师', 'value': 13}, {'name': '王老师', 'value': 3}, {'name': '王老师', 'value': 1}, {'name': '牟老师', 'value': 1}, {'name': '熊老师', 'value': 2}, {'name': '夏老师', 'value': 2}, {'name': '李老师', 'value': 1}]
+
+            },
+            {
+                "name": "物理",
+                "children": [
+                    {"name": "张老师", "value": 8833},
+                    {"name": "汪老师", "value": 1732}
+                ]
+            },
+            {
+                "name": "化学",
+                "children": [
+                    {"name": "张老师", "value": 8833},
+                    {"name": "汪老师", "value": 1732}
+                ]
+            },
+            {
+                "name": "政治",
+                "children": [
+                    {"name": "张老师", "value": 8833},
+                    {"name": "汪老师", "value": 1732}
+                ]
+            },
+            {
+                "name": "历史",
+                "children": [
+                    {"name": "张老师", "value": 8833},
+                    {"name": "汪老师", "value": 1732}
+                ]
+            },
+            {
+                "name": "生物",
+                "children": [
+                    {"name": "张老师", "value": 8833},
+                    {"name": "汪老师", "value": 1732}
+                ]
+            },
+            {
+                "name": "地理",
+                "children": [
+                    {"name": "张老师", "value": 8833},
+                    {"name": "汪老师", "value": 1732}
+                ]
+            },
+            {
+                "name": "技术",
+                "children": [
+                    {"name": "张老师", "value": 8833},
+                    {"name": "汪老师", "value": 1732}
+                ]
+            },
+            {
+                "name": "美术",
+                "children": [
+                    {"name": "张老师", "value": 8833},
+                    {"name": "汪老师", "value": 1732}
+                ]
+            },
+            {
+                "name": "体育",
+                "children": [
+                    {"name": "张老师", "value": 8833},
+                    {"name": "汪老师", "value": 1732}
+                ]
+            },
+            {
+                "name": "音乐",
+                "children": [
+                    {"name": "张老师", "value": 8833},
+                    {"name": "汪老师", "value": 1732}
+                ]
+            },
+        ]
+    };
+
+    var data2 = {
+        "name": "flare",
+        "children": [
+            {
+                "name": "flex",
+                "children": [
+                    {"name": "FlareVis", "value": 4116}
+                ]
+            },
+            {
+                "name": "scale",
+                "children": [
+                    {"name": "IScaleMap", "value": 2105},
+                    {"name": "LinearScale", "value": 1316},
+                    {"name": "LogScale", "value": 3151},
+                    {"name": "OrdinalScale", "value": 3770},
+                    {"name": "QuantileScale", "value": 2435},
+                    {"name": "QuantitativeScale", "value": 4839},
+                    {"name": "RootScale", "value": 1756},
+                    {"name": "Scale", "value": 4268},
+                    {"name": "ScaleType", "value": 1821},
+                    {"name": "TimeScale", "value": 5833}
+                ]
+            },
+            {
+                "name": "display",
+                "children": [
+                    {"name": "DirtySprite", "value": 8833}
+                ]
+            }
+        ]
+    };
+
+    myChart.hideLoading();
+
+    myChart.setOption(option = {
+        tooltip: {
+            trigger: 'item',
+            triggerOn: 'mousemove'
+        },
+        legend: {
+            top: '2%',
+            left: '3%',
+            orient: 'vertical',
+            data: [{
+                name: 'tree1',
+                icon: 'rectangle'
+            } ,
                 {
-                    type: 'graph',
-                    layout: 'none',
-                    // progressiveThreshold: 700,
-                    data: json.nodes.map(function (node) {
-                        return {
-                            x: node.x,
-                            y: node.y,
-                            id: node.id,
-                            name: node.label,
-                            symbolSize: node.size,
-                            itemStyle: {
-                                normal: {
-                                    color: node.color
-                                }
-                            }
-                        };
-                    }),
-                    edges: json.edges.map(function (edge) {
-                        return {
-                            source: edge.sourceID,
-                            target: edge.targetID
-                        };
-                    }),
+                    name: 'tree2',
+                    icon: 'rectangle'
+                }],
+            borderColor: '#c23531'
+        },
+        series:[
+            {
+                type: 'tree',
+
+                name: 'tree1',
+
+                data: [data1],
+
+                top: '5%',
+                left: '7%',
+                bottom: '2%',
+                right: '60%',
+
+                symbolSize: 7,
+
+                label: {
+                    normal: {
+                        position: 'left',
+                        verticalAlign: 'middle',
+                        align: 'right'
+                    }
+                },
+
+                leaves: {
                     label: {
-                        emphasis: {
-                            position: 'right',
-                            show: true
-                        }
-                    },
-                    roam: true,
-                    focusNodeAdjacency: true,
-                    lineStyle: {
                         normal: {
-                            width: 0.5,
-                            curveness: 0.3,
-                            opacity: 0.7
+                            position: 'right',
+                            verticalAlign: 'middle',
+                            align: 'left'
                         }
                     }
-                }
-            ]
-        }, true);
+                },
+
+                expandAndCollapse: true,
+
+                animationDuration: 550,
+                animationDurationUpdate: 750
+
+            },
+            {
+                type: 'tree',
+                name: 'tree2',
+                data: [data2],
+
+                top: '20%',
+                left: '60%',
+                bottom: '22%',
+                right: '18%',
+
+                symbolSize: 7,
+
+                label: {
+                    normal: {
+                        position: 'left',
+                        verticalAlign: 'middle',
+                        align: 'right'
+                    }
+                },
+
+                leaves: {
+                    label: {
+                        normal: {
+                            position: 'right',
+                            verticalAlign: 'middle',
+                            align: 'left'
+                        }
+                    }
+                },
+
+                expandAndCollapse: true,
+
+                animationDuration: 550,
+                animationDurationUpdate: 750
+            }
+        ]
     });
+
 }

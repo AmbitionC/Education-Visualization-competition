@@ -4,7 +4,6 @@
     <list default="true" id="092a05fb-f66f-4390-9bd6-70d6cbbf9749" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/visualization.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/visualization.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Data-preprocess/1.School-Level/3.Teacher.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Data-preprocess/1.School-Level/3.Teacher.py" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -19,25 +18,25 @@
     <session id="2131855557">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="2" />
+          <entry key="project.closed" value="3" />
           <entry key="project.open.time.0" value="1" />
           <entry key="project.open.time.3" value="1" />
-          <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="3" />
+          <entry key="project.open.time.9" value="2" />
+          <entry key="project.opened" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="css" value="211" />
           <entry key="html" value="566" />
-          <entry key="js" value="3157" />
+          <entry key="js" value="3161" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="CSS" value="211" />
           <entry key="HTML" value="566" />
-          <entry key="JavaScript" value="3157" />
+          <entry key="JavaScript" value="3161" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -62,20 +61,20 @@
     <splitter split-orientation="horizontal" split-proportion="0.46172392">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Education_components.html">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="90">
-                  <caret line="6" column="64" lean-forward="true" selection-start-line="6" selection-start-column="64" selection-end-line="6" selection-end-column="64" />
+                  <caret line="6" column="64" selection-start-line="6" selection-start-column="64" selection-end-line="6" selection-end-column="64" />
                 </state>
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="false">
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/js/visualization.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="198">
-                  <caret line="180" column="14" lean-forward="true" selection-start-line="180" selection-start-column="14" selection-end-line="180" selection-end-column="14" />
+                <state relative-caret-position="-2450">
+                  <caret line="183" column="20" selection-start-line="183" selection-start-column="20" selection-end-line="183" selection-end-column="20" />
                 </state>
               </provider>
             </entry>
@@ -83,7 +82,7 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/css/init.css">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="506">
+                <state relative-caret-position="765">
                   <caret line="51" selection-start-line="51" selection-start-column="2" selection-end-line="58" selection-end-column="3" />
                 </state>
               </provider>
@@ -96,7 +95,7 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/../../Spectrum/Front_end_v4.0/3.Center/js/menu.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="97">
+                <state relative-caret-position="52725">
                   <caret line="3515" column="9" selection-start-line="3515" selection-start-column="9" selection-end-line="3515" selection-end-column="9" />
                 </state>
               </provider>
@@ -127,9 +126,7 @@
           </file>
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/../../../津南数字制造算法赛/Code/Viusalization/css/init.css">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-193" />
-              </provider>
+              <provider selected="true" editor-type-id="text-editor" />
             </entry>
           </file>
           <file pinned="false" current-in-tab="true">
@@ -164,7 +161,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6" fullScreen="true">
+  <component name="ProjectFrameBounds" fullScreen="true">
     <option name="width" value="1680" />
     <option name="height" value="1050" />
   </component>
@@ -232,14 +229,15 @@
       <workItem from="1552982238008" duration="889000" />
       <workItem from="1553145460075" duration="152000" />
       <workItem from="1553501292489" duration="24063000" />
+      <workItem from="1553860630974" duration="719000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="25104000" />
+    <option name="totallyTimeSpent" value="25823000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1680" height="1050" extended-state="6" />
+    <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.10548523" />
@@ -287,23 +285,38 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/fuben.html">
+    <entry file="file://$PROJECT_DIR$/fuben.html" />
+    <entry file="file://$PROJECT_DIR$/../Data-preprocess/1.School-Level-data/les-miserables.gexf">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="407">
-          <caret line="106" column="46" lean-forward="true" selection-start-line="106" selection-start-column="46" selection-end-line="106" selection-end-column="46" />
+        <state relative-caret-position="-1377" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Education_components.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="64" selection-start-line="6" selection-start-column="64" selection-end-line="6" selection-end-column="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/init.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="765">
+          <caret line="51" selection-start-line="51" selection-start-column="2" selection-end-line="58" selection-end-column="3" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../Spectrum/Front_end_v4.0/3.Center/js/menu.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="97">
+        <state relative-caret-position="52725">
           <caret line="3515" column="9" selection-start-line="3515" selection-start-column="9" selection-end-line="3515" selection-end-column="9" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../../津南数字制造算法赛/Code/Viusalization/css/init.css">
+    <entry file="file://$PROJECT_DIR$/../../../津南数字制造算法赛/Code/Viusalization/js/visualization.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-193" />
+        <state relative-caret-position="8535">
+          <caret line="569" column="1" lean-forward="true" selection-start-line="569" selection-start-column="1" selection-end-line="569" selection-end-column="1" />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../../津南数字制造算法赛/Code/Viusalization/Jinnan Digital manufacturing.html">
@@ -318,39 +331,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../../津南数字制造算法赛/Code/Viusalization/js/visualization.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8535">
-          <caret line="569" column="1" lean-forward="true" selection-start-line="569" selection-start-column="1" selection-end-line="569" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../Data-preprocess/1.School-Level-data/les-miserables.gexf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1377" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/css/init.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="506">
-          <caret line="51" selection-start-line="51" selection-start-column="2" selection-end-line="58" selection-end-column="3" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/../../../津南数字制造算法赛/Code/Viusalization/css/init.css">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/../../Spectrum/Front_end_v4.0/1.Node/Spectrum_Node.html">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/js/visualization.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="180" column="14" lean-forward="true" selection-start-line="180" selection-start-column="14" selection-end-line="180" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Education_components.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="64" lean-forward="true" selection-start-line="6" selection-start-column="64" selection-end-line="6" selection-end-column="64" />
+        <state relative-caret-position="-2450">
+          <caret line="183" column="20" selection-start-line="183" selection-start-column="20" selection-end-line="183" selection-end-column="20" />
         </state>
       </provider>
     </entry>
