@@ -11,7 +11,10 @@
 ##############################################################################
 
 import pandas as pd
+import numpy as np
 import datetime
+import json
+import math
 
 data_origin = pd.read_csv("../1.School-Level-data/data_origin.csv")
 ##############################################################################
@@ -155,10 +158,13 @@ def statisitic_year_inandout():
 # 学年 2019 登记次数为 150（总共为784条，其中634条为进校离校登记）
 # 登记的次数不一样，所以要考虑是否进行归一化处理或者是计算比例
 year_students = [1561, 1749, 1364, 2037, 2329, 150]
+year_name = ['2014年', '2015年', '2016年', '2017年', '2018年', '2019年']
 
 
 def statistic_year_late():
     num_late = [0, 0, 0, 0, 0, 0]
+    year_name = ['2014年', '2015年', '2016年', '2017年', '2018年', '2019年']
+    data_show_all = []
     # 记录迟到晚到比例
     for i in range(len(year)):
         for j in range(data_origin.shape[0]):
@@ -166,11 +172,17 @@ def statistic_year_late():
                 if (data_origin['control_task_order_id'].iloc[j] == 100100) or (data_origin['control_task_order_id'].iloc[j] == 9900100) or (data_origin['control_task_order_id'].iloc[j] == 100200):
                     num_late[i] += 1
         num_late[i] = round(num_late[i] / year_students[i] * 100, 2)
-        print("学年", year[i], "迟到晚到的比例为", num_late[i], "%")
+        # print("学年", year[i], "迟到晚到的比例为", num_late[i], "%")
+        data_show = [year_name[i], round(num_late[i]/2, 2)]
+        data_show_all.append(data_show)
+    print(data_show_all)
     print("\b")
+    return data_show_all
 
 def statistic_year_early():
     num_early = [0, 0, 0, 0, 0, 0]
+    year_name = ['2014年', '2015年', '2016年', '2017年', '2018年', '2019年']
+    data_show_all = []
     # 记录早退离校比例
     for i in range(len(year)):
         for j in range(data_origin.shape[0]):
@@ -178,11 +190,18 @@ def statistic_year_early():
                 if (data_origin['control_task_order_id'].iloc[j] == 200200) or (data_origin['control_task_order_id'].iloc[j] == 9900300) :
                     num_early[i] += 1
         num_early[i] = round(num_early[i] / year_students[i] * 100, 2)
-        print("学年", year[i], "早退离校的比例为", num_early[i], "%")
+        data_show = [year_name[i], round(num_early[i]/2, 2)]
+        data_show_all.append(data_show)
+        # print("学年", year[i], "早退离校的比例为", num_early[i], "%")
+    print(data_show_all)
     print("\b")
+    return data_show_all
+
 
 def statistic_year_uniform():
     num_uniform = [0, 0, 0, 0, 0, 0]
+    year_name = ['2014年', '2015年', '2016年', '2017年', '2018年', '2019年']
+    data_show_all = []
     # 记录校服校徽问题比例
     for i in range(len(year)):
         for j in range(data_origin.shape[0]):
@@ -190,8 +209,12 @@ def statistic_year_uniform():
                 if (data_origin['control_task_order_id'].iloc[j] == 200100) or (data_origin['control_task_order_id'].iloc[j] == 9900200) :
                     num_uniform[i] += 1
         num_uniform[i] = round(num_uniform[i] / year_students[i] * 100, 2)
-        print("学年", year[i], "校服校徽问题比例为", num_uniform[i], "%")
+        data_show = [year_name[i], round(num_uniform[i]/2, 2)]
+        data_show_all.append(data_show)
+        # print("学年", year[i], "校服校徽问题比例为", num_uniform[i], "%")
+    print(data_show_all)
     print("\b")
+    return data_show_all
 
 def statistic_year_exercise():
     num_exercise = [0, 0, 0, 0, 0, 0]
@@ -205,6 +228,9 @@ def statistic_year_exercise():
         print("学年", year[i], "课间操请假比例为", num_exercise[i], "%")
     print("\b")
 
+# statistic_year_late()
+# statistic_year_early()
+# statistic_year_uniform()
 '''
 学年 2014 迟到晚到的比例为 61.43 %
 学年 2015 迟到晚到的比例为 58.49 %
@@ -321,10 +347,14 @@ def statistic_term_inandout():
 # 学期 2018-2019-1 数据量为 673（4473-3800）
 
 term_students = [309, 865, 611, 1021, 644, 415, 965, 798, 2307, 627, 673]
-
+term_name = ["2013-2014-1", "2013-2014-2", "2014-2015-1", "2014-2015-2", "2015-2016-1", "2015-2016-2", "2016-2017-1",
+            "2016-2017-2", "2017-2018-1", "2017-2018-2", "2018-2019-1"]
 
 def statistic_term_late():
     num_late = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    term_name = ["2013-2014-1", "2013-2014-2", "2014-2015-1", "2014-2015-2", "2015-2016-1", "2015-2016-2", "2016-2017-1",
+            "2016-2017-2", "2017-2018-1", "2017-2018-2", "2018-2019-1"]
+    data_show_all = []
     # 记录迟到晚到比例
     for i in range(len(term)):
         for j in range(data_origin.shape[0]):
@@ -332,11 +362,20 @@ def statistic_term_late():
                 if (data_origin['control_task_order_id'].iloc[j] == 100100) or (data_origin['control_task_order_id'].iloc[j] == 9900100) or (data_origin['control_task_order_id'].iloc[j] == 100200):
                     num_late[i] += 1
         num_late[i] = round(num_late[i] / term_students[i] * 100, 2)
-        print("学期", term[i], "迟到晚到的比例为", num_late[i], "%")
+        data_show = [term_name[i], round(num_late[i]/2, 2)]
+        data_show_all.append(data_show)
+        # print("学期", term[i], "迟到晚到的比例为", num_late[i], "%")
+    print(data_show_all)
     print("\b")
+    return data_show_all
+
 
 def statistic_term_early():
     num_early = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    term_name = ["2013-2014-1", "2013-2014-2", "2014-2015-1", "2014-2015-2", "2015-2016-1", "2015-2016-2",
+                 "2016-2017-1",
+                 "2016-2017-2", "2017-2018-1", "2017-2018-2", "2018-2019-1"]
+    data_show_all = []
     # 记录早退离校比例
     for i in range(len(term)):
         for j in range(data_origin.shape[0]):
@@ -344,11 +383,20 @@ def statistic_term_early():
                 if (data_origin['control_task_order_id'].iloc[j] == 200200) or (data_origin['control_task_order_id'].iloc[j] == 9900300) :
                     num_early[i] += 1
         num_early[i] = round(num_early[i] / term_students[i] * 100, 2)
-        print("学期", term[i], "早退离校的比例为", num_early[i], "%")
+        data_show = [term_name[i], round(num_early[i]/2, 2)]
+        data_show_all.append(data_show)
+        # print("学期", term[i], "早退离校的比例为", num_early[i], "%")
+    print(data_show_all)
     print("\b")
+    return data_show_all
+
 
 def statistic_term_uniform():
     num_uniform = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    term_name = ["2013-2014-1", "2013-2014-2", "2014-2015-1", "2014-2015-2", "2015-2016-1", "2015-2016-2",
+                 "2016-2017-1",
+                 "2016-2017-2", "2017-2018-1", "2017-2018-2", "2018-2019-1"]
+    data_show_all = []
     # 记录校服校徽问题比例
     for i in range(len(term)):
         for j in range(data_origin.shape[0]):
@@ -356,8 +404,17 @@ def statistic_term_uniform():
                 if (data_origin['control_task_order_id'].iloc[j] == 200100) or (data_origin['control_task_order_id'].iloc[j] == 9900200) :
                     num_uniform[i] += 1
         num_uniform[i] = round(num_uniform[i] / term_students[i] * 100, 2)
-        print("学期", term[i], "校服校徽问题比例为", num_uniform[i], "%")
+        data_show = [term_name[i], round(num_uniform[i]/2, 2)]
+        data_show_all.append(data_show)
+        # print("学期", term[i], "校服校徽问题比例为", num_uniform[i], "%")
+    print(data_show_all)
     print("\b")
+    return data_show_all
+
+
+# statistic_term_late()
+# statistic_term_early()
+# statistic_term_uniform()
 '''
 学期 2013-2014-1 迟到晚到的比例为 91.26 %
 学期 2013-2014-2 迟到晚到的比例为 48.32 %
@@ -468,40 +525,62 @@ def statistic_month_inandout():
 # 12 月 数据量为 201（1038-837）
 
 month_students = [1176, 27, 155, 115, 181, 126, 26, 1, 142, 81, 99, 201]
+month_name = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
 
 # 统计12个月的考勤特殊情况
 def statistic_month_late():
     num_late = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    month_name = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
+    data_show_all = []
     for i in range(len(month)):
         for j in range(data_year.shape[0]):
             if data_year['month'].iloc[j] == month[i]:
                 if (data_year['control_task_order_id'].iloc[j] == 100100) or (data_year['control_task_order_id'].iloc[j] == 9900100) or (data_year['control_task_order_id'].iloc[j] == 100200):
                     num_late[i] += 1
         num_late[i] = round(num_late[i] / month_students[i] * 100, 2)
-        print(month[i], "月迟到晚到的比例为", num_late[i], "%")
+        data_show = [month_name[i], round(num_late[i]/2, 2)]
+        data_show_all.append(data_show)
+        # print(month[i], "月迟到晚到的比例为", num_late[i], "%")
+    print(data_show_all)
     print("\b")
+    return data_show_all
+
 
 def statistic_month_early():
     num_early = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    month_name = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
+    data_show_all = []
     for i in range(len(month)):
         for j in range(data_year.shape[0]):
             if data_year['month'].iloc[j] == month[i]:
                 if (data_year['control_task_order_id'].iloc[j] == 200200) or (data_year['control_task_order_id'].iloc[j] == 9900300):
                     num_early[i] += 1
         num_early[i] = round(num_early[i] / month_students[i] * 100, 2)
-        print(month[i], "月早退的比例为", num_early[i], "%")
+        data_show = [month_name[i], round(num_early[i]/2, 2)]
+        data_show_all.append(data_show)
+        # print(month[i], "月早退的比例为", num_early[i], "%")
+    print(data_show_all)
     print("\b")
+    return data_show_all
+
 
 def statistic_month_uniform():
     num_uniform = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    month_name = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
+    data_show_all = []
     for i in range(len(month)):
         for j in range(data_year.shape[0]):
             if data_year['month'].iloc[j] == month[i]:
                 if (data_year['control_task_order_id'].iloc[j] == 200100) or (data_year['control_task_order_id'].iloc[j] == 9900200):
                     num_uniform[i] += 1
         num_uniform[i] = round(num_uniform[i] / month_students[i] * 100, 2)
-        print(month[i], "月校服校徽问题的比例为", num_uniform[i], "%")
+        data_show = [month_name[i], round(num_uniform[i]/2, 2)]
+        data_show_all.append(data_show)
+        # print(month[i], "月校服校徽问题的比例为", num_uniform[i], "%")
+    print(data_show_all)
     print("\b")
+    return data_show_all
+
 
 # statistic_month_late()
 # statistic_month_early()
@@ -561,7 +640,7 @@ def statistic_month_uniform():
 # 首先提取2018年年份的数据
 data_day = data_origin.drop(data_origin[data_origin['year'] < 2018].index)
 data_day = data_day.drop(data_day[data_day['year'] > 2018].index)
-data_day = data_day.drop(data_day[data_day['month']> 1].index)
+data_day = data_day.drop(data_day[data_day['month'] > 1].index)
 # print(data_day.shape[0])
 
 # 统计1月每一天的数据数量
@@ -608,42 +687,73 @@ def statistic_day_num():
 # 30 号 数据量为 0
 # 31 号 数据量为 0
 
+date_students = [1, 25, 17, 4, 16, 1, 1, 13, 8, 1, 3, 8, 1, 1, 54, 5, 31, 1, 1, 1, 1, 9, 22, 9, 365, 60, 433, 1, 92, 1, 1]
+date_name = ["1号", "2号", "3号", "4号", "5号", "6号", "7号", "8号", "9号", "10号", "11号", "12号", "13号", "14号", "15号", "16号",
+             "17号", "18号", "19号", "20号", "21号", "22号", "23号", "24号", "25号", "26号", "27号", "28号", "29号", "30号", "31号"]
 
 
 # 直接统计1月份每一天的数据情况
 def statistic_day_late():
     num_late = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    date_name = ["1号", "2号", "3号", "4号", "5号", "6号", "7号", "8号", "9号", "10号", "11号", "12号", "13号", "14号", "15号", "16号", "17号", "18号", "19号", "20号", "21号", "22号", "23号", "24号", "25号", "26号", "27号", "28号", "29号", "30号", "31号"]
+    data_show_all = []
     for i in range(len(date)):
         for j in range(data_day.shape[0]):
             if data_day['date'].iloc[j] == date[i]:
                 if (data_day['control_task_order_id'].iloc[j] == 100100) or (data_day['control_task_order_id'].iloc[j] == 9900100) or (data_day['control_task_order_id'].iloc[j] == 100200):
                     num_late[i] += 1
-        print(date[i], "号迟到晚到的数量为", num_late[i])
+        num_late[i] = round(num_late[i] / date_students[i] * 100, 2)
+        data_show = [date_name[i], round(num_late[i]/2, 2)]
+        data_show_all.append(data_show)
+        # print(date[i], "号迟到晚到的数量为", num_late[i])
+    print(data_show_all)
     print("\b")
+    return data_show_all
+
 
 def statistic_day_early():
     num_early = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    date_name = ["1号", "2号", "3号", "4号", "5号", "6号", "7号", "8号", "9号", "10号", "11号", "12号", "13号", "14号", "15号", "16号",
+                 "17号", "18号", "19号", "20号", "21号", "22号", "23号", "24号", "25号", "26号", "27号", "28号", "29号", "30号",
+                 "31号"]
+    data_show_all = []
     for i in range(len(date)):
         for j in range(data_day.shape[0]):
             if data_day['date'].iloc[j] == date[i]:
                 if (data_day['control_task_order_id'].iloc[j] == 200200) or (data_day['control_task_order_id'].iloc[j] == 9900300):
                     num_early[i] += 1
-        print(date[i], "号早退的数量为", num_early[i])
+        num_early[i] = round(num_early[i] / date_students[i] * 100, 2)
+        data_show = [date_name[i], round(num_early[i]/2, 2)]
+        data_show_all.append(data_show)
+        # print(date[i], "号早退的数量为", num_early[i])
+    print(data_show_all)
     print("\b")
+    return data_show_all
+
 
 def statistic_day_uniform():
     num_uniform = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    date_name = ["1号", "2号", "3号", "4号", "5号", "6号", "7号", "8号", "9号", "10号", "11号", "12号", "13号", "14号", "15号", "16号",
+                 "17号", "18号", "19号", "20号", "21号", "22号", "23号", "24号", "25号", "26号", "27号", "28号", "29号", "30号",
+                 "31号"]
+    data_show_all = []
     for i in range(len(date)):
         for j in range(data_day.shape[0]):
             if data_day['month'].iloc[j] == date[i]:
                 if (data_day['control_task_order_id'].iloc[j] == 200100) or (data_day['control_task_order_id'].iloc[j] == 9900200):
                     num_uniform[i] += 1
-        print(date[i], "号校服校徽问题的比例为", num_uniform[i])
+        num_uniform[i] = round(num_uniform[i] / date_students[i] * 100, 2)
+        data_show = [date_name[i], round(num_uniform[i]/2, 2)]
+        data_show_all.append(data_show)
+        # print(date[i], "号校服校徽问题的比例为", num_uniform[i])
+    print(data_show_all)
     print("\b")
+    return data_show_all
 
-statistic_day_late()
-statistic_day_early()
-statistic_day_uniform()
+
+# statistic_day_late()
+# statistic_day_early()
+# statistic_day_uniform()
 
 '''
 1 号迟到晚到的数量为 0
@@ -744,3 +854,172 @@ statistic_day_uniform()
 30 号校服校徽问题的比例为 0
 31 号校服校徽问题的比例为 0
 '''
+
+def create_late_json():
+    json_data = {"row": [statistic_year_late(), statistic_term_late(), statistic_month_late(), statistic_day_late()], "name": [year_name, term_name, month_name, date_name]}
+    with open('../1.School-level-data/School_Attendance_1.json', "w") as file:
+        json.dump(json_data, file)
+    print("完成文件加载")
+
+def create_early_json():
+    json_data = {"row": [statistic_year_early(), statistic_term_early(), statistic_month_early(), statistic_day_early()], "name": [year_name, term_name, month_name, date_name]}
+    with open('../1.School-level-data/School_Attendance_2.json', "w") as file:
+        json.dump(json_data, file)
+    print("完成文件加载")
+
+def create_uniform_json():
+    json_data = {
+        "row": [statistic_year_uniform(), statistic_term_uniform(), statistic_month_uniform(), statistic_day_uniform()],
+        "name": [year_name, term_name, month_name, date_name]}
+    with open('../1.School-level-data/School_Attendance_3.json', "w") as file:
+        json.dump(json_data, file)
+    print("完成文件加载")
+
+
+# create_late_json()
+# create_early_json()
+# create_uniform_json()
+
+##############################################################################
+# Step6: 统计早晨上学放学和下午上学放学的统计数据
+##############################################################################
+
+def statistic_peak_hour():
+    data_origin['hour'] = (data_origin['DataDateTime'].str.split(' ', expand=True)[1]).str.split(':', expand=True)[0]
+    data_origin['minute'] = ((data_origin['DataDateTime'].str.split(' ', expand=True)[1]).str.split(':', expand=True)[1]).str.split(':', expand=True)[0]
+    data_peak_out = data_origin
+    # data_peak_out = data_origin.drop(data_origin[data_origin['hour'] != '17'].index)
+    time = []
+    data_all = []
+    time_reg_all = []
+    count = [0] * 24
+    # print(data_peak_out['hour'])
+
+    for m in range(10):
+        time_piece = '0' + str(m) + ':00'
+        time.append(time_piece)
+        time_reg = '0' + str(m)
+        time_reg_all.append(time_reg)
+
+    for i in range(10, 24):
+        time_piece = str(i) + ':00'
+        time.append(time_piece)
+
+    for i in range(0, 10):
+        for j in range(data_peak_out.shape[0]):
+            if data_peak_out['hour'].iloc[j] == time_reg_all[i]:
+                count[i] += 1
+
+    for i in range(10, 24):
+        for j in range(data_peak_out.shape[0]):
+            if data_peak_out['hour'].iloc[j] == str(i):
+                count[i] += 1
+
+    for n in range(len(count)):
+        count[n] = round(count[n], 2)
+
+    for i in range(len(count)):
+        data_piece = [count[i], time[i]]
+        data_all.append(data_piece)
+
+    print(time)
+    print(count)
+    print(data_all)
+
+statistic_peak_hour()
+
+def statistic_peak_minute():
+    data_origin['hour'] = (data_origin['DataDateTime'].str.split(' ', expand=True)[1]).str.split(':', expand=True)[0]
+    data_origin['minute'] = ((data_origin['DataDateTime'].str.split(' ', expand=True)[1]).str.split(':', expand=True)[1]).str.split(':', expand=True)[0]
+    data_peak_out = data_origin.drop(data_origin[data_origin['hour'] != '06'].index)
+    time = []
+    time_reg_all = []
+    count = [0] * 60
+
+    for m in range(10):
+        time_piece = '06:0' + str(m)
+        time_reg = '0' + str(m)
+        time_reg_all.append(time_reg)
+        time.append(time_piece)
+
+    for k in range(10, 60):
+        time_piece = '06:' + str(k)
+        time.append(time_piece)
+
+    for i in range(0, 10):
+        for j in range(data_peak_out.shape[0]):
+            if data_peak_out['minute'].iloc[j] == time_reg_all[i]:
+                count[i] += 1
+
+    for i in range(10, 60):
+        for j in range(data_peak_out.shape[0]):
+            if data_peak_out['minute'].iloc[j] == str(i):
+                count[i] += 1
+
+    for n in range(len(count)):
+        count[n] = round(count[n], 2)
+
+    print(time)
+    print(count)
+
+# statistic_peak_minute()
+
+def statistic_peak_minute2():
+    data_origin['hour'] = (data_origin['DataDateTime'].str.split(' ', expand=True)[1]).str.split(':', expand=True)[0]
+    data_origin['minute'] = \
+    ((data_origin['DataDateTime'].str.split(' ', expand=True)[1]).str.split(':', expand=True)[1]).str.split(':', expand=True)[0]
+    data_peak_out1 = data_origin.drop(data_origin[data_origin['hour'] != '06'].index)
+    data_peak_out2 = data_origin.drop(data_origin[data_origin['hour'] != '07'].index)
+    time = []
+    time_reg_all = []
+    data_all = []
+    count = [0] * 120
+
+    for i in range(10):
+        time_piece = '06:0' + str(i)
+        time_reg = '0' + str(i)
+        time_reg_all.append(time_reg)
+        time.append(time_piece)
+
+    for i in range(10, 60):
+        time_piece = '06:' + str(i)
+        time.append(time_piece)
+
+    for i in range(10):
+        for j in range(data_peak_out1.shape[0]):
+            if data_peak_out1['minute'].iloc[j] == time_reg_all[i]:
+                count[i] += 1
+
+    for i in range(10, 60):
+        for j in range(data_peak_out1.shape[0]):
+            if data_peak_out1['minute'].iloc[j] == str(i):
+                count[i] += 1
+
+    for i in range(10):
+        time_piece = '07:0' + str(i)
+        time_reg = '0' + str(i)
+        time_reg_all.append(time_reg)
+        time.append(time_piece)
+
+    for i in range(10, 60):
+        time_piece = '07:' + str(i)
+        time.append(time_piece)
+
+    for i in range(10):
+        for j in range(data_peak_out2.shape[0]):
+            if data_peak_out2['minute'].iloc[j] == time_reg_all[i + 10]:
+                count[i + 60] += 1
+
+    for i in range(10, 60):
+        for j in range(data_peak_out2.shape[0]):
+            if data_peak_out2['minute'].iloc[j] == str(i):
+                count[i + 60] += 1
+
+    print(time)
+    print(count)
+    for i in range(len(count)):
+        data_piece = [count[i], time[i]]
+        data_all.append(data_piece)
+    print(data_all)
+
+# statistic_peak_minute2()

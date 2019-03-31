@@ -8,6 +8,7 @@
     <script type="text/javascript" src="js/echarts.js"></script>
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/dataTool.js"></script>
+
 </head>
 <body>
     <noscript>本页面需要浏览器支持(启用)JavaScript</noscript>
@@ -17,9 +18,9 @@
         </div>
         <div id="visual-2" class="data-visual-area2">
             <script type="text/javascript">data_visualization2()</script>
-            <div class="selectArea">
-                <span class="propertyName">选择科目</span>
-                <select name="selectSub" id="selectSub">
+            <div class="selectArea1">
+                <span class="propertyName1">选择科目</span>
+                <select name="selectSub1" id="selectSub1">
                     <option value="0">语文</option>
                     <option value="1">数学</option>
                     <option value="2">英语</option>
@@ -34,12 +35,47 @@
             </div>
         </div>
         <div id="visual-3" class="data-visual-area3">
-
             <script type="text/javascript">data_visualization3()</script>
         </div>
-        <!--<div id="visual-4" class="data-visual-area4">-->
-            <!--<script type="text/javascript">data_visualization4()</script>-->
-        <!--</div>-->
+        <div id="visual-4" class="data-visual-area4">
+            <script type="text/javascript">data_visualization4()</script>
+            <div class="selectArea2">
+                <span class="propertyName2">选择时间</span>
+                <select name="selectSub2" id="selectSub2">
+                    <option value="0">学年统计</option>
+                    <option value="1">学期统计</option>
+                    <option value="2">当前年份</option>
+                    <option value="3">当前月份</option>
+                </select>
+            </div>
+        </div>
+        <div id="visual-5" class="data-visual-area5">
+            <script type="text/javascript">data_visualization5()</script>
+            <div class="selectArea3">
+                <span class="propertyName3">选择时间</span>
+                <select name="selectSub3" id="selectSub3">
+                    <option value="0">学年统计</option>
+                    <option value="1" selected="selected">学期统计</option>
+                    <option value="2">当前年份</option>
+                    <option value="3">当前月份</option>
+                </select>
+            </div>
+        </div>
+        <div id="visual-6" class="data-visual-area6">
+            <script type="text/javascript">data_visualization6()</script>
+            <div class="selectArea4">
+                <span class="propertyName4">选择时间</span>
+                <select name="selectSub4" id="selectSub4">
+                    <option value="0">学年统计</option>
+                    <option value="1">学期统计</option>
+                    <option value="2" selected="selected">当前年份</option>
+                    <option value="3">当前月份</option>
+                </select>
+            </div>
+        </div>
+        <div id="visual-7" class="data-visual-area7">
+            <script type="text/javascript">data_visualization7()</script>
+        </div>
     </div>
 </body>
 </html>

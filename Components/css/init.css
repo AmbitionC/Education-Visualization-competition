@@ -13,6 +13,79 @@ a{
     cursor: pointer;
 }
 
+
+.selectArea1{
+    width: 140px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    z-index: 100;
+}
+
+.propertyName1{
+    cursor: default;
+    float: left;
+    clear: left;
+    /*width: 50%;*/
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #2c2c2c;
+}
+
+.selectArea2{
+    width: 140px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    z-index: 100;
+}
+
+.propertyName2{
+    cursor: default;
+    float: left;
+    clear: left;
+    /*width: 50%;*/
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #2c2c2c;
+}
+
+.selectArea3{
+    width: 140px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    z-index: 100;
+}
+
+.propertyName3{
+    cursor: default;
+    float: left;
+    clear: left;
+    /*width: 50%;*/
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #2c2c2c;
+}
+
+.selectArea4{
+    width: 140px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    z-index: 100;
+}
+
+.propertyName4{
+    cursor: default;
+    float: left;
+    clear: left;
+    /*width: 50%;*/
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #2c2c2c;
+}
+
 .visual-area{
     position: absolute;
     width: 100%;
@@ -49,29 +122,38 @@ a{
     border: 1px dashed #aaaaaa;
 }
 
-/*.data-visual-area4{*/
-    /*width: 50%;*/
-    /*height: 50%;*/
-    /*position: absolute;*/
-    /*left: 50%;*/
-    /*top: 50%;*/
-    /*border: 1px dashed #aaaaaa;*/
-/*}*/
-
-.selectArea{
-    width: 140px;
+.data-visual-area4{
+    width: 50%;
+    height: 50%;
     position: absolute;
-    right: 5px;
-    top: 5px;
-    z-index: 100;
+    left: 0%;
+    top: 100%;
+    border: 1px dashed #aaaaaa;
 }
 
-.propertyName{
-    cursor: default;
-    float: left;
-    clear: left;
-    /*width: 50%;*/
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: #2c2c2c;
+.data-visual-area5{
+    width: 50%;
+    height: 50%;
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    border: 1px dashed #aaaaaa;
+}
+
+.data-visual-area6{
+    width: 50%;
+    height: 50%;
+    position: absolute;
+    left: 0%;
+    top: 150%;
+    border: 1px dashed #aaaaaa;
+}
+
+.data-visual-area7{
+    width: 50%;
+    height: 50%;
+    position: absolute;
+    left: 50%;
+    top: 150%;
+    border: 1px dashed #aaaaaa;
 }
