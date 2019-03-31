@@ -890,6 +890,7 @@ def statistic_peak_hour():
     data_peak_out = data_origin
     # data_peak_out = data_origin.drop(data_origin[data_origin['hour'] != '17'].index)
     time = []
+    summary = 0
     data_all = []
     time_reg_all = []
     count = [0] * 24
@@ -919,70 +920,38 @@ def statistic_peak_hour():
         count[n] = round(count[n], 2)
 
     for i in range(len(count)):
-        data_piece = [count[i], time[i]]
+        summary += count[i]
+
+    for i in range(len(count)):
+        data_piece = [round(summary/(len(count)), 2), time[i]]
         data_all.append(data_piece)
 
     print(time)
     print(count)
     print(data_all)
 
-statistic_peak_hour()
-
-def statistic_peak_minute():
-    data_origin['hour'] = (data_origin['DataDateTime'].str.split(' ', expand=True)[1]).str.split(':', expand=True)[0]
-    data_origin['minute'] = ((data_origin['DataDateTime'].str.split(' ', expand=True)[1]).str.split(':', expand=True)[1]).str.split(':', expand=True)[0]
-    data_peak_out = data_origin.drop(data_origin[data_origin['hour'] != '06'].index)
-    time = []
-    time_reg_all = []
-    count = [0] * 60
-
-    for m in range(10):
-        time_piece = '06:0' + str(m)
-        time_reg = '0' + str(m)
-        time_reg_all.append(time_reg)
-        time.append(time_piece)
-
-    for k in range(10, 60):
-        time_piece = '06:' + str(k)
-        time.append(time_piece)
-
-    for i in range(0, 10):
-        for j in range(data_peak_out.shape[0]):
-            if data_peak_out['minute'].iloc[j] == time_reg_all[i]:
-                count[i] += 1
-
-    for i in range(10, 60):
-        for j in range(data_peak_out.shape[0]):
-            if data_peak_out['minute'].iloc[j] == str(i):
-                count[i] += 1
-
-    for n in range(len(count)):
-        count[n] = round(count[n], 2)
-
-    print(time)
-    print(count)
-
-# statistic_peak_minute()
+# statistic_peak_hour()
 
 def statistic_peak_minute2():
     data_origin['hour'] = (data_origin['DataDateTime'].str.split(' ', expand=True)[1]).str.split(':', expand=True)[0]
     data_origin['minute'] = \
     ((data_origin['DataDateTime'].str.split(' ', expand=True)[1]).str.split(':', expand=True)[1]).str.split(':', expand=True)[0]
-    data_peak_out1 = data_origin.drop(data_origin[data_origin['hour'] != '06'].index)
-    data_peak_out2 = data_origin.drop(data_origin[data_origin['hour'] != '07'].index)
+    data_peak_out1 = data_origin.drop(data_origin[data_origin['hour'] != '16'].index)
+    data_peak_out2 = data_origin.drop(data_origin[data_origin['hour'] != '17'].index)
     time = []
+    summary = 0
     time_reg_all = []
     data_all = []
     count = [0] * 120
 
     for i in range(10):
-        time_piece = '06:0' + str(i)
+        time_piece = '16:0' + str(i)
         time_reg = '0' + str(i)
         time_reg_all.append(time_reg)
         time.append(time_piece)
 
     for i in range(10, 60):
-        time_piece = '06:' + str(i)
+        time_piece = '16:' + str(i)
         time.append(time_piece)
 
     for i in range(10):
@@ -996,13 +965,13 @@ def statistic_peak_minute2():
                 count[i] += 1
 
     for i in range(10):
-        time_piece = '07:0' + str(i)
+        time_piece = '17:0' + str(i)
         time_reg = '0' + str(i)
         time_reg_all.append(time_reg)
         time.append(time_piece)
 
     for i in range(10, 60):
-        time_piece = '07:' + str(i)
+        time_piece = '17:' + str(i)
         time.append(time_piece)
 
     for i in range(10):
@@ -1015,11 +984,15 @@ def statistic_peak_minute2():
             if data_peak_out2['minute'].iloc[j] == str(i):
                 count[i + 60] += 1
 
+    for i in range(len(count)):
+        summary += count[i]
+
+    for i in range(len(count)):
+        data_piece = [round(summary/(len(count)), 2), time[i]]
+        data_all.append(data_piece)
+
     print(time)
     print(count)
-    for i in range(len(count)):
-        data_piece = [count[i], time[i]]
-        data_all.append(data_piece)
     print(data_all)
 
-# statistic_peak_minute2()
+statistic_peak_minute2()

@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="092a05fb-f66f-4390-9bd6-70d6cbbf9749" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Education_components.html" beforeDir="false" afterPath="$PROJECT_DIR$/Education_components.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/css/init.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/init.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/visualization.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/visualization.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Data-preprocess/1.School-Level/2.Attendance.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Data-preprocess/1.School-Level/2.Attendance.py" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -32,14 +28,14 @@
         <counts>
           <entry key="css" value="240" />
           <entry key="html" value="641" />
-          <entry key="js" value="4771" />
+          <entry key="js" value="5007" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="CSS" value="240" />
           <entry key="HTML" value="641" />
-          <entry key="JavaScript" value="4771" />
+          <entry key="JavaScript" value="5007" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -76,8 +72,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Education_components.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="135">
-                  <caret line="9" column="54" selection-start-line="9" selection-start-column="54" selection-end-line="9" selection-end-column="54" />
+                <state relative-caret-position="90">
+                  <caret line="6" column="53" selection-start-line="6" selection-start-column="53" selection-end-line="6" selection-end-column="53" />
                 </state>
               </provider>
             </entry>
@@ -94,8 +90,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/js/visualization.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="850">
-                  <caret line="677" lean-forward="true" selection-start-line="677" selection-end-line="677" />
+                <state relative-caret-position="654">
+                  <caret line="686" column="30" selection-start-line="686" selection-start-column="30" selection-end-line="686" selection-end-column="30" />
                 </state>
               </provider>
             </entry>
@@ -125,8 +121,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/js/visualization.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="2460">
-                  <caret line="164" column="8" selection-start-line="164" selection-start-column="8" selection-end-line="164" selection-end-column="8" />
+                <state relative-caret-position="775">
+                  <caret line="691" column="39" selection-start-line="691" selection-start-column="39" selection-end-line="691" selection-end-column="39" />
                 </state>
               </provider>
             </entry>
@@ -252,12 +248,12 @@
       <workItem from="1552982238008" duration="889000" />
       <workItem from="1553145460075" duration="152000" />
       <workItem from="1553501292489" duration="24063000" />
-      <workItem from="1553860630974" duration="12534000" />
+      <workItem from="1553860630974" duration="14514000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="37638000" />
+    <option name="totallyTimeSpent" value="39618000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
@@ -341,13 +337,6 @@
         <state relative-caret-position="-410" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../Spectrum/Front_end_v4.0/3.Center/js/menu.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="902">
-          <caret line="3515" column="9" selection-start-line="3515" selection-start-column="9" selection-end-line="3515" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/css/init.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-380">
@@ -355,17 +344,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../../Spectrum/Front_end_v4.0/3.Center/js/menu.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="902">
+          <caret line="3515" column="9" selection-start-line="3515" selection-start-column="9" selection-end-line="3515" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Education_components.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="54" selection-start-line="9" selection-start-column="54" selection-end-line="9" selection-end-column="54" />
+        <state relative-caret-position="90">
+          <caret line="6" column="53" selection-start-line="6" selection-start-column="53" selection-end-line="6" selection-end-column="53" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/visualization.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="850">
-          <caret line="677" lean-forward="true" selection-start-line="677" selection-end-line="677" />
+        <state relative-caret-position="654">
+          <caret line="686" column="30" selection-start-line="686" selection-start-column="30" selection-end-line="686" selection-end-column="30" />
         </state>
       </provider>
     </entry>
