@@ -12,12 +12,12 @@
 
 import pandas as pd
 
-# #显示所有列
-# pd.set_option('display.max_columns', None)
-# #显示所有行
-# pd.set_option('display.max_rows', None)
-# #设置value的显示长度为100，默认为50
-# pd.set_option('max_colwidth', 100)
+#显示所有列
+pd.set_option('display.max_columns', None)
+#显示所有行
+pd.set_option('display.max_rows', None)
+#设置value的显示长度为100，默认为50
+pd.set_option('max_colwidth', 100)
 
 # 读取原始数据集合
 data_origin = pd.read_csv('../../education_data/5_chengji.csv')
@@ -110,10 +110,11 @@ def Statistic_sub_byCla(sub):
     cla_id = []
     data_sub = data_merge_byStdId.drop(data_merge_byStdId[data_merge_byStdId['mes_sub_name'] != sub].index).reset_index()
     data_groupby_claID = data_sub.groupby('cla_id').count().reset_index()
-    # print(data_groupby_claID)
     for i in range(data_groupby_claID.shape[0]):
         cla_id.append(data_groupby_claID['cla_id'].iloc[i])
     print(cla_id)
-    data_sub
+    # 删除缺失值
+    data_sub = data_sub.dropna(subset=['mes_T_Score'])
+
 
 Statistic_sub_byCla(sub)
