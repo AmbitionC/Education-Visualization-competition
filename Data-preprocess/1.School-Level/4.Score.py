@@ -24,6 +24,10 @@ data_origin = pd.read_csv('../../education_data/5_chengji.csv')
 
 data_sample = pd.read_csv('../../education_data/CH/5.chengji_1.csv')
 
+data_student_info = pd.read_csv('../../education_data/2_student_info.csv')
+
+data_merge_byStdId = pd.read_csv('../../education_data/CH/5.chengji_2_claID.csv')
+
 
 ##############################################################################
 #Step1: 找到考试数据最多的那一次考试
@@ -47,10 +51,10 @@ def find_2017_finalExam():
     data_2017_finalExam = data_origin[data_origin['exam_numname'].str.contains(exam_name)]
     # data_2017_finalExam = data_2017_finalExam.groupby(['exam_numname']).count().reset_index()
     print(data_2017_finalExam.shape)
-    data_2017_finalExam.to_csv('../../education_data/CH/5.chengji_1.csv')
+    data_2017_finalExam.to_csv('../../education_data/CH/5.chengji_1.csv', encoding='utf_8_sig')
 
 
-find_2017_finalExam()
+# find_2017_finalExam()
 
 ##############################################################################
 #Step3：确定使用2017学年度第一学期期末总评作为样本数据
@@ -65,7 +69,7 @@ def statistic_sample_data():
     print(students_groupby.shape)
     print(students_groupby)
 
-statistic_sample_data()
+# statistic_sample_data()
 # 2017学年度第一学期期末总评总数据量为 13161
 # 考试的科目一共为10科，每一科目数据量分布较为一致
 # 学科 化学 的数据量为 1365
@@ -90,4 +94,26 @@ statistic_sample_data()
 # 可以用来评估这一次考试的整体难度情况
 # 让处于达标线以下的同学数量与考试的难度形成映射，有助于学校对试题难度把控提供理论依据
 
+##############################################################################
+#Step5：获得成绩的分布情况，按照班级对成绩的文件进行分析
+#根据成绩数据集的学生ID数据与学生信息的数据集的学生ID进行比对，获得他们的班级号
 
+def merge_student_id():
+    data_merge_byStdID = pd.merge(data_sample, data_student_info, left_on='mes_StudentID', right_on='bf_StudentID', how='left')
+    print(data_merge_byStdID)
+    data_merge_byStdID.to_csv('../../education_data/CH/5.chengji_2_claID.csv', encoding='utf_8_sig')
+
+# 按照学科来分析各个班级的成绩
+sub = '历史'
+
+def Statistic_sub_byCla(sub):
+    cla_id = []
+    data_sub = data_merge_byStdId.drop(data_merge_byStdId[data_merge_byStdId['mes_sub_name'] != sub].index).reset_index()
+    data_groupby_claID = data_sub.groupby('cla_id').count().reset_index()
+    # print(data_groupby_claID)
+    for i in range(data_groupby_claID.shape[0]):
+        cla_id.append(data_groupby_claID['cla_id'].iloc[i])
+    print(cla_id)
+    data_sub
+
+Statistic_sub_byCla(sub)
