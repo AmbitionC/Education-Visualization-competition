@@ -11,6 +11,7 @@
 ##############################################################################
 
 import pandas as pd
+import json
 
 #显示所有列
 pd.set_option('display.max_columns', None)
@@ -103,8 +104,13 @@ def merge_student_id():
     print(data_merge_byStdID)
     data_merge_byStdID.to_csv('../../education_data/CH/5.chengji_2_claID.csv', encoding='utf_8_sig')
 
-# 按照学科来分析各个班级的成绩
-sub = '历史'
+# 获取学科名
+def acquire_sub_name():
+    sub_name = []
+    data_subname = data_sample.groupby('mes_sub_name').count().reset_index()
+    for i in range(data_subname.shape[0]):
+        sub_name.append(data_subname['mes_sub_name'].iloc[i])
+    return sub_name
 
 def Statistic_sub_byCla(sub):
     cla_id = []
@@ -112,9 +118,32 @@ def Statistic_sub_byCla(sub):
     data_groupby_claID = data_sub.groupby('cla_id').count().reset_index()
     for i in range(data_groupby_claID.shape[0]):
         cla_id.append(data_groupby_claID['cla_id'].iloc[i])
-    print(cla_id)
     # 删除缺失值
     data_sub = data_sub.dropna(subset=['mes_T_Score'])
+    data_sub = data_sub.dropna(subset=['cla_id'])
+    return data_sub
+
+def Create_dataset_score():
+    sub_name = acquire_sub_name()
+    for i in range(len(sub_name)):
+        data_sub = Statistic_sub_byCla(sub_name[i])
+        # 获取单科的X轴数据
+        xAxis_data = []
+        data_sub_groupBy = data_sub.groupby('cla_id').count().reset_index()
+        for j in range(data_sub_groupBy.shape[0]):
+            xAxis_data.append(str(data_sub_groupBy['cla_id'].iloc[j]))
+        print(xAxis_data)
+        # 以数组的形式存储所有的点数据
+        data_all = []
+        for k in range(data_sub.shape[0]):
+            data_piece = [str(data_sub['cla_id'].iloc[k]), round(data_sub['mes_T_Score'].iloc[k], 2)]
+            data_all.append(data_piece)
+        print(data_all)
+        json_data = {'xlabel': xAxis_data, 'dataset': data_all}
+        file_name = '../1.School-Level-data/4.Score_cla_' + str(sub_name[i]) + '.json'
+        with open(file_name, 'w') as file:
+            json.dump(json_data, file)
+        print('完成文件加载')
 
 
-Statistic_sub_byCla(sub)
+Create_dataset_score()

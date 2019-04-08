@@ -638,16 +638,9 @@ function data_visualization7() {
             axisPointer: {
                 type: 'cross'
             },
-            // formatter: function (params) {
-            //     return [
-            //         '峰值为：' + params.data
-            //     ].join('<br/>')
-            // }
+
         },
 
-        // tooltip: {
-        //
-        // },
         angleAxis: {
             scale: 'True',
             type: 'category',
@@ -699,4 +692,66 @@ function data_visualization7() {
     };
 
     myChart.setOption(option)
+}
+
+function data_visualization8() {
+    var myChart = echarts.init(document.getElementById('visual-8'));
+    option = {
+        brush: {
+            xAxisIndex: [0, 1],
+            // yAxisIndex: [0, 1]
+            brushLink: [0, 1]
+        },
+        grid: [
+            {right: '50%'},
+            {left: '55%'}
+        ],
+        xAxis: [{
+            name: '班级名',
+            gridIndex: 0,
+            type: 'category',
+            data: []
+        }, {
+            name: '班级名',
+            gridIndex: 1,
+            type: 'category',
+            data: []
+        }],
+        yAxis: [{
+            name: 'T-Score',
+            gridIndex: 0
+        },{
+            name: 'T-Score',
+            gridIndex: 1
+        }],
+        series: [{
+            symbolSize: 5,
+            data: [],
+            type: 'scatter'
+        },
+        {
+            xAxisIndex: 1,
+            yAxisIndex: 1,
+            symbolSize: 5,
+            data: [],
+            type: 'scatter'
+        }]
+    };
+    myChart.setOption(option);
+
+    $.get('./Dataset/School_Score/4.Score_cla_语文.json').done(function (data) {
+        myChart.setOption({
+            // tooltip: {},
+            xAxis: [{
+                data: data.xlabel
+            },{
+                data: data.xlabel
+            }],
+            series: [{
+                data: data.dataset
+            }, {
+                data: data.dataset
+            }]
+        })
+    });
 }

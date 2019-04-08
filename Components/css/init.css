@@ -157,3 +157,21 @@ a{
     top: 150%;
     border: 1px dashed #aaaaaa;
 }
+
+.data-visual-area8{
+    width: 50%;
+    height: 50%;
+    position: absolute;
+    left: 0%;
+    top: 200%;
+    border: 1px dashed #aaaaaa;
+}
+
+.data-visual-area9{
+    width: 50%;
+    height: 50%;
+    position: absolute;
+    left: 50%;
+    top: 200%;
+    border: 1px dashed #aaaaaa;
+}
