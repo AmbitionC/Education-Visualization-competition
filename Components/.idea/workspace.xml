@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="092a05fb-f66f-4390-9bd6-70d6cbbf9749" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Education_components.html" beforeDir="false" afterPath="$PROJECT_DIR$/Education_components.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/css/init.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/init.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/visualization.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/visualization.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Data-preprocess/1.School-Level/4.Score.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Data-preprocess/1.School-Level/4.Score.py" afterDir="false" />
-    </list>
+    <list default="true" id="092a05fb-f66f-4390-9bd6-70d6cbbf9749" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -254,12 +248,12 @@
       <workItem from="1553501292489" duration="24063000" />
       <workItem from="1553860630974" duration="15451000" />
       <workItem from="1554094295212" duration="55000" />
-      <workItem from="1554704316491" duration="3325000" />
+      <workItem from="1554704316491" duration="3475000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="43935000" />
+    <option name="totallyTimeSpent" value="44085000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
