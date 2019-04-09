@@ -11,14 +11,15 @@
 ##############################################################################
 
 import pandas as pd
+import numpy as np
 import json
 
-#显示所有列
+# #显示所有列
 pd.set_option('display.max_columns', None)
-#显示所有行
-pd.set_option('display.max_rows', None)
-#设置value的显示长度为100，默认为50
-pd.set_option('max_colwidth', 100)
+# #显示所有行
+# pd.set_option('display.max_rows', None)
+# #设置value的显示长度为100，默认为50
+# pd.set_option('max_colwidth', 100)
 
 # 读取原始数据集合
 data_origin = pd.read_csv('../../education_data/5_chengji.csv')
@@ -111,6 +112,9 @@ def acquire_sub_name():
     for i in range(data_subname.shape[0]):
         sub_name.append(data_subname['mes_sub_name'].iloc[i])
     return sub_name
+# 学科为['化学', '历史', '地理', '技术', '政治', '数学', '物理', '生物', '英语', '语文']
+# 但是为了展示符合使用者的认知，将学科顺序改为
+# ['语文', '数学', '英语', '物理', '化学', '政治', '历史', '生物', '地理', '技术']
 
 def Statistic_sub_byCla(sub):
     cla_id = []
@@ -124,7 +128,10 @@ def Statistic_sub_byCla(sub):
     return data_sub
 
 def Create_dataset_score():
-    sub_name = acquire_sub_name()
+    sub_name = ['语文', '数学', '英语', '物理', '化学', '政治', '历史', '生物', '地理', '技术']
+    sub_name_Eng = ['Chinese', 'Math', 'English', 'Physics', 'Chemical', 'Political', 'History', 'Biology', 'Geography', 'Technology']
+    xAxis_data_all =[]
+    data_total = []
     for i in range(len(sub_name)):
         data_sub = Statistic_sub_byCla(sub_name[i])
         # 获取单科的X轴数据
@@ -144,6 +151,74 @@ def Create_dataset_score():
         with open(file_name, 'w') as file:
             json.dump(json_data, file)
         print('完成文件加载')
+        xAxis_data_all.append(xAxis_data)
+        data_total.append(data_all)
+    json_data = {'xlabel': xAxis_data_all, 'dataset': data_total}
+    with open('../1.School-Level-data/4.Score_cla_total.json', 'w') as file:
+        json.dump(json_data, file)
+    print(json_data)
+    print('完成文件加载')
+
+# 删除掉没有10个科目的学生数据
+# 删除掉没有10个科目的班级数据
+def delete_error_data():
+    # 统计班级的情况，取交集
+    sub_name = ['语文', '数学', '英语', '物理', '化学', '政治', '历史', '生物', '地理', '技术']
+    # 统计十个科目的成绩在班级的分布情况
+    for i in range(len(sub_name)):
+        xAxis_data = []
+        data_sub = Statistic_sub_byCla(sub_name[i])
+        data_sub_groupBy = data_sub.groupby('cla_id').count().reset_index()
+        for j in range(data_sub_groupBy.shape[0]):
+            xAxis_data.append(str(data_sub_groupBy['cla_id'].iloc[j]))
+        # print('各个学科在班级的分布情况')
+        # print(xAxis_data)
+    # 剔除掉班级id为947的数据
+    data_dropNaN = data_merge_byStdId.dropna(subset=['cla_id'])
+    data_dropNaN = data_dropNaN.drop(data_dropNaN[data_dropNaN['cla_id'] == 947].index)
+    # 剔除掉没有10个科目的学生数据
+    # data_complete_id表示十个科目都是全的数据的学生
+    data_complete_id = data_dropNaN
+    data_complete_id['label'] = 1
+    data_complete_id = data_complete_id.groupby('mes_StudentID').count().reset_index()
+    data_complete_id = data_complete_id.drop(data_complete_id[data_complete_id['label'] != 10].index)
+    # print(data_complete_id)
+    score_total = []
+
+    for i in range(data_complete_id.shape[0]):
+        data_dropNaN_groupByID = data_dropNaN.drop(data_dropNaN[data_dropNaN['mes_StudentID'] != data_complete_id['mes_StudentID'].iloc[i]].index)
+        # data_dropNaN_groupByID.fillna(80)
+        print(data_dropNaN_groupByID)
+        score_piece = []
+        for j in range(len(sub_name)):
+            if data_dropNaN_groupByID['mes_sub_name'].iloc[j] == sub_name[j]:
+                score_piece.append(data_dropNaN_groupByID['mes_T_Score'].iloc[j])
+            else:
+                score_piece.append(80)
+        score_piece.append(data_dropNaN_groupByID['mes_StudentID'].iloc[0])
+        score_piece.append(data_dropNaN_groupByID['cla_id'].iloc[0])
+        score_total.append(score_piece)
+    print(score_total)
+
+    # for i in range(data_complete_id.shape[0]):
+    #     score_piece = []
+    #     for j in range(data_dropNaN.shape[0]):
+    #         if data_dropNaN['mes_StudentID'].iloc[j] == data_complete_id['mes_StudentID'].iloc[i]:
+    #             for k
 
 
-Create_dataset_score()
+# 经过统计，前九科目只有947班级存在不齐全的情况
+# 对于技术科目的成绩，只有['916.0', '917.0', '918.0', '919.0', '920.0', '921.0', '922.0', '923.0', '924.0', '925.0', '947.0']
+# 班级有成绩
+#
+delete_error_data()
+
+# 计算各个学科的平均成绩
+def caculate_sub_average():
+    sub_name = ['语文', '数学', '英语', '物理', '化学', '政治', '历史', '生物', '地理', '技术']
+    for i in range(len(sub_name)):
+        data_sub = Statistic_sub_byCla(sub_name[i])
+        average_score = round((data_sub['mes_T_Score'].sum()) / data_sub.shape[0], 2)
+        print(average_score)
+
+# caculate_sub_average()

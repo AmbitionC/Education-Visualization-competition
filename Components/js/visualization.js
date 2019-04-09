@@ -324,7 +324,7 @@ function data_visualization3() {
         series:[
             {
                 type: 'tree',
-
+                layout: 'radial',
                 name: 'tree1',
 
                 data: [data1],
@@ -696,26 +696,51 @@ function data_visualization7() {
 
 function data_visualization8() {
     var myChart = echarts.init(document.getElementById('visual-8'));
+    // 数据格式为学科1～学科10，学生id， 班级id
+    var data_score = [
+        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, '111', '901'],
+        [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, '222', '902'],
+        [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, '333', '903']
+    ];
+    function retrieveScatterData(data, dimX, dimY){
+        var result = [];
+        for (var i = 0; i < data.length; i++){
+            var item = [data[i][dimX], data[i][dimY]];
+            result.push(item)
+        }
+        return result
+    }
     option = {
         brush: {
             xAxisIndex: [0, 1],
             // yAxisIndex: [0, 1]
             brushLink: [0, 1]
         },
+        tooltip: {},
         grid: [
-            {right: '50%'},
-            {left: '55%'}
+            {
+                left: '2%',
+                top: '5%',
+                width: '16%',
+                height: '16%'
+            },
+            {
+                left: '20%',
+                top: '5%',
+                width: '16%',
+                height: '16%'
+            }
         ],
         xAxis: [{
             name: '班级名',
             gridIndex: 0,
             type: 'category',
-            data: []
+            data: ['901', '902', '903']
         }, {
             name: '班级名',
             gridIndex: 1,
             type: 'category',
-            data: []
+            data: ['901', '902', '903']
         }],
         yAxis: [{
             name: 'T-Score',
@@ -725,33 +750,36 @@ function data_visualization8() {
             gridIndex: 1
         }],
         series: [{
+            xAxisIndex: 0,
+            yAxisIndex: 0,
             symbolSize: 5,
-            data: [],
+            data: retrieveScatterData(data_score, 11, 0),
             type: 'scatter'
         },
         {
             xAxisIndex: 1,
             yAxisIndex: 1,
             symbolSize: 5,
-            data: [],
+            data: retrieveScatterData(data_score, 11, 1),
             type: 'scatter'
         }]
     };
     myChart.setOption(option);
 
-    $.get('./Dataset/School_Score/4.Score_cla_语文.json').done(function (data) {
-        myChart.setOption({
-            // tooltip: {},
-            xAxis: [{
-                data: data.xlabel
-            },{
-                data: data.xlabel
-            }],
-            series: [{
-                data: data.dataset
-            }, {
-                data: data.dataset
-            }]
-        })
-    });
+    // $.get('./Dataset/School_Score/4.Score_cla_total.json').done(function (data) {
+    //     myChart.setOption({
+    //         // tooltip: {},
+    //         xAxis: [{
+    //             data: data.xlabel[0]
+    //         },{
+    //             data: data.xlabel[1]
+    //         }],
+    //         series: [{
+    //             data: data.dataset[0]
+    //         }, {
+    //             data: data.dataset[1]
+    //         }]
+    //     });
+    //     console.log(data.dataset[0])
+    // });
 }
