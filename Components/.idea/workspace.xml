@@ -1,23 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="092a05fb-f66f-4390-9bd6-70d6cbbf9749" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/School_Score/4.Score_cla_total.json" beforeDir="false" afterPath="$PROJECT_DIR$/Dataset/School_Score/4.Score_cla_total.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/School_Score/4.Score_cla_化学.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/School_Score/4.Score_cla_历史.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/School_Score/4.Score_cla_地理.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/School_Score/4.Score_cla_技术.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/School_Score/4.Score_cla_政治.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/School_Score/4.Score_cla_数学.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/School_Score/4.Score_cla_物理.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/School_Score/4.Score_cla_生物.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/School_Score/4.Score_cla_英语.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/School_Score/4.Score_cla_语文.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/visualization.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/visualization.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Data-preprocess/1.School-Level-data/4.Score_cla_total.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Data-preprocess/1.School-Level-data/4.Score_cla_total.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Data-preprocess/1.School-Level/4.Score.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Data-preprocess/1.School-Level/4.Score.py" afterDir="false" />
-    </list>
+    <list default="true" id="092a05fb-f66f-4390-9bd6-70d6cbbf9749" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -45,14 +29,14 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="css" value="256" />
-          <entry key="html" value="649" />
+          <entry key="html" value="873" />
           <entry key="js" value="7258" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="CSS" value="256" />
-          <entry key="HTML" value="649" />
+          <entry key="HTML" value="873" />
           <entry key="JavaScript" value="7258" />
         </counts>
       </usages-collector>
@@ -60,14 +44,14 @@
         <counts>
           <entry key="css" value="6" />
           <entry key="gexf" value="1" />
-          <entry key="html" value="7" />
+          <entry key="html" value="8" />
           <entry key="js" value="8" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="CSS" value="6" />
-          <entry key="HTML" value="7" />
+          <entry key="HTML" value="8" />
           <entry key="JavaScript" value="8" />
           <entry key="PLAIN_TEXT" value="1" />
         </counts>
@@ -87,11 +71,11 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="false">
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/Education_components.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="75">
-                  <caret line="5" column="47" lean-forward="true" selection-start-line="5" selection-start-column="47" selection-end-line="5" selection-end-column="47" />
+                <state relative-caret-position="120">
+                  <caret line="8" column="39" lean-forward="true" selection-start-line="8" selection-start-column="39" selection-end-line="8" selection-end-column="39" />
                 </state>
               </provider>
             </entry>
@@ -105,10 +89,10 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/js/visualization.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="845">
+                <state relative-caret-position="2158">
                   <caret line="780" column="43" selection-start-line="780" selection-start-column="43" selection-end-line="780" selection-end-column="43" />
                 </state>
               </provider>
@@ -187,6 +171,7 @@
         <option value="$PROJECT_DIR$/Education_components.html" />
         <option value="$PROJECT_DIR$/css/init.css" />
         <option value="$PROJECT_DIR$/js/visualization.js" />
+        <option value="$PROJECT_DIR$/../../../Coding学习/JavaScript学习/test.html" />
       </list>
     </option>
   </component>
@@ -269,12 +254,12 @@
       <workItem from="1554704316491" duration="3475000" />
       <workItem from="1554792432083" duration="3344000" />
       <workItem from="1554828547333" duration="78000" />
-      <workItem from="1554882075124" duration="4942000" />
+      <workItem from="1554882075124" duration="6065000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="52449000" />
+    <option name="totallyTimeSpent" value="53572000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
@@ -370,17 +355,24 @@
     <entry file="file://$PROJECT_DIR$/../../Spectrum/Front_end_v4.0/1.Node/Spectrum_Node.html">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/Education_components.html">
+    <entry file="file://$PROJECT_DIR$/../../../Coding学习/JavaScript学习/test.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="47" lean-forward="true" selection-start-line="5" selection-start-column="47" selection-end-line="5" selection-end-column="47" />
+        <state relative-caret-position="150">
+          <caret line="10" column="15" lean-forward="true" selection-start-line="10" selection-start-column="15" selection-end-line="10" selection-end-column="15" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/visualization.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="845">
+        <state relative-caret-position="2158">
           <caret line="780" column="43" selection-start-line="780" selection-start-column="43" selection-end-line="780" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Education_components.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="39" lean-forward="true" selection-start-line="8" selection-start-column="39" selection-end-line="8" selection-end-column="39" />
         </state>
       </provider>
     </entry>

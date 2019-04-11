@@ -39,6 +39,7 @@ def find_datamax_exam():
     data_max_exam = data_origin.groupby(['exam_numname']).count().reset_index().sort_values(by='sum', axis=0, ascending=False)
     print(data_max_exam)
 
+find_datamax_exam()
 # find_datamax_exam()
 # 考试数据最多的一次考试为2017学年度第一学期期末考试和2017学年度第一学期期末总评
 # \t2017学年度第一学期期末考试 数据量为13168
@@ -107,7 +108,7 @@ def merge_student_id():
     data = data_merge_byStdId.drop(['bf_Name', 'mes_TestID', 'exam_number', 'bf_sex', 'bf_nation', 'bf_BornDate', 'bf_NativePlace', 'Bf_ResidenceType', 'bf_policy', 'cla_term', 'bf_zhusu', 'bf_leaveSchool', 'bf_qinshihao'], axis=1)
     data.to_csv('../../education_data/CH/5.chengji_2_claID.csv', encoding='utf_8_sig')
 
-merge_student_id()
+# merge_student_id()
 
 # 获取学科名
 def acquire_sub_name():
