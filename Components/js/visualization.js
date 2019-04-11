@@ -696,12 +696,21 @@ function data_visualization7() {
 
 function data_visualization8() {
     var myChart = echarts.init(document.getElementById('visual-8'));
-    // 数据格式为学科1～学科10，学生id， 班级id
-    var data_score = [
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, '111', '901'],
-        [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, '222', '902'],
-        [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, '333', '903']
+
+    var schema = [
+        {name: 'Chinese', index: 1, text: '语文'},
+        {name: 'Math', index: 2, text: '数学'},
+        {name: 'English', index: 3, text: '英语'},
+        {name: 'Physics', index: 4, text: '物理'},
+        {name: 'Chemical', index: 5, text: '化学'},
+        {name: 'Policy', index: 6, text: '政治'},
+        {name: 'History', index: 7, text: '历史'},
+        {name: 'Biology', index: 8, text: '生物'},
+        {name: 'Geography', index: 9, text: '地理'},
+        {name: 'Technology', index: 10, text: '技术'}
     ];
+
+    // 数据格式为学科1～学科10，学生id， 班级id
     function retrieveScatterData(data, dimX, dimY){
         var result = [];
         for (var i = 0; i < data.length; i++){
@@ -710,76 +719,171 @@ function data_visualization8() {
         }
         return result
     }
+
+    function generateGrid(option){
+        var index = 0;
+        var sub_name = ['语文', '数学', '英语', '物理', '化学', '政治', '历史', '生物', '地理', '技术'];
+        for (var i = 0; i < 2; i ++){
+            for (var j = 0; j < 5; j ++){
+                option.grid.push({
+                    left: 2 + j * (18 + 1.5) + '%',
+                    top: 5 + i * (18 + 2) + '%',
+                    width: '18%',
+                    height: '18%'
+                });
+                option.brush.xAxisIndex && option.brush.xAxisIndex.push(index);
+                option.brush.yAxisIndex && option.brush.yAxisIndex.push(index);
+                option.xAxis.push({
+                    gridIndex: index,
+                    type: 'category',
+                    data: []
+                });
+                option.yAxis.push({
+                    name: sub_name[i * 5 + j] + 'T-Score',
+                    gridIndex: index,
+                    type: 'value'
+                });
+                option.series.push({
+                    type: 'scatter',
+                    xAxisIndex: index,
+                    yAxisIndex: index,
+                    symbolSize: 5,
+                    data: []
+                });
+                index ++;
+            }
+        }
+    }
+
     option = {
         brush: {
-            xAxisIndex: [0, 1],
-            // yAxisIndex: [0, 1]
-            brushLink: [0, 1]
+            xAxisIndex: [],
+            yAxisIndex: [],
+            brushLink: 'all',
+            inBrush: {
+                opacity: 1
+            }
         },
         tooltip: {},
-        grid: [
+        grid: [],
+        xAxis: [],
+        yAxis: [],
+        parallelAxis: [
+            {dim: 0, name: schema[0].text},
+            {dim: 1, name: schema[1].text},
+            {dim: 2, name: schema[2].text},
+            {dim: 3, name: schema[3].text},
+            {dim: 4, name: schema[4].text},
+            {dim: 5, name: schema[5].text},
+            {dim: 6, name: schema[6].text},
+            {dim: 7, name: schema[7].text},
+            {dim: 8, name: schema[8].text},
+            {dim: 9, name: schema[9].text},
+        ],
+        parallel: {
+            bottom: '2%',
+            top: '48%',
+            left: '5%',
+            height: '50%',
+            width: '90%',
+            parallelAxisDefault: {
+                type: 'value',
+                name: '成绩一览表',
+                nameLocation: 'end',
+                nameGap: 20,
+                splitNumber: 3,
+                nameTextStyle: {
+                    fontSize: 14
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#555'
+                    }
+                },
+                axisTick: {
+                    lineStyle: {
+                        color: '#555'
+                    }
+                },
+                splitLine: {
+                    show: false
+                },
+                axisLabel: {
+                    textStyle: {
+                        color: '#555'
+                    }
+                }
+            }
+        },
+        series: [
             {
-                left: '2%',
-                top: '5%',
-                width: '16%',
-                height: '16%'
-            },
-            {
-                left: '20%',
-                top: '5%',
-                width: '16%',
-                height: '16%'
+                name: 'parallel',
+                type: 'parallel',
+                smooth: true,
+                lineStyle: {
+                    normal: {
+                        width: 1,
+                        opacity: 0.3
+                    }
+                },
+                data: []
             }
         ],
-        xAxis: [{
-            name: '班级名',
-            gridIndex: 0,
-            type: 'category',
-            data: ['901', '902', '903']
-        }, {
-            name: '班级名',
-            gridIndex: 1,
-            type: 'category',
-            data: ['901', '902', '903']
-        }],
-        yAxis: [{
-            name: 'T-Score',
-            gridIndex: 0
-        },{
-            name: 'T-Score',
-            gridIndex: 1
-        }],
-        series: [{
-            xAxisIndex: 0,
-            yAxisIndex: 0,
-            symbolSize: 5,
-            data: retrieveScatterData(data_score, 11, 0),
-            type: 'scatter'
-        },
-        {
-            xAxisIndex: 1,
-            yAxisIndex: 1,
-            symbolSize: 5,
-            data: retrieveScatterData(data_score, 11, 1),
-            type: 'scatter'
-        }]
     };
+
+    generateGrid(option);
+
     myChart.setOption(option);
 
-    // $.get('./Dataset/School_Score/4.Score_cla_total.json').done(function (data) {
-    //     myChart.setOption({
-    //         // tooltip: {},
-    //         xAxis: [{
-    //             data: data.xlabel[0]
-    //         },{
-    //             data: data.xlabel[1]
-    //         }],
-    //         series: [{
-    //             data: data.dataset[0]
-    //         }, {
-    //             data: data.dataset[1]
-    //         }]
-    //     });
-    //     console.log(data.dataset[0])
-    // });
+
+    $.get('./Dataset/School_Score/4.Score_cla_total.json').done(function (data) {
+        myChart.setOption({
+            // tooltip: {},
+            xAxis: [{
+                data: data.xAxis
+            },{
+                data: data.xAxis
+            },{
+                data: data.xAxis
+            },{
+                data: data.xAxis
+            },{
+                data: data.xAxis
+            },{
+                data: data.xAxis
+            },{
+                data: data.xAxis
+            },{
+                data: data.xAxis
+            },{
+                data: data.xAxis
+            },{
+                data: data.xAxis
+            }],
+            series: [{
+                data: data.score_total
+            },{
+                data: retrieveScatterData(data.score_total, 11, 0),
+            }, {
+                data: retrieveScatterData(data.score_total, 11, 1),
+            },{
+                data: retrieveScatterData(data.score_total, 11, 2),
+            }, {
+                data: retrieveScatterData(data.score_total, 11, 3),
+            },{
+                data: retrieveScatterData(data.score_total, 11, 4),
+            }, {
+                data: retrieveScatterData(data.score_total, 11, 5),
+            },{
+                data: retrieveScatterData(data.score_total, 11, 6),
+            }, {
+                data: retrieveScatterData(data.score_total, 11, 7),
+            },{
+                data: retrieveScatterData(data.score_total, 11, 8),
+            }, {
+                data: retrieveScatterData(data.score_total, 11, 9),
+            }]
+        });
+        // console.log(data.dataset[0])
+    });
 }

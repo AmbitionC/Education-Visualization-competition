@@ -14,12 +14,12 @@ import pandas as pd
 import numpy as np
 import json
 
-# #显示所有列
+#显示所有列
 pd.set_option('display.max_columns', None)
-# #显示所有行
-# pd.set_option('display.max_rows', None)
-# #设置value的显示长度为100，默认为50
-# pd.set_option('max_colwidth', 100)
+#显示所有行
+pd.set_option('display.max_rows', None)
+#设置value的显示长度为100，默认为50
+pd.set_option('max_colwidth', 100)
 
 # 读取原始数据集合
 data_origin = pd.read_csv('../../education_data/5_chengji.csv')
@@ -55,6 +55,7 @@ def find_2017_finalExam():
     print(data_2017_finalExam.shape)
     data_2017_finalExam.to_csv('../../education_data/CH/5.chengji_1.csv', encoding='utf_8_sig')
 
+# find_2017_finalExam()
 
 # find_2017_finalExam()
 
@@ -103,7 +104,10 @@ def statistic_sample_data():
 def merge_student_id():
     data_merge_byStdID = pd.merge(data_sample, data_student_info, left_on='mes_StudentID', right_on='bf_StudentID', how='left')
     print(data_merge_byStdID)
-    data_merge_byStdID.to_csv('../../education_data/CH/5.chengji_2_claID.csv', encoding='utf_8_sig')
+    data = data_merge_byStdId.drop(['bf_Name', 'mes_TestID', 'exam_number', 'bf_sex', 'bf_nation', 'bf_BornDate', 'bf_NativePlace', 'Bf_ResidenceType', 'bf_policy', 'cla_term', 'bf_zhusu', 'bf_leaveSchool', 'bf_qinshihao'], axis=1)
+    data.to_csv('../../education_data/CH/5.chengji_2_claID.csv', encoding='utf_8_sig')
+
+merge_student_id()
 
 # 获取学科名
 def acquire_sub_name():
@@ -127,37 +131,18 @@ def Statistic_sub_byCla(sub):
     data_sub = data_sub.dropna(subset=['cla_id'])
     return data_sub
 
-def Create_dataset_score():
+
+# 计算各个学科的平均成绩
+def caculate_sub_average():
     sub_name = ['语文', '数学', '英语', '物理', '化学', '政治', '历史', '生物', '地理', '技术']
-    sub_name_Eng = ['Chinese', 'Math', 'English', 'Physics', 'Chemical', 'Political', 'History', 'Biology', 'Geography', 'Technology']
-    xAxis_data_all =[]
-    data_total = []
     for i in range(len(sub_name)):
         data_sub = Statistic_sub_byCla(sub_name[i])
-        # 获取单科的X轴数据
-        xAxis_data = []
-        data_sub_groupBy = data_sub.groupby('cla_id').count().reset_index()
-        for j in range(data_sub_groupBy.shape[0]):
-            xAxis_data.append(str(data_sub_groupBy['cla_id'].iloc[j]))
-        print(xAxis_data)
-        # 以数组的形式存储所有的点数据
-        data_all = []
-        for k in range(data_sub.shape[0]):
-            data_piece = [str(data_sub['cla_id'].iloc[k]), round(data_sub['mes_T_Score'].iloc[k], 2)]
-            data_all.append(data_piece)
-        print(data_all)
-        json_data = {'xlabel': xAxis_data, 'dataset': data_all}
-        file_name = '../1.School-Level-data/4.Score_cla_' + str(sub_name[i]) + '.json'
-        with open(file_name, 'w') as file:
-            json.dump(json_data, file)
-        print('完成文件加载')
-        xAxis_data_all.append(xAxis_data)
-        data_total.append(data_all)
-    json_data = {'xlabel': xAxis_data_all, 'dataset': data_total}
-    with open('../1.School-Level-data/4.Score_cla_total.json', 'w') as file:
-        json.dump(json_data, file)
-    print(json_data)
-    print('完成文件加载')
+        average_score = round((data_sub['mes_T_Score'].sum()) / data_sub.shape[0], 2)
+        print(average_score)
+
+# caculate_sub_average()
+# 因为T-Score的计算方法，则根据T-Score计算方法得到的平均分都是80分
+
 
 # 删除掉没有10个科目的学生数据
 # 删除掉没有10个科目的班级数据
@@ -171,6 +156,7 @@ def delete_error_data():
         data_sub_groupBy = data_sub.groupby('cla_id').count().reset_index()
         for j in range(data_sub_groupBy.shape[0]):
             xAxis_data.append(str(data_sub_groupBy['cla_id'].iloc[j]))
+            # xAxis_data.append(str(data_sub_groupBy['cla_Name'].iloc[j]))
         # print('各个学科在班级的分布情况')
         # print(xAxis_data)
     # 剔除掉班级id为947的数据
@@ -185,40 +171,73 @@ def delete_error_data():
     # print(data_complete_id)
     score_total = []
 
+    scatter_xAxis = ['901.0', '902.0', '903.0', '904.0', '905.0', '906.0', '907.0', '908.0', '909.0', '910.0', '911.0',
+                     '912.0', '916.0', '917.0', '918.0', '919.0', '920.0', '921.0', '922.0', '923.0', '924.0', '925.0',
+                     '943.0', '945.0']
+
+    xAxis_name = ['高一(10)', '高二(01)', '高二(02)', '高二(03)', '高二(04)', '高二(05)', '高二(06)', '高二(07)', '高二(08)'
+        , '高二(09)', '高二(10)', '高二(11)', '高二(12)', '高三(01)', '高三(02)', '高三(03)', '高三(04)', '高三(05)', '高三(06)'
+        , '高三(07)', '高三(08)', '高三(09)', '高三(10)', '高二未分班']
+
+    for i in range(data_dropNaN.shape[0]):
+        for j in range(len(scatter_xAxis)):
+            if data_dropNaN['cla_id'].iloc[i] == scatter_xAxis[j]:
+                data_dropNaN['cla_Name'].iloc[i] = xAxis_name[j]
+
     for i in range(data_complete_id.shape[0]):
         data_dropNaN_groupByID = data_dropNaN.drop(data_dropNaN[data_dropNaN['mes_StudentID'] != data_complete_id['mes_StudentID'].iloc[i]].index)
-        # data_dropNaN_groupByID.fillna(80)
-        print(data_dropNaN_groupByID)
+        data_dropNaN_groupByID['mes_T_Score'] = data_dropNaN_groupByID['mes_T_Score'].fillna(80)
         score_piece = []
         for j in range(len(sub_name)):
             if data_dropNaN_groupByID['mes_sub_name'].iloc[j] == sub_name[j]:
-                score_piece.append(data_dropNaN_groupByID['mes_T_Score'].iloc[j])
+                score_piece.append(round(data_dropNaN_groupByID['mes_T_Score'].iloc[j], 2))
             else:
                 score_piece.append(80)
-        score_piece.append(data_dropNaN_groupByID['mes_StudentID'].iloc[0])
-        score_piece.append(data_dropNaN_groupByID['cla_id'].iloc[0])
+        score_piece.append(str(data_dropNaN_groupByID['mes_StudentID'].iloc[0]))
+        score_piece.append(str(data_dropNaN_groupByID['cla_Name'].iloc[0]))
         score_total.append(score_piece)
     print(score_total)
 
-    # for i in range(data_complete_id.shape[0]):
-    #     score_piece = []
-    #     for j in range(data_dropNaN.shape[0]):
-    #         if data_dropNaN['mes_StudentID'].iloc[j] == data_complete_id['mes_StudentID'].iloc[i]:
-    #             for k
+    json_data = {'xAxis': xAxis_name, 'score_total': score_total}
+    with open('../1.School-Level-data/4.Score_cla_total.json', 'w') as file:
+        json.dump(json_data, file)
+    print(json_data)
+    print('完成文件加载')
 
 
 # 经过统计，前九科目只有947班级存在不齐全的情况
 # 对于技术科目的成绩，只有['916.0', '917.0', '918.0', '919.0', '920.0', '921.0', '922.0', '923.0', '924.0', '925.0', '947.0']
 # 班级有成绩
 #
-delete_error_data()
+# delete_error_data()
+# 该方法创造的数据集存在科目的缺失
 
-# 计算各个学科的平均成绩
-def caculate_sub_average():
+# 再次尝试
+def create_score_sub():
+    # 统计班级的情况，取交集
     sub_name = ['语文', '数学', '英语', '物理', '化学', '政治', '历史', '生物', '地理', '技术']
+    # 统计十个科目的成绩在班级的分布情况
     for i in range(len(sub_name)):
+        xAxis_data = []
         data_sub = Statistic_sub_byCla(sub_name[i])
-        average_score = round((data_sub['mes_T_Score'].sum()) / data_sub.shape[0], 2)
-        print(average_score)
+        data_sub_groupBy = data_sub.groupby('cla_id').count().reset_index()
+        for j in range(data_sub_groupBy.shape[0]):
+            xAxis_data.append(str(data_sub_groupBy['cla_id'].iloc[j]))
+            # xAxis_data.append(str(data_sub_groupBy['cla_Name'].iloc[j]))
+        # print('各个学科在班级的分布情况')
+        # print(xAxis_data)
+    # 剔除掉班级id为947的数据
+    print(data_merge_byStdId.shape)
+    data_dropNaN = data_merge_byStdId.dropna(subset=['cla_id'])
+    print(data_dropNaN.shape[0])
 
-# caculate_sub_average()
+    # data_dropNaN = data_dropNaN.drop(data_dropNaN[data_dropNaN['cla_id'] == 947].index)
+    # # 剔除掉没有10个科目的学生数据
+    # # data_complete_id表示十个科目都是全的数据的学生
+    # data_complete_id = data_dropNaN
+    # data_complete_id['label'] = 1
+    # data_complete_id = data_complete_id.groupby('mes_StudentID').count().reset_index()
+    # # data_complete_id = data_complete_id.drop(data_complete_id[data_complete_id['label'] != 10].index)
+    # print(data_complete_id)
+
+# create_score_sub()

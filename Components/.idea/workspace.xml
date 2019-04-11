@@ -3,8 +3,19 @@
   <component name="ChangeListManager">
     <list default="true" id="092a05fb-f66f-4390-9bd6-70d6cbbf9749" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/css/init.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/init.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dataset/School_Score/4.Score_cla_total.json" beforeDir="false" afterPath="$PROJECT_DIR$/Dataset/School_Score/4.Score_cla_total.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dataset/School_Score/4.Score_cla_化学.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dataset/School_Score/4.Score_cla_历史.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dataset/School_Score/4.Score_cla_地理.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dataset/School_Score/4.Score_cla_技术.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dataset/School_Score/4.Score_cla_政治.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dataset/School_Score/4.Score_cla_数学.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dataset/School_Score/4.Score_cla_物理.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dataset/School_Score/4.Score_cla_生物.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dataset/School_Score/4.Score_cla_英语.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dataset/School_Score/4.Score_cla_语文.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/js/visualization.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/visualization.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Data-preprocess/1.School-Level-data/4.Score_cla_total.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Data-preprocess/1.School-Level-data/4.Score_cla_total.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Data-preprocess/1.School-Level/4.Score.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Data-preprocess/1.School-Level/4.Score.py" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -20,27 +31,29 @@
     <session id="2131855557">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="6" />
+          <entry key="project.closed" value="8" />
           <entry key="project.open.time.0" value="1" />
           <entry key="project.open.time.1" value="2" />
           <entry key="project.open.time.13" value="1" />
+          <entry key="project.open.time.22" value="1" />
           <entry key="project.open.time.3" value="1" />
+          <entry key="project.open.time.5" value="1" />
           <entry key="project.open.time.9" value="2" />
-          <entry key="project.opened" value="7" />
+          <entry key="project.opened" value="9" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="css" value="256" />
           <entry key="html" value="649" />
-          <entry key="js" value="6208" />
+          <entry key="js" value="7258" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="CSS" value="256" />
           <entry key="HTML" value="649" />
-          <entry key="JavaScript" value="6208" />
+          <entry key="JavaScript" value="7258" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -77,8 +90,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Education_components.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="120">
-                  <caret line="36" column="53" lean-forward="true" selection-start-line="36" selection-start-column="53" selection-end-line="36" selection-end-column="53" />
+                <state relative-caret-position="75">
+                  <caret line="5" column="47" lean-forward="true" selection-start-line="5" selection-start-column="47" selection-end-line="5" selection-end-column="47" />
                 </state>
               </provider>
             </entry>
@@ -86,8 +99,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/css/init.css">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="820">
-                  <caret line="176" column="1" lean-forward="true" selection-start-line="176" selection-start-column="1" selection-end-line="176" selection-end-column="1" />
+                <state relative-caret-position="2640">
+                  <caret line="176" column="1" selection-start-line="176" selection-start-column="1" selection-end-line="176" selection-end-column="1" />
                 </state>
               </provider>
             </entry>
@@ -95,8 +108,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/js/visualization.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="555">
-                  <caret line="718" column="20" selection-start-line="718" selection-start-column="20" selection-end-line="718" selection-end-column="20" />
+                <state relative-caret-position="845">
+                  <caret line="780" column="43" selection-start-line="780" selection-start-column="43" selection-end-line="780" selection-end-column="43" />
                 </state>
               </provider>
             </entry>
@@ -126,7 +139,7 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/js/visualization.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-21">
+                <state relative-caret-position="15">
                   <caret line="687" column="39" selection-start-line="687" selection-start-column="39" selection-end-line="687" selection-end-column="39" />
                 </state>
               </provider>
@@ -183,7 +196,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6" fullScreen="true">
+  <component name="ProjectFrameBounds" fullScreen="true">
     <option name="width" value="1680" />
     <option name="height" value="1050" />
   </component>
@@ -255,14 +268,16 @@
       <workItem from="1554094295212" duration="55000" />
       <workItem from="1554704316491" duration="3475000" />
       <workItem from="1554792432083" duration="3344000" />
+      <workItem from="1554828547333" duration="78000" />
+      <workItem from="1554882075124" duration="4942000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="47429000" />
+    <option name="totallyTimeSpent" value="52449000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1680" height="1050" extended-state="6" />
+    <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.10548523" />
@@ -316,6 +331,13 @@
         <state relative-caret-position="-1377" />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/css/init.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2640">
+          <caret line="176" column="1" selection-start-line="176" selection-start-column="1" selection-end-line="176" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../../Spectrum/Front_end_v4.0/3.Center/js/menu.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="52725">
@@ -348,24 +370,17 @@
     <entry file="file://$PROJECT_DIR$/../../Spectrum/Front_end_v4.0/1.Node/Spectrum_Node.html">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/css/init.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="820">
-          <caret line="176" column="1" lean-forward="true" selection-start-line="176" selection-start-column="1" selection-end-line="176" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Education_components.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="36" column="53" lean-forward="true" selection-start-line="36" selection-start-column="53" selection-end-line="36" selection-end-column="53" />
+        <state relative-caret-position="75">
+          <caret line="5" column="47" lean-forward="true" selection-start-line="5" selection-start-column="47" selection-end-line="5" selection-end-column="47" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/visualization.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="555">
-          <caret line="718" column="20" selection-start-line="718" selection-start-column="20" selection-end-line="718" selection-end-column="20" />
+        <state relative-caret-position="845">
+          <caret line="780" column="43" selection-start-line="780" selection-start-column="43" selection-end-line="780" selection-end-column="43" />
         </state>
       </provider>
     </entry>
