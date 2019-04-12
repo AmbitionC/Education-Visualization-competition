@@ -77,6 +77,31 @@ def split_data_byGrade():
         data_split_byGrade.to_csv(filename, encoding='utf_8_sig')
         print('存储完成！')
 
-split_data_byGrade()
+# split_data_byGrade()
 
-# def
+def get_claName_byGrade():
+    filepath = ['../../education_data/CH/5.chengji_3_claID/高一.csv',
+                '../../education_data/CH/5.chengji_3_claID/高二.csv',
+                '../../education_data/CH/5.chengji_3_claID/高三.csv']
+    cla_Name = []
+    for i in range(3):
+        data_split_byGrade = pd.read_csv(filepath[i])
+        data_claName_byGrade = data_split_byGrade.groupby('cla_Name').count().reset_index()
+        cla_Name_piece = []
+        for j in range(data_claName_byGrade.shape[0]):
+            cla_Name_piece.append(data_claName_byGrade['cla_Name'].iloc[j])
+        print(cla_Name_piece)
+        cla_Name.append(cla_Name_piece)
+    print(cla_Name)
+get_claName_byGrade()
+
+def group_data_byStdId(grade):
+    filepath = ['../../education_data/CH/5.chengji_3_claID/高一.csv',
+                '../../education_data/CH/5.chengji_3_claID/高二.csv',
+                '../../education_data/CH/5.chengji_3_claID/高三.csv']
+    sub_name = ['语文', '数学', '英语', '物理', '化学', '政治', '历史', '生物', '地理', '技术']
+    data_split_byGrade = pd.read_csv(filepath[grade])
+    data_group_byStuId = data_split_byGrade.groupby('mes_StudentID').count().reset_index()
+    print(data_group_byStuId)
+
+# group_data_byStdId(0)
