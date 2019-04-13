@@ -749,6 +749,11 @@ function data_visualization8() {
                     yAxisIndex: index,
                     symbolSize: 5,
                     data: []
+                },{
+                    type: 'line',
+                    xAxisIndex: index,
+                    yAxisIndex: index,
+                    data: []
                 });
                 index ++;
             }

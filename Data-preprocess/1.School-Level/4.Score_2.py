@@ -68,7 +68,7 @@ def merge_data_byStdId():
 # merge_data_byStdId()
 
 def split_data_byGrade():
-    grade = ['高一', '高二', '高三']
+    grade = ['grade1', 'grade2', 'grade3']
     for i in range(3):
         data_split_byGrade = data_merge_byStdId[data_merge_byStdId['cla_Name'].str.contains(grade[i])]
         # 使用上一组数据对缺失值进行填充
@@ -80,9 +80,9 @@ def split_data_byGrade():
 # split_data_byGrade()
 
 def get_claName_byGrade():
-    filepath = ['../../education_data/CH/5.chengji_3_claID/高一.csv',
-                '../../education_data/CH/5.chengji_3_claID/高二.csv',
-                '../../education_data/CH/5.chengji_3_claID/高三.csv']
+    filepath = ['../../education_data/CH/5.chengji_3_claID/grade1.csv',
+                '../../education_data/CH/5.chengji_3_claID/grade2.csv',
+                '../../education_data/CH/5.chengji_3_claID/grade3.csv']
     cla_Name = []
     for i in range(3):
         data_split_byGrade = pd.read_csv(filepath[i])
@@ -101,9 +101,9 @@ def get_claName_byGrade():
 # ['高三(01)', '高三(02)', '高三(03)', '高三(04)', '高三(05)', '高三(06)', '高三(07)', '高三(08)', '高三(09)', '高三(10)']
 
 def group_data_byStdId(grade):
-    filepath = ['../../education_data/CH/5.chengji_3_claID/高一.csv',
-                '../../education_data/CH/5.chengji_3_claID/高二.csv',
-                '../../education_data/CH/5.chengji_3_claID/高三.csv']
+    filepath = ['../../education_data/CH/5.chengji_3_claID/grade1.csv',
+                '../../education_data/CH/5.chengji_3_claID/grade2.csv',
+                '../../education_data/CH/5.chengji_3_claID/grade3.csv']
     sub_name = ['语文', '数学', '英语', '物理', '化学', '政治', '历史', '生物', '地理', '技术']
     data_split_byGrade = pd.read_csv(filepath[grade])
     data_group_byStuId = data_split_byGrade.groupby('mes_StudentID').count().reset_index()
@@ -111,18 +111,30 @@ def group_data_byStdId(grade):
     for i in range(data_group_byStuId.shape[0]):
         # 按照学生ID划分，一个学生的各科考试成绩放到data_split_byStuID
         data_split_byStuID = data_split_byGrade.drop(data_split_byGrade[data_split_byGrade['mes_StudentID'] != data_group_byStuId['mes_StudentID'].iloc[i]].index)
-        print(data_split_byStuID)
+        # print(data_split_byStuID)
         # 将每一个学科数据按照顺序进行保存
-        score_stuID = [0]*10
-        print(score_stuID)
-        for j in range(len(sub_name)):
-            for k in range(data_split_byStuID.shape[0]):
+        score_stuID = ['NaN']*10
+        for j in range(data_split_byStuID.shape[0]):
+            for k in range(len(sub_name)):
                 if data_split_byStuID['mes_sub_name'].iloc[j] == sub_name[k]:
-                    # score_stuID[j] = data_split_byStuID['mes_T_Score'].iloc[k]
-                    print(data_split_byStuID['mes_T_Score'].iloc[k])
-                else:
-                    # score_stuID[j] = 'NaN'
-                    print('NaN')
+                    score_stuID[k] = data_split_byStuID['mes_T_Score'].iloc[j]
+        score_stuID.append(int(data_split_byStuID['mes_StudentID'].iloc[0]))
+        score_stuID.append(data_split_byStuID['cla_Name'].iloc[0])
         print(score_stuID)
+        score_grade.append(score_stuID)
+    return score_grade
 
-group_data_byStdId(0)
+def caculate_average_score():
+
+
+def data_to_json():
+    xAxis_name = ['东-高一(01)', '东-高一(02)', '东-高一(03)', '东-高一(04)', '东-高一(05)', '东-高一(06)', '东-高一(07)', '东-高一(08)', '东-高一(09)-IB', '白-高一(01)', '白-高一(02)', '白-高一(03)', '白-高一(04)', '白-高一(05)', '白-高一(06)', '白-高一(07)', '白-高一(08)']
+    score_total = group_data_byStdId(0)
+    json_data = {'xAxis': xAxis_name, 'score_total': score_total}
+    with open('../1.School-Level-data/4.Score_cla_total.json', 'w') as file:
+        json.dump(json_data, file)
+    print(json_data)
+    print('完成文件加载')
+
+data_to_json()
+
