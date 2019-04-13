@@ -93,7 +93,12 @@ def get_claName_byGrade():
         print(cla_Name_piece)
         cla_Name.append(cla_Name_piece)
     print(cla_Name)
-get_claName_byGrade()
+
+# get_claName_byGrade()
+
+# ['东-高一(01)', '东-高一(02)', '东-高一(03)', '东-高一(04)', '东-高一(05)', '东-高一(06)', '东-高一(07)', '东-高一(08)', '东-高一(09)-IB', '白-高一(01)', '白-高一(02)', '白-高一(03)', '白-高一(04)', '白-高一(05)', '白-高一(06)', '白-高一(07)', '白-高一(08)']
+# ['白-高二(01)', '白-高二(02)', '白-高二(03)', '白-高二(04)', '白-高二(05)', '白-高二(06)', '白-高二(07)', '白-高二(08)', '白-高二(09)', '白-高二(10)', '白-高二(11)', '白-高二(12)']
+# ['高三(01)', '高三(02)', '高三(03)', '高三(04)', '高三(05)', '高三(06)', '高三(07)', '高三(08)', '高三(09)', '高三(10)']
 
 def group_data_byStdId(grade):
     filepath = ['../../education_data/CH/5.chengji_3_claID/高一.csv',
@@ -102,6 +107,22 @@ def group_data_byStdId(grade):
     sub_name = ['语文', '数学', '英语', '物理', '化学', '政治', '历史', '生物', '地理', '技术']
     data_split_byGrade = pd.read_csv(filepath[grade])
     data_group_byStuId = data_split_byGrade.groupby('mes_StudentID').count().reset_index()
-    print(data_group_byStuId)
+    score_grade = []
+    for i in range(data_group_byStuId.shape[0]):
+        # 按照学生ID划分，一个学生的各科考试成绩放到data_split_byStuID
+        data_split_byStuID = data_split_byGrade.drop(data_split_byGrade[data_split_byGrade['mes_StudentID'] != data_group_byStuId['mes_StudentID'].iloc[i]].index)
+        print(data_split_byStuID)
+        # 将每一个学科数据按照顺序进行保存
+        score_stuID = [0]*10
+        print(score_stuID)
+        for j in range(len(sub_name)):
+            for k in range(data_split_byStuID.shape[0]):
+                if data_split_byStuID['mes_sub_name'].iloc[j] == sub_name[k]:
+                    # score_stuID[j] = data_split_byStuID['mes_T_Score'].iloc[k]
+                    print(data_split_byStuID['mes_T_Score'].iloc[k])
+                else:
+                    # score_stuID[j] = 'NaN'
+                    print('NaN')
+        print(score_stuID)
 
-# group_data_byStdId(0)
+group_data_byStdId(0)
