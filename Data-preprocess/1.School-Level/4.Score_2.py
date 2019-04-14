@@ -68,7 +68,7 @@ def merge_data_byStdId():
 # merge_data_byStdId()
 
 def split_data_byGrade():
-    grade = ['grade1', 'grade2', 'grade3']
+    grade = ['高一', '高二', '高三']
     for i in range(3):
         data_split_byGrade = data_merge_byStdId[data_merge_byStdId['cla_Name'].str.contains(grade[i])]
         # 使用上一组数据对缺失值进行填充
@@ -120,12 +120,9 @@ def group_data_byStdId(grade):
                     score_stuID[k] = data_split_byStuID['mes_T_Score'].iloc[j]
         score_stuID.append(int(data_split_byStuID['mes_StudentID'].iloc[0]))
         score_stuID.append(data_split_byStuID['cla_Name'].iloc[0])
-        print(score_stuID)
+        # print(score_stuID)
         score_grade.append(score_stuID)
     return score_grade
-
-def caculate_average_score():
-
 
 def data_to_json():
     xAxis_name = ['东-高一(01)', '东-高一(02)', '东-高一(03)', '东-高一(04)', '东-高一(05)', '东-高一(06)', '东-高一(07)', '东-高一(08)', '东-高一(09)-IB', '白-高一(01)', '白-高一(02)', '白-高一(03)', '白-高一(04)', '白-高一(05)', '白-高一(06)', '白-高一(07)', '白-高一(08)']
@@ -135,6 +132,8 @@ def data_to_json():
         json.dump(json_data, file)
     print(json_data)
     print('完成文件加载')
+
+
 
 data_to_json()
 

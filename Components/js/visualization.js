@@ -749,11 +749,6 @@ function data_visualization8() {
                     yAxisIndex: index,
                     symbolSize: 5,
                     data: []
-                },{
-                    type: 'line',
-                    xAxisIndex: index,
-                    yAxisIndex: index,
-                    data: []
                 });
                 index ++;
             }
@@ -840,10 +835,9 @@ function data_visualization8() {
 
     myChart.setOption(option);
 
-
     $.get('./Dataset/School_Score/4.Score_cla_total.json').done(function (data) {
+        console.log(data.xAxis);
         myChart.setOption({
-            // tooltip: {},
             xAxis: [{
                 data: data.xAxis
             },{
@@ -889,6 +883,5 @@ function data_visualization8() {
                 data: retrieveScatterData(data.score_total, 11, 9),
             }]
         });
-        // console.log(data.dataset[0])
     });
 }
