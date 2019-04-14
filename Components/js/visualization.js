@@ -703,9 +703,9 @@ function data_visualization8() {
         {name: 'English', index: 3, text: '英语'},
         {name: 'Physics', index: 4, text: '物理'},
         {name: 'Chemical', index: 5, text: '化学'},
-        {name: 'Policy', index: 6, text: '政治'},
-        {name: 'History', index: 7, text: '历史'},
-        {name: 'Biology', index: 8, text: '生物'},
+        {name: 'Biology', index: 6, text: '生物'},
+        {name: 'Policy', index: 7, text: '政治'},
+        {name: 'History', index: 8, text: '历史'},
         {name: 'Geography', index: 9, text: '地理'},
         {name: 'Technology', index: 10, text: '技术'}
     ];
@@ -722,7 +722,7 @@ function data_visualization8() {
 
     function generateGrid(option){
         var index = 0;
-        var sub_name = ['语文', '数学', '英语', '物理', '化学', '政治', '历史', '生物', '地理', '技术'];
+        var sub_name = ['语文', '数学', '英语', '物理', '化学', '生物', '政治', '历史', '地理', '技术'];
         for (var i = 0; i < 2; i ++){
             for (var j = 0; j < 5; j ++){
                 option.grid.push({
@@ -835,7 +835,7 @@ function data_visualization8() {
 
     myChart.setOption(option);
 
-    $.get('./Dataset/School_Score/4.Score_cla_total.json').done(function (data) {
+    $.get('./Dataset/School_Score/4.Score_cla_total_1.json').done(function (data) {
         console.log(data.xAxis);
         myChart.setOption({
             xAxis: [{
