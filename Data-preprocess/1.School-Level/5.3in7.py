@@ -102,16 +102,13 @@ def statistic_sub_combination():
     subname_7 = ['物理', '化学', '政治', '历史', '生物', '地理', '技术']
     # 按照每次考试来进行统计
     data_exam = data_drop_subname6.drop(data_drop_subname6[data_drop_subname6['exam_number'] != 304].index)
-    data_exam_groupby = data_exam.groupby(['mes_StudentID']).count().reset_index()
-    print(data_exam_groupby)
+    # 统计每次考试只有三个学科的学生数量
+    data_exam_stdID = data_exam.groupby(['mes_StudentID']).count().reset_index()
+    data_exam_stdID_3 = data_exam_stdID.drop(data_exam_stdID[data_exam_stdID['exam_number'] != 3].index)
+    print(data_exam_stdID_3)
+    # 产生三种组合的结果
+    for i in range(len(subname_7)):
 
 
-    # 统计每一次考试7选3的情况
-    # 选取一个学生的数据进行观察
-    # data_drop_subname6 = data_drop_subname6.groupby(['mes_StudentID']).count().reset_index()
-    # print(data_drop_subname6)
-    # data_split_byStdID = data_drop_subname6.drop(data_drop_subname6[data_drop_subname6['mes_StudentID'] != 13564].index)
-    # data_split_byStdID = data_split_byStdID.groupby(['mes_sub_name']).count().reset_index()
-    # print(data_split_byStdID)
 
 statistic_sub_combination()
