@@ -15,14 +15,18 @@ import numpy as np
 import json
 
 # 读取原始的数据集
-data_origin = pd.read_csv('../../education_data/5_chengji.csv')
+filepath_data_origin = '../../education_data/5_chengji.csv'
 
-data_student_info = pd.read_csv('../../education_data/2_student_info.csv')
+filepath_data_student_info = '../../education_data/2_student_info.csv'
 
-data_merge_byStdID = pd.read_csv('../../education_data/CH/5.chengji_4_3in7/5.chengji_4_3in7.csv')
+filepath_data_merge_byStdID = '../../education_data/CH/5.chengji_4_3in7/5.chengji_4_3in7.csv'
+
+filepath_data_drop_subname6 = '../../education_data/CH/5.chengji_4_3in7/drop_subname6_data.csv'
 
 # 将数据与学生信息进行合并，并去除掉信息不足的数据集
 def merge_score_stdInfo():
+    data_origin = pd.read_csv(filepath_data_origin)
+    data_student_info = pd.read_csv(filepath_data_student_info)
     # data_exam = data_origin.drop(data_origin[data_origin['exam_number'] != 305].index)
     data_merge_byStdID = pd.merge(data_origin, data_student_info, left_on='mes_StudentID', right_on='bf_StudentID', how='left')
     data_merge_byStdID = data_merge_byStdID.dropna(subset=['cla_Name'])
@@ -30,7 +34,7 @@ def merge_score_stdInfo():
     data_merge_byStdID = data_merge_byStdID[data_merge_byStdID['cla_Name'].str.contains('高二')]
     # 去除掉无用的列的数据
     data_merge_byStdID = data_merge_byStdID.drop(
-        ['bf_Name', 'mes_TestID', 'exam_number', 'bf_sex', 'bf_nation', 'bf_BornDate', 'bf_NativePlace',
+        ['bf_Name', 'mes_TestID', 'bf_sex', 'bf_nation', 'bf_BornDate', 'bf_NativePlace',
          'Bf_ResidenceType', 'bf_policy', 'cla_term', 'bf_zhusu', 'bf_leaveSchool', 'bf_qinshihao'], axis=1)
     # 删除掉数据量异常的数据，比如ID为14037的考试数据量为251，考试数据量过少的学生ID
     data_groupby_stdID = data_merge_byStdID.groupby(['bf_StudentID']).count().reset_index().sort_values(by='exam_numname', axis=0, ascending=False)
@@ -46,6 +50,7 @@ def merge_score_stdInfo():
 
 # 统计高二的数据，观察其考试的数据
 def statistic_score_info():
+    data_merge_byStdID = pd.read_csv(filepath_data_merge_byStdID)
     # 统计各个学科的考试的数量
     subname_6 = ['语文', '数学', '英语', '音乐', '美术', '体育']
     data_merge_byStdID['count'] = 1
@@ -67,11 +72,46 @@ def statistic_score_info():
     print(statistic_sub_name)
     print(statistic_sub_num)
 
-statistic_score_info()
+# statistic_score_info()
 # ['生物', '政治', '物理', '化学', '地理', '历史', '技术']
 # [19.25, 18.623, 15.63, 15.53, 14.44, 13.82, 2.70]
 
+
+# 因为要统计7选3的选课情况，因此需要剔除其他6个科目的数据
+def drop_subname6_data():
+    data_merge_byStdID = pd.read_csv(filepath_data_merge_byStdID)
+    subname_6 = ['语文', '数学', '英语', '音乐', '美术', '体育']
+    data_drop_sub0 = data_merge_byStdID.drop(data_merge_byStdID[data_merge_byStdID['mes_sub_name'] == subname_6[0]].index)
+    data_drop_sub1 = data_drop_sub0.drop(data_merge_byStdID[data_merge_byStdID['mes_sub_name'] == subname_6[1]].index)
+    data_drop_sub2 = data_drop_sub1.drop(data_merge_byStdID[data_merge_byStdID['mes_sub_name'] == subname_6[2]].index)
+    data_drop_sub3 = data_drop_sub2.drop(data_merge_byStdID[data_merge_byStdID['mes_sub_name'] == subname_6[3]].index)
+    data_drop_sub4 = data_drop_sub3.drop(data_merge_byStdID[data_merge_byStdID['mes_sub_name'] == subname_6[4]].index)
+    data_drop_sub5 = data_drop_sub4.drop(data_merge_byStdID[data_merge_byStdID['mes_sub_name'] == subname_6[5]].index)
+    data_drop_sub5.to_csv('../../education_data/CH/5.chengji_4_3in7/drop_subname6_data.csv', encoding='utf_8_sig')
+    print('存储完成！')
+# drop_subname6_data()
+
+
 # 统计高二的各个学科组合的数据情况，按照组合的形式划分，总共有35种组合的方式
 # 按照学生的id进行groupby，首先按照考试类型进行划分，然后按照考试的科目进行划分，如果不是6个科目的话进行剔除
-# 统计这35种情况
-# def statistic_sub_combination():
+# 统计这35中选择情况
+# 14454， 14455， 14456  15008
+def statistic_sub_combination():
+    # 导入数据
+    data_drop_subname6 = pd.read_csv(filepath_data_drop_subname6)
+    subname_7 = ['物理', '化学', '政治', '历史', '生物', '地理', '技术']
+    # 按照每次考试来进行统计
+    data_exam = data_drop_subname6.drop(data_drop_subname6[data_drop_subname6['exam_number'] != 304].index)
+    data_exam_groupby = data_exam.groupby(['mes_StudentID']).count().reset_index()
+    print(data_exam_groupby)
+
+
+    # 统计每一次考试7选3的情况
+    # 选取一个学生的数据进行观察
+    # data_drop_subname6 = data_drop_subname6.groupby(['mes_StudentID']).count().reset_index()
+    # print(data_drop_subname6)
+    # data_split_byStdID = data_drop_subname6.drop(data_drop_subname6[data_drop_subname6['mes_StudentID'] != 13564].index)
+    # data_split_byStdID = data_split_byStdID.groupby(['mes_sub_name']).count().reset_index()
+    # print(data_split_byStdID)
+
+statistic_sub_combination()
