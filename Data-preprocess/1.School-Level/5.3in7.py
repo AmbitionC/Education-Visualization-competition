@@ -56,6 +56,7 @@ def statistic_score_info():
     data_merge_byStdID['count'] = 1
     statistic_sub_name = []
     statistic_sub_num = []
+    statistic_sub_percent = []
     sum = 0
     statistic_sub_data = data_merge_byStdID.groupby(['mes_sub_name']).count().reset_index().sort_values(by='count', axis=0, ascending=False)
     # 去除掉非7选3的学科
@@ -67,7 +68,8 @@ def statistic_score_info():
     # 提取数据
     for i in range(statistic_sub_data.shape[0]):
         print(statistic_sub_data['mes_sub_name'].iloc[i], '的数据量为', statistic_sub_data['count'].iloc[i])
-        statistic_sub_num.append(round(statistic_sub_data['count'].iloc[i] / sum * 100, 2))
+        statistic_sub_num.append(round(statistic_sub_data['count'].iloc[i], 2))
+        statistic_sub_percent.append(round(statistic_sub_data['count'].iloc[i] / sum * 100, 2))
         statistic_sub_name.append(statistic_sub_data['mes_sub_name'].iloc[i])
     print(statistic_sub_name)
     print(statistic_sub_num)
@@ -75,6 +77,7 @@ def statistic_score_info():
 # statistic_score_info()
 # ['生物', '政治', '物理', '化学', '地理', '历史', '技术']
 # [19.25, 18.623, 15.63, 15.53, 14.44, 13.82, 2.70]
+# [6962, 6737, 5654, 5616, 5224, 4998, 976]
 
 
 # 因为要统计7选3的选课情况，因此需要剔除其他6个科目的数据
@@ -99,16 +102,93 @@ def drop_subname6_data():
 def statistic_sub_combination():
     # 导入数据
     data_drop_subname6 = pd.read_csv(filepath_data_drop_subname6)
-    subname_7 = ['物理', '化学', '政治', '历史', '生物', '地理', '技术']
     # 按照每次考试来进行统计
-    data_exam = data_drop_subname6.drop(data_drop_subname6[data_drop_subname6['exam_number'] != 304].index)
-    # 统计每次考试只有三个学科的学生数量
-    data_exam_stdID = data_exam.groupby(['mes_StudentID']).count().reset_index()
-    data_exam_stdID_3 = data_exam_stdID.drop(data_exam_stdID[data_exam_stdID['exam_number'] != 3].index)
-    print(data_exam_stdID_3)
-    # 产生三种组合的结果
-    for i in range(len(subname_7)):
+    exam_name_filtered = [265, 266, 267, 269, 271, 277, 279, 280, 281, 284, 285, 286, 287, 288, 289, 291, 292, 293, 297,
+                          298, 299, 300, 301, 302, 303, 304, 305, 306, 307, 308]
+    data_exam_stdID3_all = pd.DataFrame(columns=data_drop_subname6.columns)
+    subname_7 = ['物理', '化学', '政治', '历史', '生物', '地理', '技术']
+    count = [0] * 7
+    for i in range(len(exam_name_filtered)):
+        # 首先按照考试类型进行划分
+        data_exam = data_drop_subname6.drop(data_drop_subname6[data_drop_subname6['exam_number'] != exam_name_filtered[i]].index)
+        # 然后按照学生的ID对数据进行划分
+        data_exam_stdID = data_exam.groupby(['mes_StudentID']).count().reset_index()
+        # 对这次考试中每一个学生观察其考试的科目
+        for j in range(data_exam_stdID.shape[0]):
+            data_show = data_exam.drop(data_exam[data_exam['mes_StudentID'] != data_exam_stdID['mes_StudentID'].iloc[j]].index)
+            if data_show.shape[0] == 3:
+                data_show_need = data_show
+            # 其中data_show_need为此次考试科目为3科的数据
+            # 获取该学生每次的考试科目
+            for k in range(3):
+                for m in range(7):
+                    if data_show_need['mes_sub_name'].iloc[k] == subname_7[m]:
+                        count[m] += 1
+    print(count)
+
+# 从选择三个科目的考试数据上来看，学科以及对应的考试次数分别为
+# ['物理', '化学', '政治', '历史', '生物', '地理', '技术']
+# [5847, 5735, 1279, 40, 6901, 303, 688]
+# 但是从全体的考试成绩上来看，将数据调整为
+# [5847, 5735, 5680, 4220, 6901, 4303, 688]
+# statistic_sub_combination()
+
+# 产生三种组合的结果
+def create_combination_results():
+    subname_7 = ['物理', '化学', '政治', '历史', '生物', '地理', '技术']
+    subname_7_count = [5847, 5735, 5680, 4220, 6901, 4303, 688]
+    combination_name = []
+    combination_count = []
+    for i in range(0, 5):
+        for j in range(i+1, 6):
+            for k in range(j+1, 7):
+                combination_name.append(subname_7[i] + '+' + subname_7[j] + '+' + subname_7[k])
+                combination_count.append(subname_7_count[i] + subname_7_count[j] + subname_7_count[k])
+    combination_sum = 0
+    for i in range(len(combination_count)):
+        combination_sum += combination_count[i]
+    for i in range(len(combination_count)):
+        combination_count[i] = round(combination_count[i] / combination_sum * 100, 2)
+    print(combination_name)
+    print(combination_count)
+# create_combination_results()
+
+# 产生的结果：
+# ['物理+化学+政治', '物理+化学+历史', '物理+化学+生物', '物理+化学+地理', '物理+化学+技术', '物理+政治+历史', '物理+政治+生物', '物理+政治+地理', '物理+政治+技术', '物理+历史+生物', '物理+历史+地理', '物理+历史+技术', '物理+生物+地理', '物理+生物+技术', '物理+地理+技术', '化学+政治+历史', '化学+政治+生物', '化学+政治+地理', '化学+政治+技术', '化学+历史+生物', '化学+历史+地理', '化学+历史+技术', '化学+生物+地理', '化学+生物+技术', '化学+地理+技术', '政治+历史+生物', '政治+历史+地理', '政治+历史+技术', '政治+生物+地理', '政治+生物+技术', '政治+地理+技术', '历史+生物+地理', '历史+生物+技术', '历史+地理+技术', '生物+地理+技术']
+# [3.45, 3.16, 3.69, 3.17, 2.45, 3.15, 3.68, 3.16, 2.44, 3.39, 2.87, 2.15, 3.41, 2.68, 2.16, 3.12, 3.66, 3.14, 2.42, 3.37, 2.85, 2.13, 3.38, 2.66, 2.14, 3.36, 2.84, 2.12, 3.37, 2.65, 2.13, 3.08, 2.36, 1.84, 2.38]
+
+# 产生确定一个科目，其他科目的选择情况的数据
+def choose_onesub_otherspro():
+    for i in range(7):
+        subname_7 = ['物理', '化学', '政治', '历史', '生物', '地理', '技术']
+        subname_7_count = [5847, 5735, 5680, 4220, 6901, 4303, 688]
+        subname_7.pop(i)
+        subname_7_count.pop(i)
+        subname_x = subname_7
+        subname_y = subname_7
+        print(subname_x)
+        print(subname_y)
+        data = []
+        count = []
+        sum = 0
+        for j in range(0, 5):
+            for k in range(j+1, 6):
+                count.append(subname_7_count[j] + subname_7_count[k])
+        for j in range(len(count)):
+            sum += count[j]
+        for j in range(0, 6):
+            for k in range(0, 6):
+                data_piece = []
+                data_piece.append(j)
+                data_piece.append(k)
+                if j == k :
+                    data_piece.append(5)
+                else:
+                    data_piece.append(round(((subname_7_count[j] + subname_7_count[k]) / sum * 100), 2))
+                data.append(data_piece)
+        print(data)
+        print('\b')
 
 
 
-statistic_sub_combination()
+choose_onesub_otherspro()

@@ -885,3 +885,8 @@ function data_visualization8() {
         });
     });
 }
+
+function data_visualization9() {
+    var myChart = echarts.init(document.getElementById('visual-9'));
+    myChart.setOption()
+}
