@@ -836,7 +836,6 @@ function data_visualization8() {
     myChart.setOption(option);
 
     $.get('./Dataset/School_Score/4.Score_cla_total_1.json').done(function (data) {
-        console.log(data.xAxis);
         myChart.setOption({
             xAxis: [{
                 data: data.xAxis
@@ -888,5 +887,265 @@ function data_visualization8() {
 
 function data_visualization9() {
     var myChart = echarts.init(document.getElementById('visual-9'));
-    myChart.setOption()
+    option = {
+        tooltip: {
+            formatter: '选择{b0}人数占比：{c0}%'
+        },
+        xAxis: {
+            type: 'category',
+            name: '学科名',
+            data: ['生物', '政治', '物理', '化学', '地理', '历史', '技术']
+        },
+        yAxis: {
+            name: '%',
+            type: 'value'
+        },
+        series: [{
+            data: [19.25, 18.623, 15.63, 15.53, 14.44, 13.82, 2.70],
+            type: 'bar'
+        }]
+    };
+    myChart.setOption(option)
+}
+
+function data_visualization10() {
+    var myChart = echarts.init(document.getElementById('visual-10'));
+    option = {
+        tooltip: {
+            formatter: '选择{b0}组合占比：{c0}%'
+        },
+        xAxis: {
+            type: 'category',
+            name: '学科组合',
+            data: ['物理+化学+生物', '物理+政治+生物', '化学+政治+生物', '物理+化学+政治', '物理+生物+地理', '物理+历史+生物', '化学+生物+地理', '化学+历史+生物', '政治+生物+地理', '政治+历史+生物', '物理+化学+地理', '物理+化学+历史', '物理+政治+地理', '物理+政治+历史', '化学+政治+地理', '化学+政治+历史', '历史+生物+地理', '物理+历史+地理', '化学+历史+地理', '政治+历史+地理', '物理+生物+技术', '化学+生物+技术', '政治+生物+技术', '物理+化学+技术', '物理+政治+技术', '化学+政治+技术', '生物+地理+技术', '历史+生物+技术', '物理+地理+技术', '物理+历史+技术', '化学+地理+技术', '化学+历史+技术', '政治+地理+技术', '政治+历史+技术', '历史+地理+技术']
+        },
+        yAxis: {
+            name: '%',
+            type: 'value'
+        },
+        series: [{
+            data: [3.69, 3.68, 3.66, 3.45, 3.41, 3.39, 3.38, 3.37, 3.37, 3.36, 3.17, 3.16, 3.16, 3.15, 3.14, 3.12, 3.08, 2.87, 2.85, 2.84, 2.68, 2.66, 2.65, 2.45, 2.44, 2.42, 2.38, 2.36, 2.16, 2.15, 2.14, 2.13, 2.13, 2.12, 1.84],
+            type: 'bar'
+        }]
+    };
+    myChart.setOption(option)
+}
+
+function data_visualization11() {
+    var myChart = echarts.init(document.getElementById('visual-11'));
+    var index = 0;
+    var xdata = ['化学', '政治', '历史', '生物', '地理', '技术'];
+    var ydata = ['化学', '政治', '历史', '生物', '地理', '技术'];
+    var dataset = [[0, 0, 5], [0, 1, 8.29], [0, 2, 7.23], [0, 3, 9.18], [0, 4, 7.29], [0, 5, 4.67], [1, 0, 8.29], [1, 1, 5], [1, 2, 7.19], [1, 3, 9.14], [1, 4, 7.25], [1, 5, 4.63], [2, 0, 7.23], [2, 1, 7.19], [2, 2, 5], [2, 3, 8.08], [2, 4, 6.19], [2, 5, 3.57], [3, 0, 9.18], [3, 1, 9.14], [3, 2, 8.08], [3, 3, 5], [3, 4, 8.14], [3, 5, 5.51], [4, 0, 7.29], [4, 1, 7.25], [4, 2, 6.19], [4, 3, 8.14], [4, 4, 5], [4, 5, 3.63], [5, 0, 4.67], [5, 1, 4.63], [5, 2, 3.57], [5, 3, 5.51], [5, 4, 3.63], [5, 5, 5]];
+    function generateGrid(option){
+        for (var i = 0; i < 7; i ++){
+            option.grid.push({
+                left: 2 + i * (12 + 1.5) + '%',
+                top: '5%',
+                width: '12%',
+                height: '85%'
+            });
+            option.xAxis.push({
+                gridIndex: index,
+                type: 'category',
+                data: xdata,
+                splitArea: {
+                    show: true
+                }
+            });
+            option.yAxis.push({
+                gridIndex: index,
+                type: 'category',
+                data: ydata,
+                splitArea: {
+                    show: true
+                }
+            });
+            // option.visualMap.push({
+            //     min: 5,
+            //     max: 9,
+            //     calculable: true,
+            //     orient: 'horizontal',
+            //     left: 'center',
+            //     bottom: '5%'
+            // });
+            // option.series.push({
+            //     type: 'heatmap',
+            //     data: dataset,
+            //     label: {
+            //         normal: {
+            //             show: true
+            //         }
+            //     },
+            //     itemStyle: {
+            //         emphasis:{
+            //             showBlur: 10,
+            //             shadowColor: 'rgba(0, 0, 0, 0.5)'
+            //         }
+            //     }
+            // });
+            index ++;
+        }
+    }
+
+    option = {
+        tooltip: {},
+        animation: true,
+        visualMap: [{
+            min: 5,
+            max: 9,
+            calculable: true,
+            orient: 'horizontal',
+            left: 'center',
+            bottom: '5%'
+        },{
+            min: 5,
+            max: 9,
+            calculable: true,
+            orient: 'horizontal',
+            left: 'center',
+            bottom: '5%'
+        },{
+            min: 5,
+            max: 9,
+            calculable: true,
+            orient: 'horizontal',
+            left: 'center',
+            bottom: '5%'
+        },{
+            min: 5,
+            max: 9,
+            calculable: true,
+            orient: 'horizontal',
+            left: 'center',
+            bottom: '5%'
+        },{
+            min: 5,
+            max: 9,
+            calculable: true,
+            orient: 'horizontal',
+            left: 'center',
+            bottom: '5%'
+        },{
+            min: 5,
+            max: 9,
+            calculable: true,
+            orient: 'horizontal',
+            left: 'center',
+            bottom: '5%'
+        },{
+            min: 5,
+            max: 9,
+            calculable: true,
+            orient: 'horizontal',
+            left: 'center',
+            bottom: '5%'
+        }],
+
+        grid: [],
+        xAxis: [],
+        yAxis: [],
+        series: [{
+            type: 'heatmap',
+            data: dataset,
+            label: {
+                normal: {
+                    show: true
+                }
+            },
+            itemStyle: {
+                emphasis:{
+                    showBlur: 10,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        },{
+            type: 'heatmap',
+            data: dataset,
+            label: {
+                normal: {
+                    show: true
+                }
+            },
+            itemStyle: {
+                emphasis:{
+                    showBlur: 10,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        },{
+            type: 'heatmap',
+            data: dataset,
+            label: {
+                normal: {
+                    show: true
+                }
+            },
+            itemStyle: {
+                emphasis:{
+                    showBlur: 10,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        },{
+            type: 'heatmap',
+            data: dataset,
+            label: {
+                normal: {
+                    show: true
+                }
+            },
+            itemStyle: {
+                emphasis:{
+                    showBlur: 10,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        },{
+            type: 'heatmap',
+            data: dataset,
+            label: {
+                normal: {
+                    show: true
+                }
+            },
+            itemStyle: {
+                emphasis:{
+                    showBlur: 10,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        },{
+            type: 'heatmap',
+            data: dataset,
+            label: {
+                normal: {
+                    show: true
+                }
+            },
+            itemStyle: {
+                emphasis:{
+                    showBlur: 10,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        },{
+            type: 'heatmap',
+            data: dataset,
+            label: {
+                normal: {
+                    show: true
+                }
+            },
+            itemStyle: {
+                emphasis:{
+                    showBlur: 10,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        }]
+    };
+
+    generateGrid(option);
+    myChart.setOption(option);
 }
