@@ -969,21 +969,23 @@ function data_visualization11() {
             //     left: 'center',
             //     bottom: '5%'
             // });
-            // option.series.push({
-            //     type: 'heatmap',
-            //     data: dataset,
-            //     label: {
-            //         normal: {
-            //             show: true
-            //         }
-            //     },
-            //     itemStyle: {
-            //         emphasis:{
-            //             showBlur: 10,
-            //             shadowColor: 'rgba(0, 0, 0, 0.5)'
-            //         }
-            //     }
-            // });
+            option.series.push({
+                type: 'heatmap',
+                xAxisIndex: index,
+                yAxisIndex: index,
+                data: dataset,
+                label: {
+                    normal: {
+                        show: true
+                    }
+                },
+                itemStyle: {
+                    emphasis:{
+                        showBlur: 10,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            });
             index ++;
         }
     }
@@ -998,152 +1000,12 @@ function data_visualization11() {
             orient: 'horizontal',
             left: 'center',
             bottom: '5%'
-        },{
-            min: 5,
-            max: 9,
-            calculable: true,
-            orient: 'horizontal',
-            left: 'center',
-            bottom: '5%'
-        },{
-            min: 5,
-            max: 9,
-            calculable: true,
-            orient: 'horizontal',
-            left: 'center',
-            bottom: '5%'
-        },{
-            min: 5,
-            max: 9,
-            calculable: true,
-            orient: 'horizontal',
-            left: 'center',
-            bottom: '5%'
-        },{
-            min: 5,
-            max: 9,
-            calculable: true,
-            orient: 'horizontal',
-            left: 'center',
-            bottom: '5%'
-        },{
-            min: 5,
-            max: 9,
-            calculable: true,
-            orient: 'horizontal',
-            left: 'center',
-            bottom: '5%'
-        },{
-            min: 5,
-            max: 9,
-            calculable: true,
-            orient: 'horizontal',
-            left: 'center',
-            bottom: '5%'
         }],
 
         grid: [],
         xAxis: [],
         yAxis: [],
-        series: [{
-            type: 'heatmap',
-            data: dataset,
-            label: {
-                normal: {
-                    show: true
-                }
-            },
-            itemStyle: {
-                emphasis:{
-                    showBlur: 10,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-            }
-        },{
-            type: 'heatmap',
-            data: dataset,
-            label: {
-                normal: {
-                    show: true
-                }
-            },
-            itemStyle: {
-                emphasis:{
-                    showBlur: 10,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-            }
-        },{
-            type: 'heatmap',
-            data: dataset,
-            label: {
-                normal: {
-                    show: true
-                }
-            },
-            itemStyle: {
-                emphasis:{
-                    showBlur: 10,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-            }
-        },{
-            type: 'heatmap',
-            data: dataset,
-            label: {
-                normal: {
-                    show: true
-                }
-            },
-            itemStyle: {
-                emphasis:{
-                    showBlur: 10,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-            }
-        },{
-            type: 'heatmap',
-            data: dataset,
-            label: {
-                normal: {
-                    show: true
-                }
-            },
-            itemStyle: {
-                emphasis:{
-                    showBlur: 10,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-            }
-        },{
-            type: 'heatmap',
-            data: dataset,
-            label: {
-                normal: {
-                    show: true
-                }
-            },
-            itemStyle: {
-                emphasis:{
-                    showBlur: 10,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-            }
-        },{
-            type: 'heatmap',
-            data: dataset,
-            label: {
-                normal: {
-                    show: true
-                }
-            },
-            itemStyle: {
-                emphasis:{
-                    showBlur: 10,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-            }
-        }]
+        series: []
     };
 
     generateGrid(option);
