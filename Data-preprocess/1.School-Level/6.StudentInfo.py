@@ -178,5 +178,45 @@ def statistic_students_attendance():
 # 学生的考勤数据和学生信息的数据耦合程度较差
 
 # 使用学号为14856的学生为例子
-# def statistic_student_attendance():
-#
+def statistic_student_attendance(studentID):
+    data_attendance = pd.read_csv(filepath_AttendenceInfo)
+    student_attendance = data_attendance.drop(data_attendance[data_attendance['bf_studentID'] != studentID].index)
+    # 首先统计该学生的考勤记录
+    # 统计该学生的迟到、早退、校服校徽问题
+    late_taskName = [100100, 9900100, 10020]
+    early_taskName = [200200, 9900300]
+    uniform_taskName = [200100, 9900200]
+    student_problems_num = [0] * 3
+    class_problems_num = [0] * 3
+    for i in range(len(late_taskName)):
+        student_attendance_late = student_attendance.drop(student_attendance[student_attendance['control_task_order_id'] != late_taskName[i]].index)
+        student_problems_num[0] = student_attendance_late.shape[0]
+    for i in range(len(early_taskName)):
+        student_attendance_early = student_attendance.drop(student_attendance[student_attendance['control_task_order_id'] != early_taskName[i]].index)
+        student_problems_num[1] = student_attendance_early.shape[0]
+    for i in range(len(uniform_taskName)):
+        student_attendance_uniform = student_attendance.drop(student_attendance[student_attendance['control_task_order_id'] != uniform_taskName[i]].index)
+        student_problems_num[2] = student_attendance_uniform.shape[0]
+    print(student_problems_num)
+
+    # 统计该学生所在的班级的考勤的情况
+    student_classid = student_attendance['bf_classid'].iloc[0]
+    print(student_classid)
+    class_attendance = data_attendance.drop(data_attendance[data_attendance['bf_classid'] != student_classid].index)
+    print(class_attendance.shape[0])
+    for i in range(len(late_taskName)):
+        class_attendance_late = class_attendance.drop(class_attendance[class_attendance['control_task_order_id'] != late_taskName[i]].index)
+        class_problems_num[0] = class_attendance_late.shape[0]
+    for i in range(len(early_taskName)):
+        class_attendance_early = class_attendance.drop(class_attendance[class_attendance['control_task_order_id'] != early_taskName[i]].index)
+        class_problems_num[1] = class_attendance_early.shape[0]
+    for i in range(len(uniform_taskName)):
+        class_attendance_uniform = class_attendance.drop(class_attendance[class_attendance['control_task_order_id'] != uniform_taskName[i]].index)
+        class_problems_num[2] = class_attendance_uniform.shape[0]
+    print(class_problems_num)
+
+    # 统计该学生的一天的考勤的情况
+    # 统计学生每天早晨上学期间的打卡记录，以及晚上放学的打卡记录，并与班级的平均水平进行对比
+    print(student_attendance)
+
+statistic_student_attendance(14856)
