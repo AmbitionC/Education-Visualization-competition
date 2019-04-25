@@ -180,6 +180,10 @@ def statistic_students_attendance():
 # 使用学号为14856的学生为例子
 def statistic_student_attendance(studentID):
     data_attendance = pd.read_csv(filepath_AttendenceInfo)
+    # data_attendance['month']
+    data_attendance['hour'] = (data_attendance['DataDateTime'].str.split(' ', expand=True)[1]).str.split(':', expand=True)[0]
+    data_attendance['minute'] = ((data_attendance['DataDateTime'].str.split(' ', expand=True)[1]).str.split(':', expand=True)[1]).str.split(':', expand=True)[0]
+
     student_attendance = data_attendance.drop(data_attendance[data_attendance['bf_studentID'] != studentID].index)
     # 首先统计该学生的考勤记录
     # 统计该学生的迟到、早退、校服校徽问题
@@ -217,6 +221,132 @@ def statistic_student_attendance(studentID):
 
     # 统计该学生的一天的考勤的情况
     # 统计学生每天早晨上学期间的打卡记录，以及晚上放学的打卡记录，并与班级的平均水平进行对比
-    print(student_attendance)
 
-statistic_student_attendance(14856)
+    # 首先提取学生的早晨入校的时间，并产生180组样本数据
+    student_attendance_hour_6 = student_attendance.drop(student_attendance[student_attendance['hour'] != '06'].index)
+    student_attendance_hour_6_array = []
+    if student_attendance_hour_6.shape[0] >= 180:
+        for i in range(180):
+            student_attendance_hour_6_array[i] = student_attendance_hour_6['minute'].iloc[i]
+    else:
+        for i in range(180):
+            for j in range(student_attendance_hour_6.shape[0]):
+                if len(student_attendance_hour_6_array) < 180:
+                    student_attendance_hour_6_array.append(student_attendance_hour_6['minute'].iloc[j])
+                else:
+                    break
+
+    # 统计其所在的班级早晨入校的时间，并产生180组样本数据
+    class_attendance_hour_6 = class_attendance.drop(class_attendance[class_attendance['hour'] != '06'].index)
+    class_attendance_hour_6_array = []
+    if class_attendance_hour_6.shape[0] >= 180:
+        for i in range(180):
+            class_attendance_hour_6_array[i] = class_attendance_hour_6['minute'].iloc[i]
+    else:
+        for i in range(180):
+            for j in range(class_attendance_hour_6.shape[0]):
+                if len(class_attendance_hour_6_array) < 180:
+                    class_attendance_hour_6_array.append(class_attendance_hour_6['minute'].iloc[j])
+                else:
+                    break
+
+    # 统计学校层次早晨入校的时间，并产生180组样本数据
+    school_attendance_hour_6 = data_attendance.drop(data_attendance[data_attendance['hour'] != '06'].index)
+    school_attendance_hour_6_array = []
+    if school_attendance_hour_6.shape[0] >= 180:
+        for i in range(180):
+            school_attendance_hour_6_array.append(school_attendance_hour_6['minute'].iloc[i])
+    else:
+        for i in range(180):
+            for j in range(school_attendance_hour_6.shape[0]):
+                if len(school_attendance_hour_6_array) < 180:
+                    school_attendance_hour_6_array.append(school_attendance_hour_6['minute'].iloc[j])
+                else:
+                    break
+    # 产生三个层次的数据
+    print(len(student_attendance_hour_6_array))
+    print(len(class_attendance_hour_6_array))
+    print(len(school_attendance_hour_6_array))
+
+    # 分别统计三个层次的数据的次数
+    minute = []
+    for i in range(60):
+        minute.append(i)
+    minute_count_student = [0] * 60
+    minute_count_class = [0] * 60
+    minute_count_school = [0] * 60
+    for i in range(len(student_attendance_hour_6_array)):
+        for j in range(len(minute)):
+            if int(student_attendance_hour_6_array[i]) == minute[j]:
+                minute_count_student[j] += 1
+            if int(class_attendance_hour_6_array[i]) == minute[j]:
+                minute_count_class[j] += 1
+            if int(school_attendance_hour_6_array[i]) == minute[j]:
+                minute_count_school[j] += 1
+    print(minute_count_student)
+    print(minute_count_class)
+    print(minute_count_school)
+
+    # 产生坐标轴的数据
+    time = []
+    time_reg_all = []
+    for i in range(10):
+        time_piece = '6:0' + str(i)
+        time_reg = '0' + str(i)
+        time_reg_all.append(time_reg)
+        time.append(time_piece)
+
+    for i in range(10, 60):
+        time_piece = '6:' + str(i)
+        time.append(time_piece)
+    print(time)
+
+# statistic_student_attendance(14856)
+
+
+##############################################################################
+# 统计学生的成绩数据
+
+def statistic_student_score(studentID):
+    data_score = pd.read_csv(filepath_StudentsScore)
+    print(data_score.shape[0])
+    # 去除掉没有成绩的数据
+    data_score = data_score.dropna(subset=['mes_Z_Score'])
+    print(data_score.shape[0])
+
+    # 首先观察学生成绩的数量
+    # 选取学号为14295的学生进行分析
+    data_score['count'] = 1
+    score_groupby_stdid = data_score.groupby(['mes_StudentID']).count().reset_index().sort_values(by='count', axis=0, ascending=False)
+    # print(score_groupby_stdid)
+
+    # 筛选这个学生的成绩
+    student_score = data_score.drop(data_score[data_score['mes_StudentID'] != studentID].index)
+    student_score = student_score.drop(student_score[student_score['mes_Score'] == -2].index)
+    print(student_score.shape[0])
+
+    # 统计这个学生每一次考试的排名的情况并以数组形式保存
+    # 获取每一次考试的考试ID
+    score_groupby_examnum = student_score.groupby(['exam_number']).count().reset_index()
+    # 统计每一次考试的排名情况
+    exam_score_array = []
+    exam_name_array = []
+    for i in range(score_groupby_examnum.shape[0]):
+        exam_score = student_score.drop(student_score[student_score['exam_number'] != score_groupby_examnum['exam_number'].iloc[i]].index)
+        # print(exam_score)
+        mes_sum = 0
+        exam_name_array.append()
+        for j in range(exam_score.shape[0]):
+            print(exam_score['mes_dengdi'].iloc[j])
+            mes_sum += exam_score['mes_dengdi'].iloc[j]
+        average = mes_sum / (exam_score.shape[0])
+        exam_score_array.append(average)
+    print(exam_score_array)
+
+    # 统计这个学生的每一次考试各个科目的排名情况，并以数组的形式进行保存
+
+statistic_student_score(14295)
+
+
+
+
