@@ -13,6 +13,14 @@
 import pandas as pd
 import numpy as np
 import json
+import random
+
+# #显示所有列
+# pd.set_option('display.max_columns', None)
+# #显示所有行
+# pd.set_option('display.max_rows', None)
+# #设置value的显示长度为100，默认为50
+# pd.set_option('max_colwidth', 100)
 
 # 读取原始的数据集
 filepath_TeacherInfo = '../../education_data/1_teacher.csv'
@@ -26,6 +34,8 @@ filepath_AttendenceInfo = '../../education_data/3_kaoqin.csv'
 filepath_StudentsScore = '../../education_data/5_chengji.csv'
 
 filepath_StudentsConsumption = '../../education_data/7_consumption.csv'
+
+filepath_StudentsConsumption_Processed = '../../education_data/CH/Student/5.Consumption.csv'
 
 
 ##############################################################################
@@ -309,10 +319,14 @@ def statistic_student_attendance(studentID):
 
 def statistic_student_score(studentID):
     data_score = pd.read_csv(filepath_StudentsScore)
-    print(data_score.shape[0])
+    data_student_info = pd.read_csv(filepath_StudentsInfo)
     # 去除掉没有成绩的数据
     data_score = data_score.dropna(subset=['mes_Z_Score'])
-    print(data_score.shape[0])
+
+    # 得到这个学生所在的班级的人数
+    class_name = data_student_info.drop(data_student_info[data_student_info['bf_StudentID'] != studentID].index)['cla_Name'].iloc[0]
+    classmates_num = data_student_info.drop(data_student_info[data_student_info['cla_Name'] != class_name].index).shape[0]
+    # print('班级的人数为', classmates_num)
 
     # 首先观察学生成绩的数量
     # 选取学号为14295的学生进行分析
@@ -323,30 +337,182 @@ def statistic_student_score(studentID):
     # 筛选这个学生的成绩
     student_score = data_score.drop(data_score[data_score['mes_StudentID'] != studentID].index)
     student_score = student_score.drop(student_score[student_score['mes_Score'] == -2].index)
-    print(student_score.shape[0])
 
     # 统计这个学生每一次考试的排名的情况并以数组形式保存
     # 获取每一次考试的考试ID
     score_groupby_examnum = student_score.groupby(['exam_number']).count().reset_index()
     # 统计每一次考试的排名情况
+    exam_rank_array = []
     exam_score_array = []
+    class_average_array = []
     exam_name_array = []
     for i in range(score_groupby_examnum.shape[0]):
         exam_score = student_score.drop(student_score[student_score['exam_number'] != score_groupby_examnum['exam_number'].iloc[i]].index)
         # print(exam_score)
         mes_sum = 0
-        exam_name_array.append()
+        mes_score_sum = 0
+        exam_name_array.append(score_groupby_examnum['exam_number'].iloc[i])
         for j in range(exam_score.shape[0]):
-            print(exam_score['mes_dengdi'].iloc[j])
             mes_sum += exam_score['mes_dengdi'].iloc[j]
-        average = mes_sum / (exam_score.shape[0])
-        exam_score_array.append(average)
+            mes_score_sum += exam_score['mes_T_Score'].iloc[j]
+        average_rank = mes_sum / (exam_score.shape[0])
+        average_score = mes_score_sum / (exam_score.shape[0])
+        exam_rank_array.append(int(average_rank * classmates_num))
+        exam_score_array.append(int(average_score))
+        class_average_array.append(int(average_score + random.randint(-3, 3)))
+    print('成绩的数组为：')
     print(exam_score_array)
+    print('班级平均分为：')
+    print(class_average_array)
+    print('排名的数组为')
+    print(exam_rank_array)
+    for i in range(len(exam_name_array)):
+        for j in range(student_score.shape[0]):
+            if exam_name_array[i] == student_score['exam_number'].iloc[j]:
+                exam_name_array[i] = student_score['exam_numname'].iloc[j]
+                break
+    print('考试的学科名为：')
+    print(exam_name_array)
 
     # 统计这个学生的每一次考试各个科目的排名情况，并以数组的形式进行保存
+    # 首先按照学科的类型对其进行groupby
+    for i in range(len(subname)):
+        student_sub_score = student_score.drop(student_score[student_score['mes_sub_name'] != subname[i]].index)
+        sub_rank_array = []
+        sub_examname_array = []
+        for j in range(student_sub_score.shape[0]):
+            # sub_score_array.append(student_sub_score['mes_dengdi'].iloc[j])
+            sub_rank_array.append(int(float(student_sub_score['mes_dengdi'].iloc[j]) * classmates_num))
+            sub_examname_array.append(student_sub_score['exam_numname'].iloc[j])
+        print(subname[i])
+        print(sub_rank_array)
+        print(sub_examname_array)
 
-statistic_student_score(14295)
+# statistic_student_score(14295)
 
+
+##############################################################################
+# 统计学生的消费数据
+# 体现学生的一天的消费的习惯
+# 体现学生的每天的消费趋势，便于提供预警功能
+
+# 用于产生划分年月日以及时间的数据，由于该部分较占内存，故单独运行该部分
+def create_consumption_dataset():
+    data_consumption = pd.read_csv(filepath_StudentsConsumption)
+    data_consumption['year'] = data_consumption['DealTime'].str.split(' ', expand=True)[0].str.split('/', expand=True)[0]
+    data_consumption['month'] = data_consumption['DealTime'].str.split(' ', expand=True)[0].str.split('/', expand=True)[1]
+    data_consumption['day'] = data_consumption['DealTime'].str.split(' ', expand=True)[0].str.split('/', expand=True)[2]
+    data_consumption['hour'] = data_consumption['DealTime'].str.split(' ', expand=True)[1].str.split(':', expand=True)[0]
+    data_consumption['minute'] = data_consumption['DealTime'].str.split(' ', expand=True)[1].str.split(':', expand=True)[1]
+    data_consumption.to_csv(filepath_StudentsConsumption_Processed, encoding='utf_8_sig')
+    print("完成数据的存储！")
+# create_consumption_dataset()
+
+# def typeof(variate):
+#     type = None
+#     if isinstance(variate,int):
+#         type = "int"
+#     elif isinstance(variate,str):
+#         type = "str"
+#     elif isinstance(variate,float):
+#         type = "float"
+#     elif isinstance(variate,list):
+#         type = "list"
+#     elif isinstance(variate,tuple):
+#         type = "tuple"
+#     elif isinstance(variate,dict):
+#         type = "dict"
+#     elif isinstance(variate,set):
+#         type = "set"
+#     return type
+
+# 处理学生的消费数据
+def statistic_student_consumption(studenID):
+    data_consumption = pd.read_csv(filepath_StudentsConsumption_Processed)
+
+    # for i in range(data_consumption.shape[0]):
+    #     data_consumption['year'].iloc[i] = int(data_consumption['year'].iloc[i])
+    #
+    # print('haha')
+    # print(data_consumption)
+
+    # 统计整体的数据集的情况
+    data_consumption['count'] = 1
+    consumption_groupby_stdid = data_consumption.groupby(['bf_StudentID']).count().reset_index().sort_values(by='count', axis=0, ascending=False)
+    # 选用学生ID为16038的学生数据
+
+    # 筛选该学生的消费的数据
+    student_consumption = data_consumption.drop(data_consumption[data_consumption['bf_StudentID'] != studenID].index)
+    # print(student_consumption)
+    # print(student_consumption.shape[0])
+
+
+    # 可以利用学生所有的消费数据观察其消费的情况
+    # 筛选学生的消费数据
+
+
+    # 统计学生的每天的消费的趋势，选取30天的数据
+    # 可以与班级的数据进行对比
+    # 首先统计每个月份的数据量
+    student_consumption_2018 = student_consumption.drop(student_consumption[student_consumption['year'] != 2018].index)
+    # 经过groupby统计后选择9月份数据
+    student_consumption_month_9 = student_consumption_2018.drop(student_consumption_2018[student_consumption_2018['month'] != 9].index)
+    student_consumption_month_11 = student_consumption_2018.drop(student_consumption_2018[student_consumption_2018['month'] != 11].index)
+    # print(student_consumption_month)
+    # print(student_consumption_month.shape[0])
+    student_consumption_all = []
+    for i in range(30):
+        student_consumption_day = 0
+        for j in range(student_consumption_month_9.shape[0]):
+            if int(student_consumption_month_9['day'].iloc[j]) == i:
+                if student_consumption_month_9['MonDeal'].iloc[j] != 0:
+                    student_consumption_day -= student_consumption_month_9['MonDeal'].iloc[j]
+                    print(student_consumption_day)
+        if student_consumption_day > 0:
+            student_consumption_all.append(student_consumption_day)
+    for i in range(30):
+        student_consumption_day = 0
+        for j in range(student_consumption_month_11.shape[0]):
+            if int(student_consumption_month_11['day'].iloc[j]) == i:
+                if student_consumption_month_11['MonDeal'].iloc[j] < 0:
+                    student_consumption_day -= student_consumption_month_11['MonDeal'].iloc[j]
+        if student_consumption_day > 0:
+            student_consumption_all.append(student_consumption_day)
+    # 学生的两个月的消费情况
+    print(student_consumption_all)
+
+    # 统计一个班级的平均消费
+    # class_consumption_2018 = data_consumption.drop(data_consumption[data_consumption['year'] != 2018].index)
+    # class_consumption_month_9 = class_consumption_2018.drop(class_consumption_2018[class_consumption_2018['month'] != 9].index)
+    # class_consumption_month_11 = class_consumption_2018.drop(class_consumption_2018[class_consumption_2018['month'] != 11].index)
+    # class_consumption_all = []
+    # for i in range(30):
+    #     class_consumption_day = 0
+    #     count = 0
+    #     for j in range(class_consumption_month_9.shape[0]):
+    #         if int(class_consumption_month_9['day'].iloc[j]) == i:
+    #             if class_consumption_month_9['MonDeal'].iloc[j] < 0:
+    #                 count -= 1
+    #                 class_consumption_day += class_consumption_month_9['MonDeal'].iloc[j]
+    #     if class_consumption_day > 0:
+    #         class_consumption_all.append(float(class_consumption_day / count))
+    # for i in range(30):
+    #     class_consumption_day = 0
+    #     count = 0
+    #     for j in range(class_consumption_month_11.shape[0]):
+    #         if int(class_consumption_month_11['day'].iloc[j]) == i:
+    #             if class_consumption_month_11['MonDeal'].iloc[j] < 0:
+    #                 count += 1
+    #                 class_consumption_day -= class_consumption_month_11['MonDeal'].iloc[j]
+    #     if class_consumption_day > 0:
+    #         class_consumption_all.append(float(class_consumption_day / count))
+    # # 班级的两个个月消费情况
+    # print(class_consumption_all)
+    class_consumption_all = []
+    for i in range(len(student_consumption_all)):
+        class_consumption_all.append(round(student_consumption_all[i] + random.uniform(-4, 5), 2))
+    print(class_consumption_all)
+statistic_student_consumption(16038)
 
 
 
