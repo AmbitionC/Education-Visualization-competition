@@ -382,7 +382,7 @@ def create_sankey_data():
         if teacher_class_data.shape[0] > 0:
             for j in range(teacher_class_data.shape[0]):
                 link_single = {"source": (str(teacher_class_data['bas_id'].iloc[0]) + teacher_class_data['bas_Name'].iloc[0]),
-                                "target": teacher_class_data['cla_Name'].iloc[0],
+                                "target": teacher_class_data['cla_Name'].iloc[j],
                                 "value": 1}
                 links_all.append(link_single)
     print(links_all)
