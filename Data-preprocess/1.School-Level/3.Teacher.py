@@ -331,24 +331,68 @@ def transfer_to_json():
 def create_tree_teacher():
     sub_name = ['语文', '数学', '英语', '物理', '化学', '政治', '历史', '生物', '地理', '技术', '美术',
                 '体育', '音乐']
+    array_allInfo = []
     for i in range(len(sub_name)):
         # data_show = pd.DataFrame(columns=['name', 'value'])
-        array_cache_total = []
         data_teacher = data_origin[data_origin['sub_Name'].str.contains(sub_name[i])]
-        data_teacher = data_teacher.groupby(['bas_id']).count().reset_index()
-        for j in range(data_teacher.shape[0]):
-            for k in range(data_origin.shape[0]):
-                if data_teacher['bas_id'].iloc[j] == data_origin['bas_id'].iloc[k]:
-                    array_cache = [data_origin['bas_Name'].iloc[k], data_teacher['term'].iloc[j]]
-                    array_cache_total.append(array_cache)
+        # 以学科为单位，以教师ID对教师进行groupby
+        data_groupby_teacherID = data_teacher.groupby(['bas_id']).count().reset_index()
+        teacherID_array = []
+        for j in range(data_groupby_teacherID.shape[0]):
+            teacherID_array.append(data_groupby_teacherID['bas_id'].iloc[j])
+        children_array = []
+        for j in range(len(teacherID_array)):
+            for k in range(data_teacher.shape[0]):
+                if teacherID_array[j] == data_teacher['bas_id'].iloc[k]:
+                    teacher_name = data_teacher['bas_Name'].iloc[k]
+                    # 插入\n
+                    teacher_name_new = teacher_name[0] + '\n' + teacher_name[1] + '\n' + teacher_name[2]
+                    teacher_object = {"name": teacher_name_new, "value": 1}
+                    children_array.append(teacher_object)
                     break
-        data_show_all = []
-        for m in range(len(array_cache_total)):
-            data_show = {"name": str(array_cache_total[m][0]), "value": int(array_cache_total[m][1])}
-            data_show_all.append(data_show)
-            # print(data_show)
-        print(data_show_all)
-        print(array_cache_total)
-        print(data_teacher)
+        sub_teacher_object = {"name": sub_name[i],
+                              "children": children_array}
+        print(sub_teacher_object)
+        array_allInfo.append(sub_teacher_object)
+        school_all_object = {"name": "效实中学", "children": array_allInfo}
+        with open('../1.School-Level-data/Teacher_4.json', "w") as file:
+            json.dump(school_all_object, file)
+        print("完成文件加载！")
 
 # create_tree_teacher()
+
+def create_sankey_data():
+    # 产生两排名字
+    teacher_class_array = []
+    data_groupby_teacherID = data_origin.groupby('bas_id').count().reset_index()
+    for i in range(data_groupby_teacherID.shape[0]):
+        for j in range(data_origin.shape[0]):
+            if data_groupby_teacherID['bas_id'].iloc[i] == data_origin['bas_id'].iloc[j]:
+                teacherName_piece = {"name": (str(data_origin['bas_id'].iloc[j]) + data_origin['bas_Name'].iloc[j])}
+                teacher_class_array.append(teacherName_piece)
+                break
+    data_groupby_className = data_origin.groupby('cla_Name').count().reset_index()
+    for i in range(data_groupby_className.shape[0]):
+        className_piece = {"name": data_groupby_className['cla_Name'].iloc[i]}
+        teacher_class_array.append(className_piece)
+    print(teacher_class_array)
+    links_all = []
+    for i in range(data_groupby_teacherID.shape[0]):
+        teacher_class_data = data_origin.drop(data_origin[data_origin['bas_id'] != data_groupby_teacherID['bas_id'].iloc[i]].index)
+        if teacher_class_data.shape[0] > 0:
+            for j in range(teacher_class_data.shape[0]):
+                link_single = {"source": (str(teacher_class_data['bas_id'].iloc[0]) + teacher_class_data['bas_Name'].iloc[0]),
+                                "target": teacher_class_data['cla_Name'].iloc[0],
+                                "value": 1}
+                links_all.append(link_single)
+    print(links_all)
+    with open('../1.School-Level-data/Teacher_5.json', "w") as file:
+        json.dump(teacher_class_array, file)
+    print("完成文件加载！")
+    with open('../1.School-Level-data/Teacher_6.json', "w") as file:
+        json.dump(links_all, file)
+    print("完成文件加载！")
+
+
+
+create_sankey_data()
