@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
 import { Nav , Navbar } from 'react-bootstrap';
+
+import Home from './Home';
+
+// import components
 import SchInfo from './school/Info';
 // import SchScore4 from './school/Score4';
-import T from '../components/ClassGrade1';
-import Home from './Home';
-// import SchConsumption from './school/Consumption';
+// import T from '../components/ClassGrade1';
+import SchConsumption from './school/Consumption';
+// import ClassCsp from '../components/ClassCsp'
+// import SchoolConsumption from '../components/SchoolConsumption';
+
+import SchAttend from './school/Attendance'
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/main.css';
 
@@ -19,11 +27,11 @@ class Main extends Component {
         this.menu = [{
             header: "学校层面",
             body: ["基本信息统计", "师资分配情况", "成绩统计分析", "考勤信息统计", "消费信息分析"],
-            content: [<SchInfo />]
+            content: [ , , ,<SchAttend/>,<SchConsumption/>]
         }, {
             header: "班级层面",
             body: ["班级画像"],
-            content: [<T/>]
+            content: []
         }, {
             header: "学生层面",
             body: ["学生画像"],
