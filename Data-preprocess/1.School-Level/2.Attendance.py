@@ -49,7 +49,8 @@ for i in range(data_origin.shape[0]):
 
 print(len(data_origin['qj_term'][pd.isnull(data_origin['qj_term'])]))
 # 已经完成学期的缺失数据的补充
-data_origin.to_csv("data_origin.csv")
+data_origin.to_csv("data_origin.csv", encoding='utf_8_sig')
+print('保存成功！')
 '''
 
 ##############################################################################
@@ -995,4 +996,4 @@ def statistic_peak_minute2():
     print(count)
     print(data_all)
 
-statistic_peak_minute2()
+# statistic_peak_minute2()
