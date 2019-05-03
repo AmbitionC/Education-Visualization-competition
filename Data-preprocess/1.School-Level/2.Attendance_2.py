@@ -365,4 +365,76 @@ def create_calenda_errorData():
     with open('../1.School-level-data/Attendance_6.json', "w") as file:
         json.dump(json_data, file)
     print("完成文件加载")
-create_calenda_errorData()
+# create_calenda_errorData()
+
+# 统计迟到晚到的打卡签到数据
+def create_calenda_lateData():
+    print(data_year.shape[0])
+    data_year_drop_1 = data_year.drop(data_year[data_year['control_task_order_id'] == 9900400].index)
+    data_year_drop_2 = data_year_drop_1.drop(data_year_drop_1[data_year_drop_1['control_task_order_id'] == 9900500].index)
+    data_year_drop_3 = data_year_drop_2.drop(data_year_drop_2[data_year_drop_2['control_task_order_id'] != 9900100].index)
+    data_year_drop_3['Attendance_date'] = 0
+    for i in range(data_year_drop_3.shape[0]):
+        data_year_drop_3['Attendance_date'].iloc[i] = str(data_year_drop_3['year'].iloc[i]) + '-' + str(
+            data_year_drop_3['month'].iloc[i]) + '-' + str(data_year_drop_3['date'].iloc[i])
+    print(data_year_drop_3['Attendance_date'])
+    data_year_drop_3['count'] = 1
+    data_year_drop_3_groupby = data_year_drop_3.groupby(['Attendance_date']).count().reset_index()
+    print(data_year_drop_3_groupby)
+    calenda_data = []
+    for i in range(data_year_drop_3_groupby.shape[0]):
+        calenda_data_piece = [data_year_drop_3_groupby['Attendance_date'].iloc[i], int(data_year_drop_3_groupby['count'].iloc[i])]
+        calenda_data.append(calenda_data_piece)
+    json_data = {"calenda": calenda_data}
+    with open('../1.School-level-data/Attendance_7.json', "w") as file:
+        json.dump(json_data, file)
+    print("完成文件加载")
+create_calenda_lateData()
+
+# 统计早退离校的打卡签到数据
+def create_calenda_earlyData():
+    print(data_year.shape[0])
+    data_year_drop_1 = data_year.drop(data_year[data_year['control_task_order_id'] == 9900400].index)
+    data_year_drop_2 = data_year_drop_1.drop(data_year_drop_1[data_year_drop_1['control_task_order_id'] == 9900500].index)
+    data_year_drop_3 = data_year_drop_2.drop(data_year_drop_2[data_year_drop_2['control_task_order_id'] != 9900300].index)
+    data_year_drop_3['Attendance_date'] = 0
+    for i in range(data_year_drop_3.shape[0]):
+        data_year_drop_3['Attendance_date'].iloc[i] = str(data_year_drop_3['year'].iloc[i]) + '-' + str(
+            data_year_drop_3['month'].iloc[i]) + '-' + str(data_year_drop_3['date'].iloc[i])
+    print(data_year_drop_3['Attendance_date'])
+    data_year_drop_3['count'] = 1
+    data_year_drop_3_groupby = data_year_drop_3.groupby(['Attendance_date']).count().reset_index()
+    print(data_year_drop_3_groupby)
+    calenda_data = []
+    for i in range(data_year_drop_3_groupby.shape[0]):
+        calenda_data_piece = [data_year_drop_3_groupby['Attendance_date'].iloc[i], int(data_year_drop_3_groupby['count'].iloc[i])]
+        calenda_data.append(calenda_data_piece)
+    json_data = {"calenda": calenda_data}
+    with open('../1.School-level-data/Attendance_8.json', "w") as file:
+        json.dump(json_data, file)
+    print("完成文件加载")
+# create_calenda_earlyData()
+
+# 统计迟到晚到的打卡签到数据
+def create_calenda_uniformData():
+    print(data_year.shape[0])
+    data_year_drop_1 = data_year.drop(data_year[data_year['control_task_order_id'] == 9900400].index)
+    data_year_drop_2 = data_year_drop_1.drop(data_year_drop_1[data_year_drop_1['control_task_order_id'] == 9900500].index)
+    data_year_drop_3 = data_year_drop_2.drop(data_year_drop_2[data_year_drop_2['control_task_order_id'] != 9900200].index)
+    data_year_drop_3['Attendance_date'] = 0
+    for i in range(data_year_drop_3.shape[0]):
+        data_year_drop_3['Attendance_date'].iloc[i] = str(data_year_drop_3['year'].iloc[i]) + '-' + str(
+            data_year_drop_3['month'].iloc[i]) + '-' + str(data_year_drop_3['date'].iloc[i])
+    print(data_year_drop_3['Attendance_date'])
+    data_year_drop_3['count'] = 1
+    data_year_drop_3_groupby = data_year_drop_3.groupby(['Attendance_date']).count().reset_index()
+    print(data_year_drop_3_groupby)
+    calenda_data = []
+    for i in range(data_year_drop_3_groupby.shape[0]):
+        calenda_data_piece = [data_year_drop_3_groupby['Attendance_date'].iloc[i], int(data_year_drop_3_groupby['count'].iloc[i])]
+        calenda_data.append(calenda_data_piece)
+    json_data = {"calenda": calenda_data}
+    with open('../1.School-level-data/Attendance_9.json', "w") as file:
+        json.dump(json_data, file)
+    print("完成文件加载")
+# create_calenda_uniformData()
