@@ -342,10 +342,27 @@ def create_calenda_data():
     with open('../1.School-level-data/Attendance_5.json', "w") as file:
         json.dump(json_data, file)
     print("完成文件加载")
-create_calenda_data()
+# create_calenda_data()
 
 # 统计异常的打卡签到数据
 def create_calenda_errorData():
-    data_year['Attendance_date'] = 0
-    for i in range(data_year.shape[0]):
-        
+    print(data_year.shape[0])
+    data_year_drop_1 = data_year.drop(data_year[data_year['control_task_order_id'] == 9900400].index)
+    data_year_drop_2 = data_year_drop_1.drop(data_year_drop_1[data_year_drop_1['control_task_order_id'] == 9900500].index)
+    data_year_drop_2['Attendance_date'] = 0
+    for i in range(data_year_drop_2.shape[0]):
+        data_year_drop_2['Attendance_date'].iloc[i] = str(data_year_drop_2['year'].iloc[i]) + '-' + str(
+            data_year_drop_2['month'].iloc[i]) + '-' + str(data_year_drop_2['date'].iloc[i])
+    print(data_year_drop_2['Attendance_date'])
+    data_year_drop_2['count'] = 1
+    data_year_drop_2_groupby = data_year_drop_2.groupby(['Attendance_date']).count().reset_index()
+    print(data_year_drop_2_groupby)
+    calenda_data = []
+    for i in range(data_year_drop_2_groupby.shape[0]):
+        calenda_data_piece = [data_year_drop_2_groupby['Attendance_date'].iloc[i], int(data_year_drop_2_groupby['count'].iloc[i])]
+        calenda_data.append(calenda_data_piece)
+    json_data = {"calenda": calenda_data}
+    with open('../1.School-level-data/Attendance_6.json', "w") as file:
+        json.dump(json_data, file)
+    print("完成文件加载")
+create_calenda_errorData()
