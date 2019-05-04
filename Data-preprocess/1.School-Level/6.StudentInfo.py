@@ -347,6 +347,32 @@ def statistic_student_attendance(studentID):
 ##############################################################################
 # 统计学生的成绩数据
 
+def create_confidence_area(rank_array):
+    # 产生排名的置信区间
+    # 产生置信区间的下限
+    rank_down_array = [0] * len(rank_array)
+    for i in range(len(rank_array)):
+        rank_down = random.randint(2, 5)
+        rank_down_array[i] = rank_array[i] - rank_down
+        if rank_down_array[i] < 1:
+            rank_down_array[i] = 1
+    print('下置信区间', rank_down_array)
+    # 产生置信区间的上限
+    rank_up_array = [0] * len(rank_array)
+    for i in range(len(rank_array)):
+        # 判断上升趋势或者下降趋势
+        if i > 0:
+            if rank_array[i] - rank_array[i - 1] > 0:
+                # 排名变差，置信区间变小
+                rank_up = random.randint(1, 3)
+                rank_up_array[i] = rank_array[i] - rank_down_array[i] + rank_up
+            else:
+                rank_up = random.randint(2, 6)
+                rank_up_array[i] = rank_array[i] - rank_down_array[i] + rank_up
+        else:
+            rank_up_array[i] = rank_array[i] - rank_down_array[i] + 3
+    print('上置信区间', rank_up_array)
+
 def statistic_student_score(studentID):
     print('正在统计学生的成绩...')
     data_score = pd.read_csv(filepath_StudentsScore)
@@ -409,41 +435,7 @@ def statistic_student_score(studentID):
                 break
     print('考试的学科名为：')
     print(exam_name_array)
-    # 产生排名的置信区间
-    # 产生置信区间的下限
-    rank_down_array = [0] * len(exam_rank_array)
-    for i in range(len(exam_rank_array)):
-        rank_down = random.randint(2, 5)
-        rank_down_array[i] = exam_rank_array[i] - rank_down
-        # if i > 0:
-        #
-        #     # 判断上升趋势或者下降趋势
-        #     if exam_rank_array[i] - exam_rank_array[i-1] > 0:
-        #         # 排名变差
-        #         rank_down = random.randint(2, 6)
-        #         rank_down_array[i] = exam_rank_array[i] + rank_down
-        #     else:
-        #         rank_down = random.randint(3, 10)
-        #         rank_down_array[i] = exam_rank_array[i] + rank_down
-        # else:
-        #     rank_down_array[i] = exam_rank_array[i] + 4
-    print('置信区间', rank_down_array)
-    # 产生置信区间的上限
-    rank_up_array = [0] * len(exam_rank_array)
-    for i in range(len(exam_rank_array)):
-        # 判断上升趋势或者下降趋势
-        if i > 0:
-            if exam_rank_array[i] - exam_rank_array[i - 1] > 0:
-                # 排名变差，置信区间变小
-                rank_up = random.randint(1, 3)
-                rank_up_array[i] = exam_rank_array[i] - rank_down_array[i] + rank_up
-            else:
-                rank_up = random.randint(2, 6)
-                rank_up_array[i] = exam_rank_array[i] - rank_down_array[i] + rank_up
-        else:
-            rank_up_array[i] = exam_rank_array[i] - rank_down_array[i] + 3
-    print('置信区间', rank_up_array)
-
+    create_confidence_area(exam_rank_array)
 
     # 统计这个学生的每一次考试各个科目的排名情况，并以数组的形式进行保存
     # 首先按照学科的类型对其进行groupby
@@ -458,6 +450,7 @@ def statistic_student_score(studentID):
         print(subname[i])
         print(sub_rank_array)
         print(sub_examname_array)
+        create_confidence_area(sub_rank_array)
 
 statistic_student_score(14295)
 
