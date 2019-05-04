@@ -12,6 +12,8 @@ import SchConsumption from './school/Consumption';
 // import SchoolConsumption from '../components/SchoolConsumption';
 
 import SchAttend from './school/Attendance'
+import ChooseSub from './application/3In7'
+import StudentInfo from './student/Student.js'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/main.css';
@@ -27,7 +29,7 @@ class Main extends Component {
         this.menu = [{
             header: "学校层面",
             body: ["基本信息统计", "师资分配情况", "成绩统计分析", "考勤信息统计", "消费信息分析"],
-            content: [ , , ,<SchAttend/>,<SchConsumption/>]
+            content: [<SchInfo/>, , ,<SchAttend/>,<SchConsumption/>]
         }, {
             header: "班级层面",
             body: ["班级画像"],
@@ -35,11 +37,11 @@ class Main extends Component {
         }, {
             header: "学生层面",
             body: ["学生画像"],
-            content: []
+            content: [<StudentInfo/>]
         }, {
             header: "应用层面",
             body: ["学生7选3推荐"],
-            content: []
+            content: [<ChooseSub />]
         }];
         this.animation = {
             slideLeft: {animation: 'slideLeft 320ms ease 0s 1 normal forwards running'},

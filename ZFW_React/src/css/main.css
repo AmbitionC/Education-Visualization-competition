@@ -169,6 +169,11 @@ body {
     font-weight: 400;
 }
 
+.Dropdown_area{
+    position: absolute;
+    right: 3%;
+}
+
 /* 功能 */
 .align-items-center {
     align-items: center;
@@ -214,6 +219,9 @@ body {
     /*background-color: #17a2b8;*/
 }
 
+.studentInfo_title{
+    color: #8e8e8e;
+}
 
 /********** 动画 **********/
 @-webkit-keyframes slideLeft-show {
