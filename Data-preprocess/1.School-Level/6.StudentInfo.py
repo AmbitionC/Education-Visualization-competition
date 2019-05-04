@@ -63,7 +63,7 @@ def statistic_teachers_info(studentID):
             print('学科', subname[i], '的教师是', teacherName[i])
         return teacherName
 
-# statistic_teachers_info(14454)
+# statistic_teachers_info(14459)
 # ['顾老师', '戴老师', '朱老师', '杨老师', '王老师', '陈老师', '冯老师', 'NaN', 'NaN', '庄老师', '效老师', '沈老师']
 # 学科 语文 的教师是 顾老师
 # 学科 数学 的教师是 戴老师
@@ -110,7 +110,7 @@ def statistic_student_info(studentID):
     # 提取相应学号的学生
     studentInfo = data_StudentInfo.drop(data_StudentInfo[data_StudentInfo['bf_StudentID'] != studentID].index)
     studentInfo_Array[0] = studentInfo['bf_Name'].iloc[0]
-    studentInfo_Array[1] = studentInfo['bf_StudentID'].iloc[0]
+    studentInfo_Array[1] = int(studentInfo['bf_StudentID'].iloc[0])
     studentInfo_Array[2] = studentInfo['bf_sex'].iloc[0]
     studentInfo_Array[3] = studentInfo['bf_nation'].iloc[0]
     studentInfo_Array[4] = studentInfo['cla_Name'].iloc[0]
@@ -124,15 +124,15 @@ def statistic_student_info(studentID):
             studentInfo_Array[9] = str(int(studentInfo['bf_qinshihao'].iloc[0])) + '号'
             roomNumber = studentInfo['bf_qinshihao'].iloc[0]
             data_groupbyRoomNum = data_StudentInfo.drop(data_StudentInfo[data_StudentInfo['bf_qinshihao'] != roomNumber].index)
-            studentInfo_Array[10] = data_groupbyRoomNum.shape[0]
+            studentInfo_Array[10] = int(data_groupbyRoomNum.shape[0])
     print(studentInfo_Array)
+    json_data = {"info": studentInfo_Array}
+    with open('../3.Student-level-data/Student_Info_1.json', "w") as file:
+        json.dump(json_data, file)
+    print('完成文件加载')
 
-# statistic_student_info(14572)
+# statistic_student_info(14459)
 
-# data_StudentInfo = pd.read_csv(filepath_StudentsInfo_processed)
-# for i in range(300):
-#     studentID = data_StudentInfo['bf_StudentID'].iloc[i]
-#     statistic_student_info(studentID)
 
 ##############################################################################
 # 统计每个班级的人数
@@ -189,6 +189,7 @@ def statistic_students_attendance():
 
 # 使用学号为14856的学生为例子
 def statistic_student_attendance(studentID):
+    print('统计学生的考勤情况中...')
     data_attendance = pd.read_csv(filepath_AttendenceInfo)
     # data_attendance['month']
     data_attendance['hour'] = (data_attendance['DataDateTime'].str.split(' ', expand=True)[1]).str.split(':', expand=True)[0]
@@ -215,9 +216,9 @@ def statistic_student_attendance(studentID):
 
     # 统计该学生所在的班级的考勤的情况
     student_classid = student_attendance['bf_classid'].iloc[0]
-    print(student_classid)
+    print('学生的班级ID为', student_classid)
     class_attendance = data_attendance.drop(data_attendance[data_attendance['bf_classid'] != student_classid].index)
-    print(class_attendance.shape[0])
+    print('班级考勤数据量为', class_attendance.shape[0])
     for i in range(len(late_taskName)):
         class_attendance_late = class_attendance.drop(class_attendance[class_attendance['control_task_order_id'] != late_taskName[i]].index)
         class_problems_num[0] = class_attendance_late.shape[0]
@@ -227,11 +228,11 @@ def statistic_student_attendance(studentID):
     for i in range(len(uniform_taskName)):
         class_attendance_uniform = class_attendance.drop(class_attendance[class_attendance['control_task_order_id'] != uniform_taskName[i]].index)
         class_problems_num[2] = class_attendance_uniform.shape[0]
-    print(class_problems_num)
+    print('班级问题考勤数据量为:', class_problems_num)
 
     # 统计该学生的一天的考勤的情况
     # 统计学生每天早晨上学期间的打卡记录，以及晚上放学的打卡记录，并与班级的平均水平进行对比
-
+    print(student_attendance['hour'])
     # 首先提取学生的早晨入校的时间，并产生180组样本数据
     student_attendance_hour_6 = student_attendance.drop(student_attendance[student_attendance['hour'] != '06'].index)
     student_attendance_hour_6_array = []
@@ -310,6 +311,35 @@ def statistic_student_attendance(studentID):
         time_piece = '6:' + str(i)
         time.append(time_piece)
     print(time)
+
+    # 产生晚坐标轴的数据
+    night_time = []
+    night_time_reg_all = []
+    for i in range(10):
+        night_time_piece = '17:0' + str(i)
+        night_time_reg = '0' + str(i)
+        night_time_reg_all.append(night_time_reg)
+        night_time.append(night_time_piece)
+
+    for i in range(10, 60):
+        night_time_piece = '17:' + str(i)
+        night_time.append(night_time_piece)
+    print(night_time)
+
+    ch_1 = [0, 2, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 2, 0, 1, 0, 0, 1, 1, 3, 3, 0, 2, 2, 1, 1, 0, 1, 0, 2, 0, 1, 4, 8, 10, 14, 9,
+     9, 4, 9, 7, 7, 9, 7, 8, 8, 4, 4, 4, 6, 5, 1, 5, 3, 2, 3, 2, 1, 1]
+    ch_2 = [5, 1, 5, 5, 5, 13, 5, 6, 1, 4, 2, 4, 0, 0, 1, 4, 4, 3, 4, 1, 2, 1, 2, 3, 1, 0, 1, 0, 0, 3, 16, 2, 2, 2, 19, 1, 2, 1, 2, 2, 1, 2, 0, 2, 4, 1, 0, 2, 0, 2, 1, 1, 4, 3, 8, 1, 0, 7, 4, 2]
+    ch_3 = [1, 0, 4, 5, 8, 2, 2, 2, 4, 0, 1, 5, 3, 5, 3, 8, 2, 4, 9, 12, 5, 6, 5, 1, 5, 1, 4, 2, 1, 1, 1, 1, 2, 5, 3, 3, 3, 3, 1, 4, 2, 5, 2, 4, 3, 4, 2, 2, 2, 3, 2, 3, 2, 2, 0, 1, 2, 0, 2, 0]
+
+    json_data = {'xlabel': time, 'student': minute_count_student, 'class': minute_count_class, 'school': minute_count_school}
+    with open('../3.Student-level-data/Student_Attendance_1.json', "w") as file:
+        json.dump(json_data, file)
+    print('完成文件加载！')
+
+    json_data = {'xlabel': night_time, 'student': ch_1, 'class': ch_2, 'school': ch_3}
+    with open('../3.Student-level-data/Student_Attendance_2.json', "w") as file:
+        json.dump(json_data, file)
+    print('完成文件加载！')
 
 # statistic_student_attendance(14856)
 
@@ -512,7 +542,46 @@ def statistic_student_consumption(studenID):
     for i in range(len(student_consumption_all)):
         class_consumption_all.append(round(student_consumption_all[i] + random.uniform(-4, 5), 2))
     print(class_consumption_all)
-statistic_student_consumption(16038)
+# statistic_student_consumption(16038)
 
-
-
+# 产生学生、班级、学校三个层次的异常考勤数据
+def create_errorAttend_data():
+    # 产生轴数据
+    data_xlabel = []
+    for i in range(12):
+        data_xlabel.append(str(i + 1) + '月')
+    print(data_xlabel)
+    # 产生迟到数据
+    data_late = []
+    for i in range(12):
+        rand_data = random.randint(-3, 6)
+        if rand_data < 0:
+            rand_data = 0
+        data_late.append(rand_data)
+    # data_late[1] = 0
+    data_late[6] = 0
+    data_late[7] = 0
+    print(data_late)
+    # 产生早退数据
+    data_early = []
+    for i in range(12):
+        rand_data = random.randint(-1, 9)
+        if rand_data < 0:
+            rand_data = 0
+        data_early.append(rand_data)
+    data_early[6] = 0
+    data_early[7] = 0
+    print(data_early)
+    # 产生迟到数据
+    data_uniform = []
+    for i in range(12):
+        rand_data = random.randint(-1, 10)
+        if rand_data < 0:
+            rand_data = 0
+        data_uniform.append(rand_data)
+    data_uniform[6] = 0
+    data_uniform[7] = 0
+    print(data_uniform)
+    dataset = {"student": data_late, "class": data_early, "school": data_uniform}
+    print(dataset)
+create_errorAttend_data()
