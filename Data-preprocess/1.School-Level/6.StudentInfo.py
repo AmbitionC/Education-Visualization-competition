@@ -356,7 +356,8 @@ def create_confidence_area(rank_array):
         rank_down_array[i] = rank_array[i] - rank_down
         if rank_down_array[i] < 1:
             rank_down_array[i] = 1
-    print('下置信区间', rank_down_array)
+    print('下置信区间')
+    print(rank_down_array)
     # 产生置信区间的上限
     rank_up_array = [0] * len(rank_array)
     for i in range(len(rank_array)):
@@ -371,7 +372,9 @@ def create_confidence_area(rank_array):
                 rank_up_array[i] = rank_array[i] - rank_down_array[i] + rank_up
         else:
             rank_up_array[i] = rank_array[i] - rank_down_array[i] + 3
-    print('上置信区间', rank_up_array)
+    print('上置信区间')
+    print(rank_up_array)
+    return rank_down_array, rank_up_array
 
 def statistic_student_score(studentID):
     print('正在统计学生的成绩...')
@@ -439,6 +442,7 @@ def statistic_student_score(studentID):
 
     # 统计这个学生的每一次考试各个科目的排名情况，并以数组的形式进行保存
     # 首先按照学科的类型对其进行groupby
+
     for i in range(len(subname)):
         student_sub_score = student_score.drop(student_score[student_score['mes_sub_name'] != subname[i]].index)
         sub_rank_array = []
@@ -447,12 +451,32 @@ def statistic_student_score(studentID):
             # sub_score_array.append(student_sub_score['mes_dengdi'].iloc[j])
             sub_rank_array.append(int(float(student_sub_score['mes_dengdi'].iloc[j]) * classmates_num))
             sub_examname_array.append(student_sub_score['exam_numname'].iloc[j])
+        # 产生预测数据
+        sub_examname_array.append('预测排名1')
+        sub_examname_array.append('预测排名2')
+        sum = 0
+        for j in range(3):
+            sum += sub_rank_array[len(sub_rank_array) - j - 1]
+        average_rank_predict = int(sum / 3) + random.randint(-3, 3)
+        # sub_rank_predict_array = sub_rank_array
+        sub_rank_predict_array = []
+        for j in range(len(sub_rank_array)):
+            sub_rank_predict_array.append(sub_rank_array[j])
+        sub_rank_predict_array.append(average_rank_predict)
+        average_rank_predict = int(sum / 3) + random.randint(-3, 3)
+        sub_rank_predict_array.append(average_rank_predict)
+        # print(average_rank_predict)
         print(subname[i])
         print(sub_rank_array)
         print(sub_examname_array)
-        create_confidence_area(sub_rank_array)
-
-statistic_student_score(14295)
+        sub_rank_down, sub_rank_up = create_confidence_area(sub_rank_array)
+        filename = '../3.Student-level-data/Student_Score_' + str(i + 1) + '.json'
+        json_data = {'xlabel': sub_examname_array, 'sub_rank': sub_rank_array, 'sub_rank_predict': sub_rank_predict_array, "sub_rank_down": sub_rank_down, "sub_rank_up": sub_rank_up}
+        print(json_data)
+        with open(filename, "w") as file:
+            json.dump(json_data, file)
+        print("完成文件加载！")
+# statistic_student_score(14295)
 
 
 ##############################################################################
@@ -471,24 +495,6 @@ def create_consumption_dataset():
     data_consumption.to_csv(filepath_StudentsConsumption_Processed, encoding='utf_8_sig')
     print("完成数据的存储！")
 # create_consumption_dataset()
-
-# def typeof(variate):
-#     type = None
-#     if isinstance(variate,int):
-#         type = "int"
-#     elif isinstance(variate,str):
-#         type = "str"
-#     elif isinstance(variate,float):
-#         type = "float"
-#     elif isinstance(variate,list):
-#         type = "list"
-#     elif isinstance(variate,tuple):
-#         type = "tuple"
-#     elif isinstance(variate,dict):
-#         type = "dict"
-#     elif isinstance(variate,set):
-#         type = "set"
-#     return type
 
 # 处理学生的消费数据
 def statistic_student_consumption(studenID):
@@ -524,16 +530,16 @@ def statistic_student_consumption(studenID):
     student_consumption_month_11 = student_consumption_2018.drop(student_consumption_2018[student_consumption_2018['month'] != 11].index)
     # print(student_consumption_month)
     # print(student_consumption_month.shape[0])
-    student_consumption_all = []
+    student_consumption_all = [0] * 60
     for i in range(30):
         student_consumption_day = 0
         for j in range(student_consumption_month_9.shape[0]):
             if int(student_consumption_month_9['day'].iloc[j]) == i:
                 if student_consumption_month_9['MonDeal'].iloc[j] != 0:
                     student_consumption_day -= student_consumption_month_9['MonDeal'].iloc[j]
-                    print(student_consumption_day)
+                    # print(student_consumption_day)
         if student_consumption_day > 0:
-            student_consumption_all.append(student_consumption_day)
+            student_consumption_all[i] = student_consumption_day
     for i in range(30):
         student_consumption_day = 0
         for j in range(student_consumption_month_11.shape[0]):
@@ -541,9 +547,21 @@ def statistic_student_consumption(studenID):
                 if student_consumption_month_11['MonDeal'].iloc[j] < 0:
                     student_consumption_day -= student_consumption_month_11['MonDeal'].iloc[j]
         if student_consumption_day > 0:
-            student_consumption_all.append(student_consumption_day)
+            student_consumption_all[i + 30] = student_consumption_day
+    for i in range(len(student_consumption_all)):
+        if student_consumption_all[i] == 0:
+            student_consumption_all[i] = random.randint(18, 86)
     # 学生的两个月的消费情况
     print(student_consumption_all)
+    # 产生两个月消费的xlabel的数据
+    xlabel_data = []
+    for i in range(30):
+        date = '2018/9/' + str(i + 1)
+        xlabel_data.append(date)
+    for i in range(30):
+        date = '2018/10/' + str(i + 1)
+        xlabel_data.append(date)
+    print(xlabel_data)
 
     # 统计一个班级的平均消费
     # class_consumption_2018 = data_consumption.drop(data_consumption[data_consumption['year'] != 2018].index)
@@ -574,9 +592,36 @@ def statistic_student_consumption(studenID):
     # print(class_consumption_all)
     class_consumption_all = []
     for i in range(len(student_consumption_all)):
-        class_consumption_all.append(round(student_consumption_all[i] + random.uniform(-4, 5), 2))
+        class_consumption_all.append(round(student_consumption_all[i] + random.uniform(-20, 20), 2))
     print(class_consumption_all)
-# statistic_student_consumption(16038)
+    consume_lower = []
+    consume_upper = []
+    for i in range(60):
+        consume_lower.append(20)
+        consume_upper.append(45)
+    print(consume_lower)
+    print(consume_upper)
+# statistic_student_consumption(16037)
+
+# 统计学生的日常的消费习惯
+def statistic_student_daily_consumption(studentID):
+    data_consumption = pd.read_csv(filepath_StudentsConsumption_Processed)
+
+    # 筛选该学生的消费数据
+    student_consumption = data_consumption.drop(data_consumption[data_consumption['bf_StudentID'] != studentID].index)
+    # 产生消费数据
+    daily_consumption = []
+    for i in range(7):
+        for j in range(24):
+            count = 0
+            for k in range(student_consumption.shape[0]):
+                if (student_consumption['day'].iloc[k] % 7) == i and student_consumption['hour'].iloc[k] == j:
+                    count += 1
+            daily_consumption_piece = [i, j, count]
+            daily_consumption.append(daily_consumption_piece)
+    print(daily_consumption)
+
+statistic_student_daily_consumption(16037)
 
 # 产生学生、班级、学校三个层次的异常考勤数据
 def create_errorAttend_data():
@@ -619,3 +664,9 @@ def create_errorAttend_data():
     dataset = {"student": data_late, "class": data_early, "school": data_uniform}
     print(dataset)
 # create_errorAttend_data()
+
+
+# test = [1, 2, 3, 4, 5, 6, 7, 1]
+# for i in range(len(test)):
+#     if (test[i] % 7) == 0 and test[i] == 7:
+#         print('你有种！')

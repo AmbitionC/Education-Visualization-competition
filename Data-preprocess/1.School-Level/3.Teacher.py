@@ -393,6 +393,48 @@ def create_sankey_data():
         json.dump(links_all, file)
     print("完成文件加载！")
 
+# create_sankey_data()
 
+def create_sankey_data_new():
+    print(data_origin.shape[0])
+    data_origin_new = data_origin.drop(data_origin[data_origin['term'] != '2014-2015-1'].index)
+    print(data_origin_new.shape[0])
+    teacher_class_array = []
+    data_groupby_teacherID = data_origin_new.groupby('bas_id').count().reset_index()
+    for i in range(data_groupby_teacherID.shape[0]):
+        for j in range(data_origin_new.shape[0]):
+            if data_groupby_teacherID['bas_id'].iloc[i] == data_origin_new['bas_id'].iloc[j]:
+                teacherName_piece = {"name": (str(data_origin_new['bas_id'].iloc[j]) + data_origin_new['bas_Name'].iloc[j])}
+                teacher_class_array.append(teacherName_piece)
+                break
+    data_groupby_className = data_origin_new.groupby('cla_Name').count().reset_index()
+    for i in range(data_groupby_className.shape[0]):
+        className_piece = {"name": data_groupby_className['cla_Name'].iloc[i]}
+        teacher_class_array.append(className_piece)
+    print(teacher_class_array)
+    links_all = []
+    for i in range(data_groupby_teacherID.shape[0]):
+        teacher_class_data = data_origin_new.drop(data_origin_new[data_origin_new['bas_id'] != data_groupby_teacherID['bas_id'].iloc[i]].index)
+        if teacher_class_data.shape[0] > 0:
+            for j in range(teacher_class_data.shape[0]):
+                link_single = {"source": (str(teacher_class_data['bas_id'].iloc[0]) + teacher_class_data['bas_Name'].iloc[0]),
+                                "target": teacher_class_data['cla_Name'].iloc[j],
+                                "value": 1}
+                links_all.append(link_single)
+    print(links_all)
+    with open('../1.School-Level-data/Teacher_5.json', "w") as file:
+        json.dump(teacher_class_array, file)
+    print("完成文件加载！")
+    with open('../1.School-Level-data/Teacher_6.json', "w") as file:
+        json.dump(links_all, file)
+    print("完成文件加载！")
 
-create_sankey_data()
+create_sankey_data_new()
+
+#
+# def observe_sankey_data():
+#     data_origin['count'] = 1
+#     data_groupby = data_origin.groupby(['term']).count().reset_index()
+#     print(data_groupby)
+#
+# # observe_sankey_data()
