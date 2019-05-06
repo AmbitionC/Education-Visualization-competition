@@ -664,9 +664,3 @@ def create_errorAttend_data():
     dataset = {"student": data_late, "class": data_early, "school": data_uniform}
     print(dataset)
 # create_errorAttend_data()
-
-
-# test = [1, 2, 3, 4, 5, 6, 7, 1]
-# for i in range(len(test)):
-#     if (test[i] % 7) == 0 and test[i] == 7:
-#         print('你有种！')
