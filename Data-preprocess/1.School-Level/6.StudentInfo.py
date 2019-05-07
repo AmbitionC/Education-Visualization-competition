@@ -621,7 +621,7 @@ def statistic_student_daily_consumption(studentID):
             daily_consumption.append(daily_consumption_piece)
     print(daily_consumption)
 
-statistic_student_daily_consumption(16037)
+# statistic_student_daily_consumption(16037)
 
 # 产生学生、班级、学校三个层次的异常考勤数据
 def create_errorAttend_data():
@@ -633,7 +633,7 @@ def create_errorAttend_data():
     # 产生迟到数据
     data_late = []
     for i in range(12):
-        rand_data = random.randint(-3, 6)
+        rand_data = random.randint(-2, 8)
         if rand_data < 0:
             rand_data = 0
         data_late.append(rand_data)
@@ -644,7 +644,7 @@ def create_errorAttend_data():
     # 产生早退数据
     data_early = []
     for i in range(12):
-        rand_data = random.randint(-1, 9)
+        rand_data = random.randint(-1, 6)
         if rand_data < 0:
             rand_data = 0
         data_early.append(rand_data)
@@ -654,7 +654,7 @@ def create_errorAttend_data():
     # 产生迟到数据
     data_uniform = []
     for i in range(12):
-        rand_data = random.randint(-1, 10)
+        rand_data = random.randint(1, 6)
         if rand_data < 0:
             rand_data = 0
         data_uniform.append(rand_data)
@@ -663,4 +663,4 @@ def create_errorAttend_data():
     print(data_uniform)
     dataset = {"student": data_late, "class": data_early, "school": data_uniform}
     print(dataset)
-# create_errorAttend_data()
+create_errorAttend_data()

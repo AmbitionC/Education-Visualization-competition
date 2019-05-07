@@ -301,16 +301,165 @@ def extract_connection_data():
 
     print(student_sub_score)
 
-extract_connection_data()
+# extract_connection_data()
 
-# rank_array_1 = []
-# rank_array_2 = []
-# for i in range(1):
-#     rank_array_c = statistic_sub_score_connection(14217 + i)
-#     rank_array_1.extend(rank_array_c[0])
-#     rank_array_2.extend(rank_array_c[1])
-# print(rank_array_1)
-# # print('var A =', rank_array_1)
-# print(rank_array_2)
-# # print('var B =', rank_array_2)
-# # print(len(rank_array_1), len(rank_array_2))
+
+##############################################################################
+# Chart_3
+# 完成学生的班级的划分与聚类
+
+# 输入学生的ID，产出这个学生的文理科成绩，并做成数组的形式
+# 产出数据的格式：[文科成绩，理科成绩，姓名]
+def create_student_score(studentID, classNum):
+    print('正在产生该学生的成绩...')
+    Libral_sub_name = ['语文', '政治', '历史']
+    Libral_sub_score = []
+    Libral_sub_rank = []
+    Science_sub_name = ['数学', '物理', '化学']
+    Science_sub_score = []
+    Science_sub_rank = []
+    data_score = pd.read_csv(filepath_StudentsScore)
+    data_score = data_score.dropna(subset=['mes_Z_Score'])
+    # 得到这个学生的成绩数据
+    student_score = data_score.drop(data_score[data_score['mes_StudentID'] != studentID].index)
+
+    # 计算该学生的文科成绩
+    for i in range(len(Libral_sub_name)):
+        student_sub_score = student_score.drop(student_score[student_score['mes_sub_name'] != Libral_sub_name[i]].index)
+        # 计算平均值
+        sub_Tscore_sum = 0
+        sub_dengdi_sum = 0
+        for j in range(student_sub_score.shape[0]):
+            sub_Tscore_sum += student_sub_score['mes_T_Score'].iloc[j]
+            sub_dengdi_sum += student_sub_score['mes_dengdi'].iloc[j]
+        sub_Tscore_average = sub_Tscore_sum / student_sub_score.shape[0]
+        sub_dengdi_average = sub_dengdi_sum / student_sub_score.shape[0]
+        Libral_sub_score.append(sub_Tscore_average)
+        Libral_sub_rank.append(sub_dengdi_average)
+    # 计算该学生的理科成绩
+    for i in range(len(Science_sub_name)):
+        student_sub_score = student_score.drop(student_score[student_score['mes_sub_name'] != Science_sub_name[i]].index)
+        # 计算平均值
+        sub_Tscore_sum = 0
+        sub_dengdi_sum = 0
+        for j in range(student_sub_score.shape[0]):
+            sub_Tscore_sum += student_sub_score['mes_T_Score'].iloc[j]
+            sub_dengdi_sum += student_sub_score['mes_dengdi'].iloc[j]
+        sub_Tscore_average = sub_Tscore_sum / student_sub_score.shape[0]
+        sub_dengdi_average = sub_dengdi_sum / student_sub_score.shape[0]
+        Science_sub_score.append(sub_Tscore_average)
+        Science_sub_rank.append(sub_dengdi_average)
+
+    # 计算该学生的文理科平均成绩
+    Libral_score_sum = 0
+    Libral_rank_sum = 0
+    Science_score_sum = 0
+    Science_rank_sum = 0
+    # 文科成绩
+    for i in range(len(Libral_sub_score)):
+        Libral_score_sum += Libral_sub_score[i]
+        Libral_rank_sum += Libral_sub_rank[i]
+
+    Libral_score_average = round(Libral_score_sum / len(Libral_sub_score), 2)
+    Libral_rank_average = int((Libral_rank_sum / len(Libral_sub_score)) * classNum)
+    # 理科成绩
+    for i in range(len(Science_sub_score)):
+        Science_score_sum += Science_sub_score[i]
+        Science_rank_sum += Science_sub_rank[i]
+
+    Science_score_average = round(Science_score_sum / len(Science_sub_score), 2)
+    Science_rank_average = int((Science_rank_sum / len(Science_sub_score)) * classNum)
+
+    Libral_Science = [Libral_rank_average, Science_rank_average]
+    print(Libral_Science)
+    return Libral_Science
+
+
+# 产生聚类的数据
+def create_cluster_data(studentID):
+    # 导入成绩数据
+    data_score = pd.read_csv(filepath_StudentsScore)
+    data_student_info = pd.read_csv(filepath_StudentsInfo)
+    # 去除掉没有成绩的数据
+    data_score = data_score.dropna(subset=['mes_Z_Score'])
+
+    # 得到这个学生所在的班级
+    class_name = data_student_info.drop(data_student_info[data_student_info['bf_StudentID'] != studentID].index)['cla_Name'].iloc[0]
+    classmates_data = data_student_info.drop(data_student_info[data_student_info['cla_Name'] != class_name].index)
+    # print(classmates_data)
+
+    # 统计这个班级的成绩的分布
+    Libral_Science_All = []
+    for i in range(classmates_data.shape[0]):
+        Libral_Science_Name = create_student_score(classmates_data['bf_StudentID'].iloc[i], classmates_data.shape[0])
+        Libral_Science_Name.append(classmates_data['bf_Name'].iloc[i])
+        Libral_Science_All.append(Libral_Science_Name)
+    print(Libral_Science_All)
+
+    Libral_Science_I = []
+    Libral_Science_II = []
+    Libral_Science_III = []
+    Libral_Science_IV = []
+
+    for i in range(len(Libral_Science_All)):
+        if Libral_Science_All[i][0] <= 25:
+            if Libral_Science_All[i][1] >= 25:
+                Libral_Science_I.append(Libral_Science_All[i])
+            if Libral_Science_All[i][1] < 25:
+                Libral_Science_IV.append(Libral_Science_All[i])
+        if Libral_Science_All[i][0] > 25:
+            if Libral_Science_All[i][1] >= 25:
+                Libral_Science_II.append(Libral_Science_All[i])
+            if Libral_Science_All[i][1] < 25:
+                Libral_Science_III.append(Libral_Science_All[i])
+
+    print(Libral_Science_I)
+    print(Libral_Science_II)
+    print(Libral_Science_III)
+    print(Libral_Science_IV)
+
+    print(create_student_score(14237, classmates_data.shape[0]))
+
+
+# create_cluster_data(14237)
+
+# 看看920班级的情况
+
+def look_look_920():
+    # 导入数据
+    data_score = pd.read_csv(filepath_StudentsScore)
+    data_student_info = pd.read_csv(filepath_StudentsInfo)
+
+    # 筛选这个班级数据
+    classmates_data = data_student_info.drop(data_student_info[data_student_info['cla_id'] != 920].index)
+    # 统计这个班级的成绩的分布
+    Libral_Science_All = []
+    for i in range(classmates_data.shape[0]):
+        Libral_Science_Name = create_student_score(classmates_data['bf_StudentID'].iloc[i], classmates_data.shape[0])
+        Libral_Science_Name.append(classmates_data['bf_Name'].iloc[i])
+        Libral_Science_All.append(Libral_Science_Name)
+    print(Libral_Science_All)
+
+    Libral_Science_I = []
+    Libral_Science_II = []
+    Libral_Science_III = []
+    Libral_Science_IV = []
+
+    for i in range(len(Libral_Science_All)):
+        if Libral_Science_All[i][0] <= 25:
+            if Libral_Science_All[i][1] >= 25:
+                Libral_Science_I.append(Libral_Science_All[i])
+            if Libral_Science_All[i][1] < 25:
+                Libral_Science_IV.append(Libral_Science_All[i])
+        if Libral_Science_All[i][0] > 25:
+            if Libral_Science_All[i][1] >= 25:
+                Libral_Science_II.append(Libral_Science_All[i])
+            if Libral_Science_All[i][1] < 25:
+                Libral_Science_III.append(Libral_Science_All[i])
+
+    print(Libral_Science_I)
+    print(Libral_Science_II)
+    print(Libral_Science_III)
+    print(Libral_Science_IV)
+
+look_look_920()
