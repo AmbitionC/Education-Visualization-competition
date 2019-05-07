@@ -293,8 +293,13 @@ def extract_connection_data():
         student_sub_score_piece.append(connection_data_9[i])
         student_sub_score.append(student_sub_score_piece)
     print('niubi')
-    print(student_sub_score)
 
+    for i in range(len(student_sub_score)):
+        for j in range(9):
+            if student_sub_score[i][j] < 50 :
+                student_sub_score[i][j] = 50
+
+    print(student_sub_score)
 
 extract_connection_data()
 
