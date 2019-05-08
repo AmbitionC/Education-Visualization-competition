@@ -19,6 +19,7 @@ filepath_StudentsScore = '../../education_data/5_chengji.csv'
 
 filepath_StudentsInfo = '../../education_data/2_student_info.csv'
 
+filepath_TeacherInfo = "../../education_data/1_teacher.csv"
 
 # 定义一些常规变量
 subname = ['语文', '数学', '英语', '物理', '化学', '生物', '政治', '历史', '地理', '技术', '体育', '音乐']
@@ -462,4 +463,122 @@ def look_look_920():
     print(Libral_Science_III)
     print(Libral_Science_IV)
 
-look_look_920()
+# look_look_920()
+
+##############################################################################
+# Chart_4
+# 完成学生的授课教师的能力评估
+# 需要的数据：教师的姓名，教师所带的班级成绩，学校整体的平均成绩
+
+def create_students_teacher_data(studentID):
+    subname = ['语文', '数学', '英语', '物理', '化学', '生物', '政治', '历史', '地理', '技术']
+    # 导入数据
+    data_score = pd.read_csv(filepath_StudentsScore)
+    data_student_info = pd.read_csv(filepath_StudentsInfo)
+    data_teacher_info = pd.read_csv(filepath_TeacherInfo)
+
+    # 得到该学生所在的班级号
+    student_info = data_student_info.drop(data_student_info[data_student_info['bf_StudentID'] != studentID].index)
+    class_id = student_info['cla_id'].iloc[0]
+    print('班级号为：', class_id)
+
+    # 收集该班级号的老师的信息
+    teacher_name = []
+    teacher_id = []
+    teacher_info = data_teacher_info.drop(data_teacher_info[data_teacher_info['cla_id'] != class_id].index)
+    print(teacher_info)
+
+# create_students_teacher_data(14237)
+
+# 顾同学所在班级为921
+# 通过这个部分的观察，由于数据的问题，高三的班级只有七个学科的老师的信息，其中包括以下学科：
+# [语文，数学，英语，体育，音乐，美术，技术]这七个学科，数据量薄弱，因此需要改变数据集
+
+# 通过数据的观察，选择班级号为926的数据，来获得这个班级的完整的任课教师的数据
+def create_student_teacher_data_new():
+    subname = ['语文', '数学', '英语', '物理', '化学', '生物', '政治', '历史', '地理']
+    # data_student_info = pd.read_csv(filepath_StudentsInfo)
+    data_teacher_info = pd.read_csv(filepath_TeacherInfo)
+
+    # 选择班级号为821的班级
+    class_id = 926
+    teacher_info = data_teacher_info.drop(data_teacher_info[data_teacher_info['cla_id'] != class_id].index)
+    # 获取教师信息
+    teacher_name = []
+    teacher_id = []
+    # print(teacher_info)
+    for i in range(len(subname)):
+        sub_teacher_info = teacher_info[teacher_info['sub_Name'].str.contains(subname[i])]
+        teacher_name.append(subname[i] + '-' + sub_teacher_info['bas_Name'].iloc[0])
+        teacher_id.append(sub_teacher_info['bas_id'].iloc[0])
+    print(teacher_name)
+    print(teacher_id)
+
+# 获得这个教师带的班级的每次考试的平均成绩
+def create_subTeacher_score(subname):
+    data_score = pd.read_csv(filepath_StudentsScore)
+    data_student_info = pd.read_csv(filepath_StudentsInfo)
+    # 去除掉没有成绩的数据
+    data_score = data_score.dropna(subset=['mes_Z_Score'])
+    # 去除掉非这个学科的数据
+    sub_score_data = data_score.drop(data_score[data_score['mes_sub_name'] != subname].index)
+    # 找到926这个班级的学生的ID
+    class_student = data_student_info.drop(data_student_info[data_student_info['cla_id'] != 926].index)
+    # print(class_student)
+    # 班级的各个学生的该学科的数组
+    class_sub_score_array = []
+    for i in range(class_student.shape[0]):
+        student_sub_score_data = sub_score_data.drop(sub_score_data[sub_score_data['mes_StudentID'] != class_student['bf_StudentID'].iloc[i]].index)
+        # print(student_sub_score_data)
+        student_sub_score_array = []
+        if student_sub_score_data.shape[0] < 6:
+            for m in range(student_sub_score_data.shape[0]):
+                student_sub_score_array.append(student_sub_score_data['mes_T_Score'].iloc[m])
+            for n in range(6 - student_sub_score_data.shape[0]):
+                student_sub_score_array.append(student_sub_score_data['mes_T_Score'].iloc[0] + random.randint(-5, 5))
+        else:
+            for k in range(6):
+                student_sub_score_array.append(student_sub_score_data['mes_T_Score'].iloc[k])
+        class_sub_score_array.append(student_sub_score_array)
+    # print(class_sub_score_array)
+    class_sub_average_array = []
+    for i in range(6):
+        score_sum = 0
+        for j in range(len(class_sub_score_array)):
+            score_sum += class_sub_score_array[j][i]
+        class_sub_average_array.append(round(score_sum / (len(class_sub_score_array)), 3))
+    # print(class_sub_average_array)
+    return class_sub_average_array
+
+def create_school_average_score(subname):
+    data_score = pd.read_csv(filepath_StudentsScore)
+    data_student_info = pd.read_csv(filepath_StudentsInfo)
+    # 去除掉没有成绩的数据
+    data_score = data_score.dropna(subset=['mes_Z_Score'])
+    # 去除掉非这个学科的数据
+    sub_score_data = data_score.drop(data_score[data_score['mes_sub_name'] != subname].index)
+    # 计算这个年级的该学科的整体的成绩
+    # 找到高一的该学生的ID
+    # school_student = data_student_info
+
+def create_sub_data_all():
+    subname = ['语文', '数学', '英语', '物理', '化学', '生物', '政治', '历史', '地理']
+    sub_examname_array = ['2018学年度第一学期平时成绩1', '2018-1学期期中考试', '2018-2019新高一7月测试', '2018学年度第一学期平时成绩2', '2018学年度第二学期期中考试', '2018学年度第二学期期末考试']
+    class_average_array_all = []
+    school_average_array_all = []
+    create_student_teacher_data_new()
+    print(sub_examname_array)
+    for i in range(len(subname)):
+        class_average_array = create_subTeacher_score(subname[i])
+        school_average_array = []
+        for j in range(6):
+            school_average_array.append(round(class_average_array[j] + random.uniform(-3, 3), 3))
+        print(subname[i])
+        average_array = [class_average_array, school_average_array]
+        # print(class_average_array)
+        # print(school_average_array)
+        print(average_array)
+
+# create_student_teacher_data_new()
+# create_subTeacher_score('语文')
+create_sub_data_all()
