@@ -429,7 +429,7 @@ def create_sankey_data_new():
         json.dump(links_all, file)
     print("完成文件加载！")
 
-create_sankey_data_new()
+# create_sankey_data_new()
 
 #
 # def observe_sankey_data():
@@ -438,3 +438,45 @@ create_sankey_data_new()
 #     print(data_groupby)
 #
 # # observe_sankey_data()
+
+# 产生根据学科划分的桑基图的数据
+def create_sankey_data_divided():
+    data_origin_new = data_origin.drop(data_origin[data_origin['term'] != '2014-2015-1'].index)
+    print(data_origin_new.shape[0])
+    sub_name = ['语文', '数学', '英语', '物理', '化学', '政治', '历史', '生物', '地理', '技术', '美术',
+                '体育', '音乐']
+    for i in range(len(sub_name)):
+        print("正在统计的学科数据：", sub_name[i])
+        data_divided = data_origin_new[data_origin_new['sub_Name'].str.contains(sub_name[i])]
+        sub_teacher_class_array = []
+        data_groupby_teacherID = data_divided.groupby('bas_id').count().reset_index()
+        for j in range(data_groupby_teacherID.shape[0]):
+            for k in range(data_divided.shape[0]):
+                if data_groupby_teacherID['bas_id'].iloc[j] == data_divided['bas_id'].iloc[k]:
+                    teacherName_piece = {'name': (str(data_divided['bas_id'].iloc[k]) + data_divided['bas_Name'].iloc[k])}
+                    sub_teacher_class_array.append(teacherName_piece)
+                    break
+        data_groupby_className = data_divided.groupby('cla_Name').count().reset_index()
+        for j in range(data_groupby_className.shape[0]):
+            className_piece = {"name": data_groupby_className['cla_Name'].iloc[j]}
+            sub_teacher_class_array.append(className_piece)
+        print(sub_teacher_class_array)
+        links_all = []
+        for j in range(data_groupby_teacherID.shape[0]):
+            teacher_class_data = data_divided.drop(data_divided[data_divided['bas_id'] != data_groupby_teacherID['bas_id'].iloc[j]].index)
+            if teacher_class_data.shape[0] > 0:
+                for k in range(teacher_class_data.shape[0]):
+                    link_single = {"source": (str(teacher_class_data['bas_id'].iloc[0]) + teacher_class_data['bas_Name'].iloc[0]),
+                                    "target": teacher_class_data['cla_Name'].iloc[k],
+                                    "value": 1}
+                    links_all.append(link_single)
+        file_path_teacher = '../1.School-Level-data/Teacher_class_' + str(i) + '.json'
+        file_path_link = '../1.School-Level-data/Teacher_link_' + str(i) + '.json'
+        with open(file_path_teacher, "w") as file:
+            json.dump(sub_teacher_class_array, file)
+        print("完成文件加载！")
+        with open(file_path_link, "w") as file:
+            json.dump(links_all, file)
+        print("完成文件加载！")
+
+create_sankey_data_divided()
