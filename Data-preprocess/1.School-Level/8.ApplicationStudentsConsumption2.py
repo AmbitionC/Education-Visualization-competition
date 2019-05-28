@@ -211,7 +211,7 @@ def average_consumption_data():
                     student_daycost += (0 - student_consumption_day['MonDeal'].iloc[m])
                 student_average_consumption_piece.append(poverty_index)
                 if student_consumption_day.shape[0] > 0:
-                    student_average_consumption_piece.append(student_daycost / student_consumption_day.shape[0])
+                    student_average_consumption_piece.append(int(student_daycost / student_consumption_day.shape[0]))
                 else:
                     student_average_consumption_piece.append(0)
                 poverty_student_averageConsume.append(student_average_consumption_piece)
@@ -247,7 +247,7 @@ def average_consumption_data():
                     student_daycost += (0 - student_consumption_day['MonDeal'].iloc[m])
                 student_average_consumption_piece.append(normal_index)
                 if student_consumption_day.shape[0] > 0:
-                    student_average_consumption_piece.append(student_daycost / student_consumption_day.shape[0])
+                    student_average_consumption_piece.append(int(student_daycost / student_consumption_day.shape[0]))
                 else:
                     student_average_consumption_piece.append(0)
                 normal_student_averageConsume.append(student_average_consumption_piece)
@@ -263,24 +263,38 @@ def average_consumption_data():
     print("非贫困生每天平均消费金额数据量", len(normal_students_averageConsume[0]))
 
     # 处理数据，将连续的数据转为不连续的数据，去除值为0的数据，即分段形式
+    poverty_students_averageConsume_new = []
+    for i in range(len(poverty_students_averageConsume)):
+        poverty_students_averageConsume_new_piece = []
+        for j in range(len(poverty_students_averageConsume[0])):
+            if poverty_students_averageConsume[i][j][1] != 0:
+                poverty_students_averageConsume_new_piece.append(poverty_students_averageConsume[i][j])
+        poverty_students_averageConsume_new.append(poverty_students_averageConsume_new_piece)
 
+    normal_students_averageConsume_new = []
+    for i in range(len(normal_students_averageConsume)):
+        normal_students_averageConsume_new_piece = []
+        for j in range(len(normal_students_averageConsume[0])):
+            if normal_students_averageConsume[i][j][1] != 0:
+                normal_students_averageConsume_new_piece.append(normal_students_averageConsume[i][j])
+        normal_students_averageConsume_new.append(normal_students_averageConsume_new_piece)
 
     # 保存数据
-    poverty_data = {"date": xAxis_data, "student_1_average": poverty_students_averageConsume[0],
-                    "student_2_average": poverty_students_averageConsume[1],
-                    "student_3_average": poverty_students_averageConsume[2],
-                    "student_4_average": poverty_students_averageConsume[3],
-                    "student_5_average": poverty_students_averageConsume[4],
+    poverty_data = {"date": xAxis_data, "student_1_average": poverty_students_averageConsume_new[0],
+                    "student_2_average": poverty_students_averageConsume_new[1],
+                    "student_3_average": poverty_students_averageConsume_new[2],
+                    "student_4_average": poverty_students_averageConsume_new[3],
+                    "student_5_average": poverty_students_averageConsume_new[4],
                     "student_1_time": poverty_students_consumeTime[0],
                     "student_2_time": poverty_students_consumeTime[1],
                     "student_3_time": poverty_students_consumeTime[2],
                     "student_4_time": poverty_students_consumeTime[3],
                     "student_5_time": poverty_students_consumeTime[4]}
-    normal_data = {"date": xAxis_data, "student_1_average": normal_students_averageConsume[0],
-                    "student_2_average": normal_students_averageConsume[1],
-                    "student_3_average": normal_students_averageConsume[2],
-                    "student_4_average": normal_students_averageConsume[3],
-                    "student_5_average": normal_students_averageConsume[4],
+    normal_data = {"date": xAxis_data, "student_1_average": normal_students_averageConsume_new[0],
+                    "student_2_average": normal_students_averageConsume_new[1],
+                    "student_3_average": normal_students_averageConsume_new[2],
+                    "student_4_average": normal_students_averageConsume_new[3],
+                    "student_5_average": normal_students_averageConsume_new[4],
                     "student_1_time": normal_students_consumeTime[0],
                     "student_2_time": normal_students_consumeTime[1],
                     "student_3_time": normal_students_consumeTime[2],
