@@ -155,5 +155,142 @@ def all_consumption_data():
     with open('../4.Application-Level-data/PovertyHelper4.json', "w") as file:
         json.dump(normal_data, file)
     print("完成文件加载")
-all_consumption_data()
 
+# all_consumption_data()
+
+# 展示学生的消费对比
+
+def average_consumption_data():
+    poverty_studentsID = [13948, 13992, 14416, 14568, 14570]
+    normal_studentsID = [14025, 14090, 14207, 14281, 14296]
+    consumption_data = pd.read_csv(filepath_StudentsConsumption_Processed)
+    # 统计学生三个月的消费次数
+    year_array = [2018]
+    month_array = [9, 10, 11, 12]
+    day_array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+    # 产生xAxis的数据
+    xAxis_data = []
+    for i in range(len(month_array)):
+        for j in range(len(day_array)):
+            if month_array[i] == 9:
+                if day_array[j] < 10:
+                    date = "2018-0" + str(month_array[i]) + "-0" + str(day_array[j])
+                    xAxis_data.append(date)
+                else:
+                    date = "2018-0" + str(month_array[i]) + "-" + str(day_array[j])
+                    xAxis_data.append(date)
+            else:
+                if day_array[j] < 10:
+                    date = "2018-" + str(month_array[i]) + "-0" + str(day_array[j])
+                    xAxis_data.append(date)
+                else:
+                    date = "2018-" + str(month_array[i]) + "-" + str(day_array[j])
+                    xAxis_data.append(date)
+    print('xlabel的数据')
+    print(xAxis_data)
+
+    # 产生实际的消费次数
+    poverty_students_consumeTime = []
+    poverty_students_averageConsume = []
+    for i in range(len(poverty_studentsID)):
+        consumption_data_student = consumption_data.drop(consumption_data[consumption_data['bf_StudentID'] != poverty_studentsID[i]].index)
+        poverty_student_consumeTime = []
+        poverty_student_averageConsume = []
+        for j in range(len(month_array)):
+            student_consumption_month = consumption_data_student.drop(consumption_data_student[consumption_data_student['month'] != month_array[j]].index)
+            for k in range(len(day_array)):
+                student_consumption_day = student_consumption_month.drop(student_consumption_month[student_consumption_month['day'] != day_array[k]].index)
+                student_consumption_piece = []
+                student_average_consumption_piece = []
+                poverty_index = int(j * 31 + k)
+                student_consumption_piece.append(poverty_index)
+                student_consumption_piece.append(student_consumption_day.shape[0])
+                poverty_student_consumeTime.append(student_consumption_piece)
+                student_daycost = 0
+                for m in range(student_consumption_day.shape[0]):
+                    student_daycost += (0 - student_consumption_day['MonDeal'].iloc[m])
+                student_average_consumption_piece.append(poverty_index)
+                if student_consumption_day.shape[0] > 0:
+                    student_average_consumption_piece.append(student_daycost / student_consumption_day.shape[0])
+                else:
+                    student_average_consumption_piece.append(0)
+                poverty_student_averageConsume.append(student_average_consumption_piece)
+        poverty_students_consumeTime.append(poverty_student_consumeTime)
+        poverty_students_averageConsume.append(poverty_student_averageConsume)
+    print(poverty_students_consumeTime)
+    print("贫困生们次数数据量", len(poverty_students_consumeTime))
+    print(poverty_students_consumeTime[0])
+    print("贫困生次数数据量", len(poverty_students_consumeTime[0]))
+    print(poverty_students_averageConsume)
+    print("贫困生们每天平均消费金额数据量", len(poverty_students_averageConsume))
+    print(poverty_students_averageConsume[0])
+    print("贫困生每天平均消费金额数据量", len(poverty_students_averageConsume[0]))
+
+    normal_students_consumeTime = []
+    normal_students_averageConsume = []
+    for i in range(len(normal_studentsID)):
+        consumption_data_student = consumption_data.drop(consumption_data[consumption_data['bf_StudentID'] != normal_studentsID[i]].index)
+        normal_student_consumeTime = []
+        normal_student_averageConsume = []
+        for j in range(len(month_array)):
+            student_consumption_month = consumption_data_student.drop(consumption_data_student[consumption_data_student['month'] != month_array[j]].index)
+            for k in range(len(day_array)):
+                student_consumption_day = student_consumption_month.drop(student_consumption_month[student_consumption_month['day'] != day_array[k]].index)
+                student_consumption_piece = []
+                student_average_consumption_piece = []
+                normal_index = int(j * 31 + k)
+                student_consumption_piece.append(normal_index)
+                student_consumption_piece.append(student_consumption_day.shape[0])
+                normal_student_consumeTime.append(student_consumption_piece)
+                student_daycost = 0
+                for m in range(student_consumption_day.shape[0]):
+                    student_daycost += (0 - student_consumption_day['MonDeal'].iloc[m])
+                student_average_consumption_piece.append(normal_index)
+                if student_consumption_day.shape[0] > 0:
+                    student_average_consumption_piece.append(student_daycost / student_consumption_day.shape[0])
+                else:
+                    student_average_consumption_piece.append(0)
+                normal_student_averageConsume.append(student_average_consumption_piece)
+        normal_students_consumeTime.append(normal_student_consumeTime)
+        normal_students_averageConsume.append(normal_student_averageConsume)
+    print(normal_students_consumeTime)
+    print("非贫困生们次数数据量", len(normal_students_consumeTime))
+    print(normal_students_consumeTime[0])
+    print("非贫困生次数数据量", len(normal_students_consumeTime[0]))
+    print(normal_students_averageConsume)
+    print("非贫困生们每天平均消费金额数据量", len(normal_students_averageConsume))
+    print(normal_students_averageConsume[0])
+    print("非贫困生每天平均消费金额数据量", len(normal_students_averageConsume[0]))
+
+    # 处理数据，将连续的数据转为不连续的数据，去除值为0的数据，即分段形式
+
+
+    # 保存数据
+    poverty_data = {"date": xAxis_data, "student_1_average": poverty_students_averageConsume[0],
+                    "student_2_average": poverty_students_averageConsume[1],
+                    "student_3_average": poverty_students_averageConsume[2],
+                    "student_4_average": poverty_students_averageConsume[3],
+                    "student_5_average": poverty_students_averageConsume[4],
+                    "student_1_time": poverty_students_consumeTime[0],
+                    "student_2_time": poverty_students_consumeTime[1],
+                    "student_3_time": poverty_students_consumeTime[2],
+                    "student_4_time": poverty_students_consumeTime[3],
+                    "student_5_time": poverty_students_consumeTime[4]}
+    normal_data = {"date": xAxis_data, "student_1_average": normal_students_averageConsume[0],
+                    "student_2_average": normal_students_averageConsume[1],
+                    "student_3_average": normal_students_averageConsume[2],
+                    "student_4_average": normal_students_averageConsume[3],
+                    "student_5_average": normal_students_averageConsume[4],
+                    "student_1_time": normal_students_consumeTime[0],
+                    "student_2_time": normal_students_consumeTime[1],
+                    "student_3_time": normal_students_consumeTime[2],
+                    "student_4_time": normal_students_consumeTime[3],
+                    "student_5_time": normal_students_consumeTime[4]}
+    with open("../4.Application-Level-data/PovertyHelper5.json", "w") as file:
+        json.dump(poverty_data, file)
+    print("完成文件加载")
+    with open("../4.Application-Level-data/PovertyHelper6.json", "w") as file:
+        json.dump(normal_data, file)
+    print("完成文件加载")
+
+average_consumption_data()
