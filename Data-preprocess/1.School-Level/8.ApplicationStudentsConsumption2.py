@@ -12,7 +12,6 @@
 
 import pandas as pd
 import json
-import random
 
 # 读取原始的数据集
 filepath_StudentsConsumption = '../../education_data/7_consumption.csv'
