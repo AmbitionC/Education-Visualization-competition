@@ -10,7 +10,7 @@
 
 #### &emsp;&emsp;作品线上链接：[作品链接](https://ashinzhang.github.io/work1/)
 
-#### &emsp;&emsp;参赛总结： [总结链接]()
+#### &emsp;&emsp;参赛总结： [总结链接](https://zhuanlan.zhihu.com/p/69391508)
 
 ## Data Analysis
 
