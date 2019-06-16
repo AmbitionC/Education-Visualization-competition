@@ -12,7 +12,6 @@
 
 import pandas as pd
 import json
-import random
 
 # 读取原始的数据集
 filepath_StudentsConsumption = '../../education_data/7_consumption.csv'
@@ -96,23 +95,7 @@ def statistic_poverty_index():
                     student_poverty_index = 0
                 if student_poverty_index > 70:
                     student_poverty_index = 70.32
-                if student_poverty_index >= 50 and student_poverty_index < 70:
-                    student_poverty_index = student_poverty_index + random.randint(-10, 10)
-                if student_poverty_index >= 30 and student_poverty_index < 50:
-                    student_poverty_index = student_poverty_index + random.randint(-8, 15)
-                if student_poverty_index >= 20 and student_poverty_index < 30:
-                    student_poverty_index = student_poverty_index + random.randint(-6, 15)
-                if student_poverty_index >= 10 and student_poverty_index < 20:
-                    student_poverty_index = student_poverty_index + random.randint(-5, 15)
-                if student_poverty_index >= 5 and student_poverty_index < 10:
-                    student_poverty_index = student_poverty_index + random.randint(-3, 3)
-                if student_poverty_index < 5:
-                    student_poverty_index = student_poverty_index + random.randint(0, 3)
-                if student_poverty_index > 30:
-                    student_poverty_index = 20 + random.randint(5, 10)
-                if student_poverty_index < 10:
-                    student_poverty_index = student_poverty_index * random.uniform(1.3, 1.8)
-
+                
                 student_poverty_array_piece.append(str(xAxis_data[j]))
                 student_poverty_array_piece.append(round(student_poverty_index, 2))
                 poverty_index_month_array.append(student_poverty_array_piece)

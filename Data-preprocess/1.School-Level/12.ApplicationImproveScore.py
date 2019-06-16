@@ -101,7 +101,7 @@ def statistic_student_score(studentID):
         average_score = mes_score_sum / (exam_score.shape[0])
         exam_rank_array.append(int(average_rank * classmates_num))
         exam_score_array.append(int(average_score))
-        class_average_array.append(int(average_score + random.randint(-3, 3)))
+        class_average_array.append(int(average_score))
     print('成绩的数组为：')
     # 计算总分
     for i in range(len(exam_score_array)):
@@ -149,7 +149,7 @@ def statistic_student_score(studentID):
             rank_array_new.append(rank_array_new_piece)
         else:
             for j in range(18 - len(sub_rank_array)):
-                sub_rank_array.append(sub_rank_array[0] + random.randint(-3, 3))
+                sub_rank_array.append(sub_rank_array[0])
             rank_array_new.append(sub_rank_array)
         print(subname[i])
         print(sub_rank_array)
@@ -241,7 +241,7 @@ def statistic_sub_score_connection(studentID):
             examname_array_new.append(examname_array_new_piece)
         else:
             for j in range(10 - len(sub_rank_array)):
-                sub_rank_array.append(sub_rank_array[0] + random.randint(-3, 3))
+                sub_rank_array.append(sub_rank_array[0])
                 sub_examname_array.append(sub_examname_array[0])
             rank_array_new.append(sub_rank_array)
             examname_array_new.append(sub_examname_array)
@@ -535,7 +535,7 @@ def create_subTeacher_score(subname):
             for m in range(student_sub_score_data.shape[0]):
                 student_sub_score_array.append(student_sub_score_data['mes_T_Score'].iloc[m])
             for n in range(6 - student_sub_score_data.shape[0]):
-                student_sub_score_array.append(student_sub_score_data['mes_T_Score'].iloc[0] + random.randint(-5, 5))
+                student_sub_score_array.append(student_sub_score_data['mes_T_Score'].iloc[0])
         else:
             for k in range(6):
                 student_sub_score_array.append(student_sub_score_data['mes_T_Score'].iloc[k])
@@ -572,7 +572,7 @@ def create_sub_data_all():
         class_average_array = create_subTeacher_score(subname[i])
         school_average_array = []
         for j in range(6):
-            school_average_array.append(round(class_average_array[j] + random.uniform(-3, 3), 3))
+            school_average_array.append(round(class_average_array[j], 3))
         print(subname[i])
         average_array = [class_average_array, school_average_array]
         # print(class_average_array)

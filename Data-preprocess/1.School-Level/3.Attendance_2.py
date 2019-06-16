@@ -7,7 +7,6 @@
 '''
 
 import pandas as pd
-import random
 import json
 
 data_origin = pd.read_csv('../1.School-Level-data/data_origin.csv')
@@ -278,7 +277,7 @@ def statistic_month_uniform():
                     num_uniform[i] += 1
         num_uniform[i] = round(num_uniform[i] / date_students[i] * 100, 2)
         if num_uniform[i] > 100 or num_uniform[i] == 0:
-            num_uniform[i] = random.randint(0, 40)
+            num_uniform[i] = 20
         data_show = [date_name[i], round(num_uniform[i]/2, 2)]
         data_show_all.append(data_show)
         # print(date[i], "号校服校徽问题的比例为", num_uniform[i])

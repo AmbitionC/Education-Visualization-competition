@@ -13,7 +13,6 @@
 import pandas as pd
 import numpy as np
 import json
-import random
 
 #显示所有列
 pd.set_option('display.max_columns', None)
@@ -265,8 +264,8 @@ def create_net_teachers():
     total_teacher['x'] = 0
     total_teacher['y'] = 0
     for j in range(total_teacher.shape[0]):
-        total_teacher['x'].iloc[j] = random.randint(-170, -120)
-        total_teacher['y'].iloc[j] = random.randint(-500, 500)
+        total_teacher['x'].iloc[j] = 0
+        total_teacher['y'].iloc[j] = 0
     # print(total_teacher)
     return total_teacher
 
@@ -281,8 +280,8 @@ def create_net_classes():
     data_class['y'] = 0
     data_class.rename(columns={0: 'id'}, inplace=True)
     for i in range(data_class.shape[0]):
-        data_class['x'].iloc[i] = random.randint(180, 200)
-        data_class['y'].iloc[i] = random.randint(-500, 500)
+        data_class['x'].iloc[i] = 0
+        data_class['y'].iloc[i] = 0
     # print(data_class)
     return data_class
 

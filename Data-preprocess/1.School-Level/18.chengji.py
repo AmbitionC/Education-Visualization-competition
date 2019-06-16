@@ -1,8 +1,8 @@
 import pandas as pd
 
-chengji = pd.read_csv("./data/edu_data/5_chengji.csv")
-exam_type = pd.read_csv('./data/edu_data/6_exam_type.csv')
-
+chengji = pd.read_csv("./data/5_chengji.csv")
+exam_type = pd.read_csv('./data/6_exam_type.csv')
+student_info = pd.read_csv("./data/2_student_info.csv")
 
 # 缺失值查看
 print('\n********** 缺失值查看 **********')
@@ -85,9 +85,6 @@ for i in idx_18_19:
     print(chengji['exam_numname'][chengji['exam_number'] == i].value_counts().index[0])
 
 
-print('\n********** 2013-2014学年 **********')
-
-
 def f2(s):
     if ('高三' in s) | ('五校联考' in s) | ('十校联考' in s):
         return 2011
@@ -96,4 +93,4 @@ def f2(s):
 
 
 # pd.concat([chengji, chengji['exam_numname'].apply(f2).rename('grade')], axis=1)
-
+print(chengji[chengji['exam_numname'] == '2014年宁波市高三“十校联考”'])

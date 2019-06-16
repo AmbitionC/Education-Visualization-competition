@@ -12,7 +12,6 @@
 
 import pandas as pd
 import json
-import random
 
 # 读取原始的数据集
 filename_score = '../../education_data/5_chengji.csv'
@@ -49,8 +48,6 @@ def generate_data_byStdID(data_split_byGrade):
             for k in range(len(sub_name)):
                 if data_split_byStuID['mes_sub_name'].iloc[j] == sub_name[k]:
                     score_stuID[k] = data_split_byStuID[score_category].iloc[j]
-                    # if score_stuID[k] < 20:
-                    #     score_stuID[k] = score_stuID[k] + random.randint(10, 20)
         score_stuID.append(int(data_split_byStuID['mes_StudentID'].iloc[0]))
         score_stuID.append(data_split_byStuID['cla_Name'].iloc[0])
         score_grade.append(score_stuID)
